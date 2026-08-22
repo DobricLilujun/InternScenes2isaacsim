@@ -17,13 +17,28 @@ import mathutils
 def parse_args():
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     glb = out = engine = "auto"
-    for a in args:
+    i = 0
+    while i < len(args):
+        a = args[i]
         if a.startswith("--glb="):
             glb = a.split("=", 1)[1]
+        elif a == "--glb":
+            i += 1
+            if i < len(args):
+                glb = args[i]
         elif a.startswith("--out="):
             out = a.split("=", 1)[1]
+        elif a == "--out":
+            i += 1
+            if i < len(args):
+                out = args[i]
         elif a.startswith("--engine="):
             engine = a.split("=", 1)[1]
+        elif a == "--engine":
+            i += 1
+            if i < len(args):
+                engine = args[i]
+        i += 1
     return glb, out, engine
 
 
