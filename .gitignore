@@ -1,0 +1,13 @@
+# InternScenes -> Isaac Sim (USD) pipeline
+# data is huge (objaverse ~100GB); never commit it
+data/
+output/
+*.glb
+*.usd
+*.usdz
+*.usda
+*.usdc
+.venv/
+.venv311/
+__pycache__/
+*.pyc
