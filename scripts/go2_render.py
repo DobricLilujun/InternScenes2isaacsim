@@ -40,17 +40,37 @@ try:
 except Exception as e:
     print("ground err", e)
 
-# camera 3/4 view looking at the Go2 (frame the Go2 + nearby, not the whole room)
+# camera 3/4 view looking at the Go2, standing on the OPEN side (away from the
+# nearest furniture) so the robot has a clean background.
 bpy.ops.object.camera_add()
 cam = bpy.context.active_object
 try:
-    cam.data.lens = 50
+    cam.data.lens = 55
 except Exception:
     pass
 bpy.context.scene.camera = cam
-# frame the Go2: stand ~2.5m away, at ~1.5m height
-cam.location = (px + 2.2, py - 1.8, 1.6)
-d = mathutils.Vector((px, py, 0.35)) - cam.location
+
+# find nearest scene object to the Go2 (to stand opposite it)
+go2_names = set(o.name for o in go2_objs)
+nx = ny = None
+best_d = 1e9
+for o in bpy.data.objects:
+    if o.type != "MESH" or o.name in go2_names:
+        continue
+    wx = o.location.x; wy = o.location.y
+    d2 = (wx - px) ** 2 + (wy - py) ** 2
+    if d2 < best_d:
+        best_d = d2
+        nx, ny = wx, wy
+if nx is not None and best_d > 1e-6:
+    dx, dy = px - nx, py - ny           # direction from nearest obj -> go2
+    m = math.hypot(dx, dy)
+    ux, uy = dx / m, dy / m            # open side = go2 + (away from obj)
+else:
+    ux, uy = 0.7, -0.7
+cam.location = (px + ux * 2.0, py + uy * 2.0, 1.5)
+look = mathutils.Vector((px, py, 0.30))
+d = look - cam.location
 cam.rotation_euler = d.to_track_quat('-Z', 'Y').to_euler()
 
 bpy.ops.object.light_add(type='SUN')
