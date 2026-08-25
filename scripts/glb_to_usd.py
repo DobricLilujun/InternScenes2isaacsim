@@ -16,7 +16,10 @@ Usage:
     python glb_to_usd.py --glb <scene.glb> --out <scene.usd>
 """
 import argparse
+import logging
 import os
+from typing import Any
+
 import numpy as np
 import trimesh
 
@@ -25,13 +28,15 @@ import pxr.UsdGeom as UsdGeom
 import pxr.UsdShade as UsdShade
 import pxr.Gf
 
+logger = logging.getLogger(__name__)
 
-def _safe(name):
+
+def _safe(name: str) -> str:
     # USD prim path components may only contain [A-Za-z0-9_]; everything else -> _
     return "".join((c if c.isalnum() else "_") for c in name)[:50] or "n"
 
 
-def _base_color(mesh):
+def _base_color(mesh) -> tuple[float, float, float]:
     """Return (r, g, b) float 0-1 base color for a mesh's visual."""
     try:
         vis = getattr(mesh, "visual", None)
@@ -51,23 +56,27 @@ def _base_color(mesh):
             return (float(np.clip(c[0], 0, 1)),
                     float(np.clip(c[1], 0, 1)),
                     float(np.clip(c[2], 0, 1)))
-    except Exception:
-        pass
+    except Exception as exc:  # pragma: no cover - material extraction is best-effort
+        logger.debug("base color extraction failed: %s", exc)
     return (0.8, 0.8, 0.85)
 
 
-def build_usd(glb_path, out_usd):
-    scene = trimesh.load(glb_path)
+def build_usd(glb_path: str, out_usd: str) -> str:
+    """Convert a composed GLB scene to a USD file; return the output path."""
+    try:
+        scene = trimesh.load(glb_path)
+    except Exception as exc:
+        raise RuntimeError(f"failed to load GLB {glb_path}") from exc
     stage = pxr.Usd.Stage.CreateInMemory()
     if not stage:
         raise RuntimeError("could not create USD stage")
 
     geom_by_name = scene.geometry if isinstance(scene, trimesh.Scene) else {}
     graph = scene.graph if isinstance(scene, trimesh.Scene) else None
-    shader_cache = {}
+    shader_cache: dict[tuple, Any] = {}
     n_meshes = 0
 
-    def make_basecolor_shader(name, rgb):
+    def make_basecolor_shader(name: str, rgb: tuple) -> Any:
         key = tuple(round(x, 3) for x in rgb)
         if key in shader_cache:
             return shader_cache[key]
@@ -150,18 +159,25 @@ def build_usd(glb_path, out_usd):
 
     os.makedirs(os.path.dirname(out_usd), exist_ok=True)
     stage.Export(out_usd)
-    print("  meshes:", n_meshes, "USD size:", os.path.getsize(out_usd))
+    logger.info("USD written: %s (%d meshes, %.1f KB)",
+                out_usd, n_meshes, os.path.getsize(out_usd) / 1024)
     return out_usd
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--glb", required=True)
-    ap.add_argument("--out", required=True)
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Convert a composed GLB scene to USD")
+    ap.add_argument("--glb", required=True, help="input GLB path")
+    ap.add_argument("--out", required=True, help="output USD path")
     args = ap.parse_args()
-    out = build_usd(args.glb, args.out)
-    print("USD written:", out)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    try:
+        out = build_usd(args.glb, args.out)
+    except Exception as exc:
+        logger.error("glb_to_usd failed: %s", exc)
+        return 1
+    print(f"USD written: {out}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

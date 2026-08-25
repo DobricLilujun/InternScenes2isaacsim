@@ -19,61 +19,95 @@ Method (collision-aware, floor-level):
 Go2 dims (meters): 0.46 x 0.30 x 0.30.
 """
 
-import json, math
+from __future__ import annotations
+
+import json
+import logging
+import math
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
 
 CLEARANCE_MARGIN = 0.12  # extra clearance beyond object bbox (m)
 GO2_R = 0.25            # Go2 footprint radius (m) ~ half of 0.50 diag
 
-
-def load_layout(p):
-    with open(p) as f:
-        return json.load(f)
+# A parsed object record: a tuple of (centre_x, centre_y, radius, category).
+Obstacle = tuple[float, float, float, str]
 
 
-def room_bounds(objs):
-    xs, ys = [], []
+def load_layout(p: str | Path) -> list[dict]:
+    """Load and return the objects list from a layout.json file."""
+    p = Path(p)
+    if not p.exists():
+        raise FileNotFoundError(f"layout.json not found: {p}")
+    with p.open(encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _bbox(o: dict) -> list[float] | None:
+    """Return a usable bbox list for an object, or None if invalid/absent."""
+    b = o.get("bbox")
+    if b is None:
+        return None
+    try:
+        return [float(x) for x in b]
+    except (TypeError, ValueError):
+        logger.debug("skipping object with invalid bbox: %r", o.get("id"))
+        return None
+
+
+def room_bounds(objs: list[dict]) -> tuple[float, float, float, float]:
+    """Return (min_x, max_x, min_y, max_y) of the union of object extents."""
+    xs: list[float] = []
+    ys: list[float] = []
     for o in objs:
-        b = o.get("bbox")
+        b = _bbox(o)
         if b is None:
             continue
         cx, cy, dx, dy = b[0], b[1], b[3], b[4]
         xs += [cx - dx / 2, cx + dx / 2]
         ys += [cy - dy / 2, cy + dy / 2]
     if not xs:
-        return (-1, 1, -1, 1)
+        return (-1.0, 1.0, -1.0, 1.0)
     return (min(xs), max(xs), min(ys), max(ys))
 
 
-def obstacle_circles(objs, margin=CLEARANCE_MARGIN):
-    out = []
+def obstacle_circles(objs: list[dict], margin: float = CLEARANCE_MARGIN) -> list[Obstacle]:
+    """Turn each object into a collision circle (cx, cy, radius, category)."""
+    out: list[Obstacle] = []
     for o in objs:
-        b = o.get("bbox")
+        b = _bbox(o)
         if b is None:
             continue
         cx, cy, dx, dy = b[0], b[1], b[3], b[4]
         r = max(dx, dy) / 2 + margin
-        out.append((cx, cy, r, o.get("category")))
+        out.append((cx, cy, r, o.get("category", "")))
     return out
 
 
-def collides(cx, cy, obs):
-    for (ox, oy, r, _) in obs:
+def collides(cx: float, cy: float, obs: list[Obstacle]) -> bool:
+    """True if the Go2 circle at (cx, cy) intersects any obstacle circle."""
+    for ox, oy, r, _ in obs:
         if math.hypot(cx - ox, cy - oy) < GO2_R + r:
             return True
     return False
 
 
-def nearest_clearance(cx, cy, obs):
-    return min((math.hypot(cx - ox, cy - oy) - r for (ox, oy, r, _) in obs),
+def nearest_clearance(cx: float, cy: float, obs: list[Obstacle]) -> float:
+    """Smallest gap (m) between the Go2 at (cx, cy) and any obstacle."""
+    return min((math.hypot(cx - ox, cy - oy) - r for ox, oy, r, _ in obs),
                default=999.0)
 
 
-def best_placement(objs, n_grid=80, margin=CLEARANCE_MARGIN):
+def best_placement(objs: list[dict], n_grid: int = 80,
+                   margin: float = CLEARANCE_MARGIN) -> list[tuple[float, float, float]]:
+    """Return collision-free placements sorted by descending clearance.
+
+    Each entry is (clearance, x, y); an empty list means no valid placement.
+    """
     obs = obstacle_circles(objs, margin=margin)
     bx0, bx1, by0, by1 = room_bounds(objs)
-    cand = []
+    cand: list[tuple[float, float, float]] = []
     for i in range(n_grid + 1):
         for j in range(n_grid + 1):
             cx = bx0 + (bx1 - bx0) * i / n_grid
@@ -82,13 +116,13 @@ def best_placement(objs, n_grid=80, margin=CLEARANCE_MARGIN):
                 continue
             if collides(cx, cy, obs):
                 continue
-            nearest = nearest_clearance(cx, cy, obs)
-            cand.append((nearest, cx, cy))
+            cand.append((nearest_clearance(cx, cy, obs), cx, cy))
     cand.sort(key=lambda t: t[0], reverse=True)
     return cand
 
 
-def place_go2(layout_path, top_n=5):
+def place_go2(layout_path: str | Path, top_n: int = 5) -> list[tuple[float, float, float]]:
+    """Compute and print the best Go2 placements for a scene's layout.json."""
     objs = load_layout(layout_path)
     cand = best_placement(objs)
     print(f"scene: {layout_path}")
@@ -100,6 +134,7 @@ def place_go2(layout_path, top_n=5):
 
 if __name__ == "__main__":
     import sys
+
     p = sys.argv[1] if len(sys.argv) > 1 else \
         "/home/ubadmin/projects/InternScenes2isaacsim/data/Layout_info/scannet/scene0000_00/layout.json"
     place_go2(p)
