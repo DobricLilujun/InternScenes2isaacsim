@@ -1,5 +1,4 @@
-"""
-Placement algorithm for a Unitree Go2 robot in an InternScenes scene.
+"""Placement algorithm for a Unitree Go2 robot in an InternScenes scene.
 
 Goal: find a floor location where the Go2 can stand without colliding with any
 object and with enough clearance from walls.
@@ -132,9 +131,15 @@ def place_go2(layout_path: str | Path, top_n: int = 5) -> list[tuple[float, floa
     return cand
 
 
-if __name__ == "__main__":
-    import sys
+def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description="Find Go2 placement for a scene layout")
+    ap.add_argument("layout", help="path to layout.json")
+    ap.add_argument("--top-n", type=int, default=5, help="print top N placements")
+    args = ap.parse_args()
+    place_go2(args.layout, top_n=args.top_n)
+    return 0
 
-    p = sys.argv[1] if len(sys.argv) > 1 else \
-        "/home/ubadmin/projects/InternScenes2isaacsim/data/Layout_info/scannet/scene0000_00/layout.json"
-    place_go2(p)
+
+if __name__ == "__main__":
+    raise SystemExit(main())

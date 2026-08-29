@@ -40,10 +40,33 @@ class AssetMeshLoader:
                 return str(ASSET_LIBRARY / f"{uid}.glb")
         raise ValueError(f"Invalid uid: {uid}")
 
+    def resolve_mesh_path(self, uid):
+        """Return the on-disk path for ``uid``, or None if not found.
+
+        Tries the canonical path first, then common layout variants
+        (e.g. ``data/asset_library/<lib>/<lib>/<uid>.glb`` for asset
+        libraries that were extracted from a multi-part tar with a
+        top-level directory of the same name).
+        """
+        try:
+            primary = Path(self.get_mesh_path(uid))
+            if primary.exists():
+                return primary
+        except ValueError:
+            return None
+        # Fallback: <lib>/<lib>/<uid>.glb (matches the objaverse tar extract)
+        first = uid.split("/", 1)[0]
+        for nested in (
+            ASSET_LIBRARY / first / first / f"{Path(uid).name}.glb",
+        ):
+            if nested.exists():
+                return nested
+        return None
+
     def load_init_mesh(self, uid, use_texture=False):
-        path = self.get_mesh_path(uid)
-        if not Path(path).exists():
-            raise FileNotFoundError(path)
+        path = self.resolve_mesh_path(uid)
+        if path is None:
+            raise FileNotFoundError(self.get_mesh_path(uid))
         return trimesh.load(path, force="mesh") if not use_texture else trimesh.load(path)
 
     def load_init_rotation(self, uid):
@@ -107,7 +130,10 @@ class SceneComposer:
             return np.diag([s, s, s, 1])
         return np.diag([1, 1, 1, 1])
 
-    def compose_scene_from_instance_infos(self, infos, output_glb, use_texture, bbox_key="bbox"):
+    def compose_scene_from_instance_infos(self, infos, output_glb, use_texture,
+                                         bbox_key="bbox",
+                                         missing_report_path=None,
+                                         verbose_missing=True):
         scene = trimesh.scene.Scene()
         lock = threading.Lock()
         missing = []
@@ -120,8 +146,10 @@ class SceneComposer:
             try:
                 mesh = self.asset_mesh_loader.load_canonical_mesh(uid, use_texture)
             except FileNotFoundError as e:
-                print(f"  MISSING asset {uid}: {e}")
-                missing.append(uid)
+                if verbose_missing:
+                    print(f"  MISSING asset {uid}: {e}")
+                with lock:
+                    missing.append({"uid": uid, "path": str(e)})
                 return
             geometry_name = instance["category"] + "@" + uid
             transform = np.eye(4)
@@ -164,11 +192,21 @@ class SceneComposer:
         return scene, missing
 
     def compose_one_scene(self, scene_name, use_texture=True,
-                          add_floor=True, add_wall=True, add_ceiling=True):
+                          add_floor=True, add_wall=True, add_ceiling=True,
+                          write_missing_report=True, verbose_missing=True):
         layout = LAYOUT_DIR / scene_name / "layout.json"
         out_glb = COMPOSED_DIR / scene_name / "glb_scene.glb"
         infos = json.load(open(layout))
-        scene, missing = self.compose_scene_from_instance_infos(infos, None, use_texture, "bbox")
+        # Decide where the missing-assets report lives.  Mirror the
+        # scene_info convention: ``<dataset>_<id>_missing.json`` under
+        # ``output/info/`` so the auto-fill downloader can read it.
+        slug = scene_name.replace("/", "_")
+        missing_report = OUTPUT_ROOT / "info" / f"{slug}_missing.json"
+        scene, missing = self.compose_scene_from_instance_infos(
+            infos, None, use_texture, "bbox",
+            missing_report_path=str(missing_report),
+            verbose_missing=verbose_missing,
+        )
         for part in (("floor", add_floor), ("wall", add_wall), ("ceiling", add_ceiling)):
             try:
                 p = LAYOUT_DIR / scene_name / "StructureMesh" / f"{part[0]}.glb"
@@ -180,6 +218,15 @@ class SceneComposer:
                 print(f"  error adding {part[0]}: {e}")
         Path(out_glb).parent.mkdir(parents=True, exist_ok=True)
         trimesh.exchange.export.export_mesh(scene, out_glb)
+        if write_missing_report and missing:
+            missing_report.parent.mkdir(parents=True, exist_ok=True)
+            payload = {
+                "scene_id": scene_name,
+                "num_missing": len(missing),
+                "missing": missing,
+            }
+            with missing_report.open("w", encoding="utf-8") as fh:
+                json.dump(payload, fh, ensure_ascii=False, indent=2)
         print(f"Composed {scene_name} -> {out_glb} (missing assets: {len(missing)})")
         return out_glb, missing
 

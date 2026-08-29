@@ -1,32 +1,35 @@
-#!/usr/bin/env python3
 """3D -> 2D top-down projection of an InternScenes scene with a live Go2 marker.
 
 For each scene we project the 3D world onto the XY (top-down) plane:
   - every object's 3D bounding box -> its rotated rectangle footprint (XY)
-  - the Go2 is placed by the collision-aware algorithm (scripts/place_go2.py)
+  - the Go2 is placed by the collision-aware algorithm (:mod:`place_go2`)
   - the Go2 is drawn as a marker with a heading + a live position trace
 
-This is the "3D to 2D projection" view the user asked for, alongside the
-Isaac ego (A) and third-person (B) renders.
+Public entry point: :func:`draw_scene`.
 """
-import os, json, math, argparse, logging
+from __future__ import annotations
+
+import argparse
+import json
+import logging
+import math
+import os
+from pathlib import Path
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle, FancyArrow
+from matplotlib.patches import Rectangle
 from matplotlib.transforms import Affine2D
-import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-import place_go2 as pg
+from . import place_go2 as pg
 
 logger = logging.getLogger(__name__)
 
-# Go2 heading (yaw, radians) for a few scenes (arbitrary but plausible)
 GO2_YAW = {"default": -math.pi / 2}
 
 
-def footprint_rect(b):
+def _footprint_rect(b):
     """Return (cx, cy, w, h, yaw) for the XY footprint of a 3D bbox.
     b = [cx, cy, cz, dx, dy, dz, rot_x, rot_y, rot_z]; dx,dy are full extents."""
     if isinstance(b, dict):
@@ -46,7 +49,8 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
     is still drawn (obstacle footprints + grid) with a "no valid placement"
     note so the caller always gets an image.
     """
-    objs = json.load(open(layout_path))
+    with open(layout_path, encoding="utf-8") as fh:
+        objs = json.load(fh)
     objs = [o for o in objs if o.get("bbox")]
     obs = pg.obstacle_circles(objs)
 
@@ -74,15 +78,11 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
         b = o.get("bbox")
         if b is None:
             continue
-        cx, cy, w, h, yaw = footprint_rect(b)
-        # rotate the rectangle by yaw about its center
+        cx, cy, w, h, yaw = _footprint_rect(b)
         t = Affine2D().translate(cx, cy).rotate(yaw).translate(-cx, -cy)
         rect = Rectangle((cx - w / 2, cy - h / 2), w, h,
-                         transform=ax.transData,
                          facecolor="#d94f4f", edgecolor="#a03030",
                          alpha=0.35, lw=0.6)
-        # apply rotation
-        import matplotlib.transforms as mt
         rect.set_transform(t + ax.transData)
         ax.add_patch(rect)
 
@@ -118,13 +118,14 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
                   edgecolor="#a03030", label="obstacle footprint"))
     ax.legend(loc="upper left", fontsize=8, framealpha=0.9)
     plt.tight_layout()
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
     plt.savefig(out_path, dpi=120)
     plt.close()
     return (gx, gy, clearance)
 
 
-def main():
-    ap = argparse.ArgumentParser()
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Render a top-down projection")
     ap.add_argument("scene", help="scene name (e.g. scannet/scene0100_01)")
     ap.add_argument("--layout", help="layout.json path")
     ap.add_argument("--out", help="output png")
@@ -132,15 +133,15 @@ def main():
     args = ap.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    here = os.path.dirname(os.path.abspath(__file__))
-    root = os.path.dirname(here)
-    layout = args.layout or os.path.join(root, "data", "Layout_info",
-                                         args.scene, "layout.json")
+    here = Path(__file__).resolve().parent
+    root = here.parents[1]
+    layout = args.layout or str(root / "data" / "Layout_info" /
+                                args.scene / "layout.json")
     if not os.path.exists(layout):
         logger.error("no layout.json at %s", layout)
         return 1
-    out = args.out or os.path.join(root, "output", "topdown",
-                                   args.scene.replace("/", "_") + "_topdown.png")
+    out = args.out or str(root / "output" / "topdown" /
+                          args.scene.replace("/", "_") + "_topdown.png")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     try:
         res = draw_scene(args.scene, layout, out, go2_yaw=args.yaw)

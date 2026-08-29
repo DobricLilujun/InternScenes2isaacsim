@@ -17,16 +17,26 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+isaac = ["isaacsim"]          # install only in the Isaac Sim environment
+studio = ["bpy>=4.2"]         # only when running render module inside Blender
 dev = ["nbformat>=5.1.4", "nbclient>=0.10", "pytest>=8.0"]
 
 [project.scripts]
 internscenes = "internscenes.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/InternRobotics/InternScenes"
+Repository = "https://github.com/InternRobotics/InternScenes"
+
+[tool.setuptools.package-data]
+"*" = ["*.md"]
 
 [tool.setuptools]
 package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["internscenes*"]
 
 [tool.ruff]
 line-length = 100
