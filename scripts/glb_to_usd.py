@@ -82,7 +82,7 @@ def build_usd(glb_path: str, out_usd: str) -> str:
             return shader_cache[key]
         sname = "BaseColor_%d" % abs(hash(key))
         # OpenUSD 26.x: no schema .Def(); create via DefinePrim then wrap
-        p = stage.DefinePrim("/Look/" + sname, "Shader")
+        p = stage.DefinePrim("/World/Look/" + sname, "Shader")
         sh = UsdShade.Shader(p)
         try:
             sh.CreateInput("baseColor", pxr.Sdf.ValueTypeCode.Color)
@@ -101,7 +101,7 @@ def build_usd(glb_path: str, out_usd: str) -> str:
             if mesh is None or len(mesh.vertices) == 0:
                 continue
             m = np.array(transform, dtype=float)
-            xform_path = "/Objects/xform_%s" % _safe(gname)
+            xform_path = "/World/Objects/xform_%s" % _safe(gname)
             xp = stage.DefinePrim(xform_path, "Xform")
             x = UsdGeom.Xform(xp)
             try:
@@ -145,7 +145,7 @@ def build_usd(glb_path: str, out_usd: str) -> str:
     else:
         mesh = scene
         if len(mesh.vertices) > 0:
-            mp = stage.DefinePrim("/Objects/mesh", "Mesh")
+            mp = stage.DefinePrim("/World/Objects/mesh", "Mesh")
             mm = UsdGeom.Mesh(mp)
             pa = mm.CreatePointsAttr()
             pa.Set([pxr.Gf.Vec3d(float(v[0]), float(v[1]), float(v[2]))
@@ -156,6 +156,19 @@ def build_usd(glb_path: str, out_usd: str) -> str:
                 mm.CreateFaceVertexIndicesAttr().Set([i for f in faces for i in f])
                 mm.CreateCornerIndicesAttr().Set([i for f in faces for i in f])
             n_meshes += 1
+
+    # Content is authored directly under a /World root (no reparenting needed;
+    # usd-exchange's pxr has no Stage.Move / Prim.Reparent API, and defining the
+    # full path up front is the portable equivalent).
+    #
+    # The InternScenes assets are authored Y-up (GLB convention); the Isaac Sim
+    # adapter rotates them to Z-up at load time, so we keep upAxis="Y" here and do
+    # NOT bake a rotation into the asset (baking it would double-rotate the robot
+    # placement coordinates in scene.json). The adapter references
+    # @scene@</World/Objects>, so /World/Objects is what it probes for first.
+    world = stage.GetPrimAtPath("/World")
+    if world.IsValid():
+        stage.SetDefaultPrim(world)
 
     os.makedirs(os.path.dirname(out_usd), exist_ok=True)
     stage.Export(out_usd)
