@@ -55,8 +55,24 @@ def _bbox(o: dict) -> list[float] | None:
         return None
 
 
-def room_bounds(objs: list[dict]) -> tuple[float, float, float, float]:
-    """Return (min_x, max_x, min_y, max_y) of the union of object extents."""
+def room_bounds(objs: list[dict],
+                interior_bounds: dict[str, Any] | None = None) -> tuple[float, float, float, float]:
+    """Return (min_x, max_x, min_y, max_y) of the walkable room footprint.
+
+    If ``interior_bounds`` is supplied (e.g. from ``StructureMesh/floor.glb``),
+    use that rectangle directly; otherwise fall back to the union of object
+    extents from the layout file.  The footprint is shrunk inward by ``GO2_R``
+    so the robot centre always stays clear of the walls.
+    """
+    if interior_bounds is not None:
+        bx0 = float(interior_bounds["min_x"]) + GO2_R
+        bx1 = float(interior_bounds["max_x"]) - GO2_R
+        by0 = float(interior_bounds["min_y"]) + GO2_R
+        by1 = float(interior_bounds["max_y"]) - GO2_R
+        # If the room is too tight to shrink on both sides, fall through to the
+        # layout-based fallback below.
+        if bx1 - bx0 > 0 and by1 - by0 > 0:
+            return (bx0, bx1, by0, by1)
     xs: list[float] = []
     ys: list[float] = []
     for o in objs:
@@ -99,13 +115,14 @@ def nearest_clearance(cx: float, cy: float, obs: list[Obstacle]) -> float:
 
 
 def best_placement(objs: list[dict], n_grid: int = 80,
-                   margin: float = CLEARANCE_MARGIN) -> list[tuple[float, float, float]]:
+                   margin: float = CLEARANCE_MARGIN,
+                   interior_bounds: dict[str, Any] | None = None) -> list[tuple[float, float, float]]:
     """Return collision-free placements sorted by descending clearance.
 
     Each entry is (clearance, x, y); an empty list means no valid placement.
     """
     obs = obstacle_circles(objs, margin=margin)
-    bx0, bx1, by0, by1 = room_bounds(objs)
+    bx0, bx1, by0, by1 = room_bounds(objs, interior_bounds=interior_bounds)
     cand: list[tuple[float, float, float]] = []
     for i in range(n_grid + 1):
         for j in range(n_grid + 1):

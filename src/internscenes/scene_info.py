@@ -4,15 +4,16 @@ Reads a scene's ``layout.json`` (the per-object layout produced by InternScenes)
 and produces a compact, JSON-serialisable description of the scene:
 
 * room dimensions (bounding box of all objects, in metres);
+* real interior room bounds derived from ``StructureMesh/*.glb`` when available;
 * the object list, with each object's category, source asset, world position,
   size (length/width/height) and rotation;
 * a Unitree Go2 placement (collision-aware) so the downstream pipeline knows
   where a robot could stand;
 * category frequency counts.
 
-This module is deliberately free of heavy dependencies (only the standard
-library plus ``numpy``) so it can be imported from the notebook, the CLI
-wrappers in ``scripts/`` and the batch orchestrator alike.
+This module tries to stay light on dependencies (only the standard library plus
+``numpy``).  Reading the actual structural mesh bounds requires ``trimesh``; if
+it is unavailable the code falls back to the layout-derived bounding box.
 """
 
 from __future__ import annotations
@@ -23,6 +24,11 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+
+try:
+    import trimesh
+except Exception:  # pragma: no cover - optional heavy dependency
+    trimesh = None  # type: ignore
 
 try:  # optional: reuse the collision-aware placement used by the topdown view
     from . import place_go2  # type: ignore  (relative import, package context)
@@ -115,6 +121,83 @@ def room_dimensions(objs: list[dict[str, Any]]) -> dict[str, float]:
     }
 
 
+def _mesh_bounds(path: Path) -> np.ndarray | None:
+    """Return (2,3) axis-aligned bounds of a GLB mesh in the project frame.
+
+    trimesh loads GLB files in their native frame (usually Y-up).  The project
+    standard (matches ``layout.json`` and the USD stage) is Z-up, so we apply
+    the inverse of the -90 deg X-axis rotation used in :mod:`compose` to bring
+    the mesh into the unified frame.  The mapping is (x, y, z) -> (x, -z, y).
+
+    We transform the vertices first and re-compute the axis-aligned bounds, so
+    that the min/max order is preserved after the axis swap.
+    """
+    if trimesh is None or not path.exists():
+        return None
+    try:
+        mesh = trimesh.load(str(path), force="mesh")
+        if isinstance(mesh, trimesh.Scene):
+            mesh = mesh.dump(concatenate=True)
+        # GLB (Y-up) -> project (Z-up): (x, y, z) -> (x, -z, y)
+        verts = np.asarray(mesh.vertices, dtype=float).copy()
+        verts = np.column_stack([verts[:, 0], -verts[:, 2], verts[:, 1]])
+        return np.array([verts.min(axis=0), verts.max(axis=0)], dtype=float)
+    except Exception as exc:
+        logger.debug("could not load mesh bounds from %s: %s", path, exc)
+        return None
+
+
+def structure_mesh_bounds(layout_path: str | Path) -> dict[str, Any] | None:
+    """Compute real interior room bounds from ``StructureMesh/*.glb``.
+
+    The floor mesh is the most reliable proxy for the walkable interior footprint;
+    walls/ceilings are included when available so the caller can sanity-check the
+    height.  The returned dict has the same shape as ``room_dimensions`` plus a
+    ``source`` field indicating which files contributed.
+    """
+    layout_path = Path(layout_path)
+    struct_dir = layout_path.parent / "StructureMesh"
+    if not struct_dir.is_dir():
+        return None
+
+    floor_bounds = _mesh_bounds(struct_dir / "floor.glb")
+    wall_bounds = _mesh_bounds(struct_dir / "wall.glb")
+    ceiling_bounds = _mesh_bounds(struct_dir / "ceiling.glb")
+
+    if floor_bounds is None:
+        # Without a floor we cannot trust the footprint; fall back to layout bbox.
+        return None
+
+    min_x, min_y, min_z = floor_bounds[0]
+    max_x, max_y, max_z = floor_bounds[1]
+
+    # Height: use ceiling when available, otherwise wall top, otherwise floor Z.
+    if ceiling_bounds is not None:
+        max_z = max(max_z, ceiling_bounds[1, 2])
+    if wall_bounds is not None:
+        max_z = max(max_z, wall_bounds[1, 2])
+        min_z = min(min_z, wall_bounds[0, 2])
+
+    sources = ["floor"]
+    if wall_bounds is not None:
+        sources.append("wall")
+    if ceiling_bounds is not None:
+        sources.append("ceiling")
+
+    return {
+        "min_x": round(float(min_x), 3),
+        "min_y": round(float(min_y), 3),
+        "min_z": round(float(min_z), 3),
+        "max_x": round(float(max_x), 3),
+        "max_y": round(float(max_y), 3),
+        "max_z": round(float(max_z), 3),
+        "width": round(float(max_x - min_x), 3),
+        "depth": round(float(max_y - min_y), 3),
+        "height": round(float(max_z - min_z), 3),
+        "source": "/".join(sources),
+    }
+
+
 def object_properties(obj: dict[str, Any]) -> dict[str, Any]:
     """Return a normalised, JSON-safe record of a single object.
 
@@ -164,10 +247,16 @@ def category_counts(objs: list[dict[str, Any]]) -> dict[str, int]:
     return dict(sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])))
 
 
-def go2_placement(objs: list[dict[str, Any]]) -> dict[str, Any]:
-    """Return the collision-aware Go2 placement (best + nearest clearance)."""
+def go2_placement(objs: list[dict[str, Any]], layout_path: str | Path | None = None) -> dict[str, Any]:
+    """Return the collision-aware Go2 placement (best + nearest clearance).
+
+    When ``layout_path`` is provided, the placement search is restricted to the
+    interior footprint derived from ``StructureMesh/floor.glb`` instead of the
+    looser layout-derived bounding box.
+    """
+    interior = structure_mesh_bounds(layout_path) if layout_path else None
     try:
-        candidates = place_go2.best_placement(objs)
+        candidates = place_go2.best_placement(objs, interior_bounds=interior)
     except Exception as exc:  # pragma: no cover - placement is best-effort
         logger.warning("go2 placement failed: %s", exc)
         return {"valid": False, "reason": str(exc)}
@@ -207,8 +296,9 @@ def build_scene_info(
         "num_objects": len(objs),
         "num_valid_objects": len(valid_objs),
         "room_dimensions_m": room_dimensions(objs),
+        "room_interior_bounds_m": structure_mesh_bounds(layout_path),
         "category_counts": category_counts(objs),
-        "go2_placement": go2_placement(objs),
+        "go2_placement": go2_placement(objs, layout_path),
         "objects": [object_properties(o) for o in objs],
     }
     if renders:
