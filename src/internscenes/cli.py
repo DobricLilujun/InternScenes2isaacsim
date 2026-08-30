@@ -47,6 +47,7 @@ def cmd_run(
     skip_topdown: bool,
     manifest: str,
     log: str,
+    min_room_extent_m: float = 0.0,
 ) -> int:
     """Run the full pipeline (compose → render → topdown → info → normalize)."""
     manifest_path = Path(manifest)
@@ -60,23 +61,33 @@ def cmd_run(
 
     # resolve scene list
     if scene_ids:
-        scenes = list(scene_ids)
+        scenes = pipeline.resolve_scenes(
+            scene_ids=scene_ids, min_room_extent_m=min_room_extent_m
+        )
         picked: dict[str, list[str]] = {}
         for sid in scenes:
             ds = sid.split("/", 1)[0]
             picked.setdefault(ds, []).append(sid)
     else:
-        inventory = pipeline._sampler.scan_all(pipeline.DATA / "Layout_info")
-        wanted = set(datasets) if datasets else set(pipeline._sampler.DATASETS)
-        inventory = {k: v for k, v in inventory.items() if k in wanted}
-        picked = pipeline._sampler.sample(inventory, n=n or 50, seed=seed)
-        scenes = [sid for ids in picked.values() for sid in ids]
+        scenes = pipeline.resolve_scenes(
+            n=n or 50,
+            seed=seed,
+            datasets=datasets,
+            min_room_extent_m=min_room_extent_m,
+        )
+        picked: dict[str, list[str]] = {}
+        for sid in scenes:
+            ds = sid.split("/", 1)[0]
+            picked.setdefault(ds, []).append(sid)
         pipeline._sampler.save_sample(
             picked, pipeline.OUTPUT / "batch" / "sample_manifest.json"
         )
 
     total = len(scenes)
-    logger.info("run start: %d scene(s) (n=%s, seed=%d)", total, n or "N/A", seed)
+    logger.info(
+        "run start: %d scene(s) (n=%s, seed=%d, min_room_extent_m=%.2f)",
+        total, n or "N/A", seed, min_room_extent_m,
+    )
 
     # optional auto-fill pass
     if auto_fill or auto_fill_once:
@@ -163,7 +174,10 @@ def cmd_info(scene: str, out: str | None = None) -> int:
     return 0
 
 
-def cmd_batch(n: int, seed: int, resume: bool, datasets: str) -> int:
+def cmd_batch(
+    n: int, seed: int, resume: bool, datasets: str,
+    min_room_extent_m: float = 0.0,
+) -> int:
     """Run the legacy batch pipeline (compose → render → topdown → info)."""
     return cmd_run(
         n=n,
@@ -177,6 +191,7 @@ def cmd_batch(n: int, seed: int, resume: bool, datasets: str) -> int:
         skip_topdown=False,
         manifest=str(pipeline.OUTPUT / "batch" / "manifest.json"),
         log=str(pipeline.OUTPUT / "batch" / "batch.log"),
+        min_room_extent_m=min_room_extent_m,
     )
 
 
@@ -208,6 +223,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="collect + download missing UIDs, but do not re-compose")
     p.add_argument("--skip-render", action="store_true")
     p.add_argument("--skip-topdown", action="store_true")
+    p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
+                   help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.add_argument("--manifest", default=str(pipeline.OUTPUT / "batch" / "manifest.json"))
     p.add_argument("--log", default=str(pipeline.OUTPUT / "batch" / "batch.log"))
     p.set_defaults(func=cmd_run)
@@ -232,6 +249,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--resume", action="store_true")
     p.add_argument("--datasets", default="")
+    p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
+                   help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.set_defaults(func=cmd_batch)
 
     return ap

@@ -248,15 +248,21 @@ def category_counts(objs: list[dict[str, Any]]) -> dict[str, int]:
 
 
 def go2_placement(objs: list[dict[str, Any]], layout_path: str | Path | None = None) -> dict[str, Any]:
-    """Return the collision-aware Go2 placement (best + nearest clearance).
+    """Return the collision-aware Go2 placement (best + safety clearance).
 
     When ``layout_path`` is provided, the placement search is restricted to the
-    interior footprint derived from ``StructureMesh/floor.glb`` instead of the
-    looser layout-derived bounding box.
+    interior polygon derived from ``StructureMesh/wall.glb`` (or the
+    ``floor.glb`` bbox when the wall mesh is unavailable).
+
+    The returned ``clearance_m`` is ``min(wall_gap, obstacle_gap)``: it rewards
+    positions that are simultaneously far from walls and far from obstacles.
     """
     interior = structure_mesh_bounds(layout_path) if layout_path else None
+    polygon = place_go2.interior_polygon(layout_path) if layout_path else None
     try:
-        candidates = place_go2.best_placement(objs, interior_bounds=interior)
+        candidates = place_go2.best_placement(
+            objs, interior_bounds=interior, polygon=polygon,
+        )
     except Exception as exc:  # pragma: no cover - placement is best-effort
         logger.warning("go2 placement failed: %s", exc)
         return {"valid": False, "reason": str(exc)}
@@ -289,6 +295,7 @@ def build_scene_info(
     """
     objs = load_layout(layout_path)
     valid_objs = [o for o in objs if _as_array(o.get("bbox")) is not None]
+    poly = place_go2.interior_polygon(layout_path)
     info: dict[str, Any] = {
         "scene_id": scene_id,
         "dataset": scene_id.split("/", 1)[0] if "/" in scene_id else "unknown",
@@ -297,6 +304,10 @@ def build_scene_info(
         "num_valid_objects": len(valid_objs),
         "room_dimensions_m": room_dimensions(objs),
         "room_interior_bounds_m": structure_mesh_bounds(layout_path),
+        "room_interior_polygon_xy_m": (
+            [[round(float(x), 4), round(float(y), 4)] for x, y in poly]
+            if poly is not None else None
+        ),
         "category_counts": category_counts(objs),
         "go2_placement": go2_placement(objs, layout_path),
         "objects": [object_properties(o) for o in objs],

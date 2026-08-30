@@ -4,6 +4,7 @@ numpy>=1.26
 matplotlib>=3.8
 huggingface-hub>=0.20
 usd-exchange>=3.0.0
+shapely>=2.0
 
 [dev]
 nbformat>=5.1.4

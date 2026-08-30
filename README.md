@@ -88,7 +88,7 @@ source .venv311/bin/activate            # or use .venv311/bin/python directly
 
 # 2. dependencies
 uv pip install --python .venv311/bin/python \
-    trimesh open3d numpy matplotlib huggingface-hub usd-exchange
+    trimesh open3d numpy matplotlib huggingface-hub usd-exchange shapely
 
 # 3. (optional) install the package itself for the CLI
 pip install -e .

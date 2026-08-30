@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import random
 import shutil
 import subprocess
 import sys
@@ -265,29 +266,105 @@ def assemble_normalized(scene_id: str) -> dict[str, str]:
 # ---------------------------------------------------------------------------
 # scene selection
 # ---------------------------------------------------------------------------
+def room_extent(layout_path: str | Path) -> tuple[float, float]:
+    """Return (width, depth) in metres for a scene.
+
+    Uses the real interior bounds from ``StructureMesh/floor.glb`` when
+    available; otherwise falls back to the axis-aligned footprint spanned by
+    all object bboxes in ``layout.json``.
+    """
+    layout_path = Path(layout_path)
+    interior = _scene_info.structure_mesh_bounds(layout_path)
+    if interior is not None:
+        return float(interior["width"]), float(interior["depth"])
+
+    # Fallback: span of object footprints.
+    try:
+        objs = json.loads(layout_path.read_text(encoding="utf-8"))
+    except Exception:
+        return (0.0, 0.0)
+    xs: list[float] = []
+    ys: list[float] = []
+    for o in objs:
+        b = o.get("bbox")
+        if b is None or len(b) < 5:
+            continue
+        cx, cy, dx, dy = b[0], b[1], b[3], b[4]
+        xs += [cx - dx / 2, cx + dx / 2]
+        ys += [cy - dy / 2, cy + dy / 2]
+    if not xs:
+        return (0.0, 0.0)
+    return float(max(xs) - min(xs)), float(max(ys) - min(ys))
+
+
+def _extent_ok(scene_id: str, min_room_extent_m: float) -> bool:
+    """Return True if a scene's smaller floor dimension >= threshold."""
+    if min_room_extent_m <= 0:
+        return True
+    layout = paths_for(scene_id)["layout"]
+    if not layout.exists():
+        return False
+    w, d = room_extent(layout)
+    return min(w, d) >= min_room_extent_m
+
+
 def resolve_scenes(
     n: int = 0,
     seed: int = 0,
     datasets: list[str] | None = None,
     scene_ids: list[str] | None = None,
     dataset_filter: list[str] | None = None,
+    min_room_extent_m: float = 0.0,
 ) -> list[str]:
     """Resolve CLI scene selection into a flat list of scene IDs.
 
     Priority:
-      1. explicit ``scene_ids``
-      2. sample ``n`` random scenes per dataset with ``seed``
+      1. explicit ``scene_ids`` (filtered by ``min_room_extent_m``)
+      2. sample ``n`` random scenes per dataset with ``seed``,
+         keeping only scenes whose smaller floor dimension is at least
+         ``min_room_extent_m``.
     """
     if scene_ids:
-        return list(scene_ids)
+        kept = [sid for sid in scene_ids if _extent_ok(sid, min_room_extent_m)]
+        dropped = set(scene_ids) - set(kept)
+        if dropped:
+            logger.warning(
+                "dropped %d scene(s) smaller than %.2fm: %s",
+                len(dropped), min_room_extent_m, sorted(dropped),
+            )
+        return kept
 
     inventory = _sampler.scan_all(DATA / "Layout_info")
     wanted = set(datasets or _sampler.DATASETS)
     if dataset_filter:
         wanted &= set(dataset_filter)
     inventory = {k: v for k, v in inventory.items() if k in wanted}
-    picked = _sampler.sample(inventory, n=n or 50, seed=seed)
-    return [sid for ids in picked.values() for sid in ids]
+
+    rng = random.Random(seed)
+    picked: dict[str, list[str]] = {name: [] for name in _sampler.DATASETS if name in wanted}
+    for name in _sampler.DATASETS:
+        if name not in wanted:
+            continue
+        ids = inventory.get(name, [])
+        if not ids:
+            continue
+        # Reservoir-sample until we have n valid scenes or exhaust the pool.
+        pool = ids[:]
+        rng.shuffle(pool)
+        chosen: list[str] = []
+        for sid in pool:
+            if _extent_ok(sid, min_room_extent_m):
+                chosen.append(sid)
+                if len(chosen) >= n:
+                    break
+        chosen.sort()
+        picked[name] = chosen
+        if len(chosen) < n:
+            logger.warning(
+                "%s: only %d/%d scenes meet min_room_extent_m >= %.2fm",
+                name, len(chosen), n, min_room_extent_m,
+            )
+    return [sid for name in _sampler.DATASETS for sid in picked.get(name, [])]
 
 
 def scene_inventory() -> dict[str, list[str]]:

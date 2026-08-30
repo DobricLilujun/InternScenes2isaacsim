@@ -15,6 +15,7 @@ Requires-Dist: numpy>=1.26
 Requires-Dist: matplotlib>=3.8
 Requires-Dist: huggingface-hub>=0.20
 Requires-Dist: usd-exchange>=3.0.0
+Requires-Dist: shapely>=2.0
 Provides-Extra: isaac
 Requires-Dist: isaacsim; extra == "isaac"
 Provides-Extra: studio
@@ -51,14 +52,14 @@ output/composed/<scene>/glb_scene.glb
 
 ## Features
 
-- **GLB → USD** with **auto backend** selection (`scripts/glb_to_usd.py`):
+- **GLB → USD** with **auto backend** selection (`internscenes.glb_to_usd`):
   - **Primary** — Isaac Sim's `omni.kit.asset_converter`
-    (`scripts/glb_to_usd_isaac.py`), matching the
+    (`internscenes.glb_to_usd_isaac`), matching the
     [official InternScenes Real2Sim release](https://github.com/InternRobotics/InternScenes).
     Produces the full `OmniPBR.mdl` material graph the InternScenes
     `trajectory_tools` renderer expects, with glTF PBR extensions
     (`KHR_materials_variants`, multi-UV, glTF mesh compression).
-  - **Fallback** — `usd-exchange` / `pxr` (`scripts/glb_to_usd_fallback.py`):
+  - **Fallback** — `usd-exchange` / `pxr` (`internscenes.glb_to_usd_fallback`):
     full PBR `UsdPreviewSurface` materials with metallic / roughness / opacity,
     `UsdShade.MaterialBindingAPI` bindings, exported texture PNGs, vertex
     normals, UVs (`primvars:st`), and `primvars:class` for instance
@@ -71,8 +72,9 @@ output/composed/<scene>/glb_scene.glb
   nearest-obstacle clearance, and metre-scale grid.
 - **Scene metadata export** (JSON): room dimensions (m), per-object category/position/
   size/rotation, category frequency, and the Go2 placement.
-- **Batch orchestration** (`scripts/batch_pipeline.py`): sample *N* random scenes per
-  category, run compose → render → top-down → info for each, resumable and logged.
+- **Batch orchestration** (`internscenes run` / `internscenes batch`): sample *N*
+  random scenes per category, run compose → render → top-down → info for each,
+  resumable and logged.
 - **Type annotations, logging, and exception handling** throughout the codebase.
 
 ## Project layout
@@ -84,18 +86,16 @@ InternScenes2isaacsim/
 │   ├── scene_info.py          # per-scene metadata extraction (JSON)
 │   ├── sampler.py             # deterministic per-category random sampling
 │   ├── pipeline.py            # full pipeline Python API
-│   └── cli.py                 # unified CLI (`run` + legacy commands)
-├── scripts/
-│   ├── glb_to_usd.py           # GLB -> USD dispatcher (auto backend, normalized output)
-│   ├── glb_to_usd_isaac.py     # Primary backend — Isaac Sim's omni.kit.asset_converter
-│   ├── glb_to_usd_fallback.py  # Fallback backend — usd-exchange / pxr
-│   ├── glb_render.py           # GLB -> perspective PNG (Blender, run via `blender --python`)
-│   ├── topdown_projection.py   # layout.json -> 2D top-down PNG
-│   ├── place_go2.py            # collision-aware Go2 placement (shared by topdown)
-│   ├── normalize_output.py     # assemble the per-scene normalized folder
-│   ├── download_perobject.py   # download per-object GLBs (`--auto` fills only what's missing)
-│   ├── usd_all.sh / render_all.sh   # batch helpers for the 5 example scenes
-│   └── batch_pipeline.py       # full batch pipeline (sample -> compose -> render -> topdown -> info)
+│   ├── cli.py                 # unified CLI (`run` + legacy commands)
+│   ├── glb_to_usd.py          # GLB -> USD dispatcher (auto backend, normalized output)
+│   ├── glb_to_usd_isaac.py    # Primary backend — Isaac Sim's omni.kit.asset_converter
+│   ├── glb_to_usd_fallback.py # Fallback backend — usd-exchange / pxr
+│   ├── render.py              # GLB -> perspective PNG (Blender, run via `blender --python`)
+│   ├── _render_in_blender.py  # Blender bootstrap (runs render.py inside Blender's Python)
+│   ├── topdown.py             # layout.json -> 2D top-down PNG
+│   ├── place_go2.py           # collision-aware Go2 placement (shared by topdown)
+│   ├── download.py            # download per-object GLBs (`--auto` fills only what's missing)
+│   └── __init__.py            # public API (lazy submodules for Blender compatibility)
 ├── data/
 │   ├── Layout_info/        # per-scene layout.json (one folder per scene)
 │   └── asset_library/      # per-object GLB assets (22k+)
@@ -115,7 +115,7 @@ source .venv311/bin/activate            # or use .venv311/bin/python directly
 
 # 2. dependencies
 uv pip install --python .venv311/bin/python \
-    trimesh open3d numpy matplotlib huggingface-hub usd-exchange
+    trimesh open3d numpy matplotlib huggingface-hub usd-exchange shapely
 
 # 3. (optional) install the package itself for the CLI
 pip install -e .
@@ -149,38 +149,32 @@ internscenes run --scene scannet/scene0001_00
 internscenes run -n 10 --seed 0 --auto-fill
 ```
 
-### Single scene (legacy scripts)
+### Single scene (programmatic)
 
 ```bash
 # 1. compose the GLB from layout.json + the asset library
-.venv311/bin/python -c "import sys; sys.path.insert(0,'src/internscenes'); \
-  import compose; compose.SceneComposer().compose_one_scene('scannet/scene0001_00')"
+.venv311/bin/python -c "from internscenes import compose; \
+  compose.SceneComposer().compose_one_scene('scannet/scene0001_00')"
 
 # 2. GLB -> USD (auto backend: Isaac Sim if installed, else usd-exchange).
 #    Output lands in the normalized per-scene folder by default.
-.venv311/bin/python scripts/glb_to_usd.py \
-  --glb output/composed/scannet/scene0001_00/glb_scene.glb
+.venv311/bin/python -c "from internscenes.glb_to_usd import build_usd; \
+  build_usd('output/composed/scannet/scene0001_00/glb_scene.glb')"
 # -> output/normalized/scannet_scene0001_00/scene.usd
 #    output/normalized/scannet_scene0001_00/textures/*.png
 
 # 3. GLB -> perspective PNG (Blender, headless)
-$BLENDER --background --python scripts/glb_render.py -- \
-  --glb output/composed/scannet/scene0001_00/glb_scene.glb \
-  --out output/render/scannet/scene0001_00 --engine=EEVEE
+internscenes render scannet/scene0001_00 --engine EEVEE
 
 # 4. 2D top-down projection
-.venv311/bin/python scripts/topdown_projection.py scannet/scene0001_00
+internscenes topdown scannet/scene0001_00
 
 # 5. per-scene metadata (dimensions, objects, Go2 placement)
-.venv311/bin/python -c "import sys; sys.path.insert(0,'src/internscenes'); \
-  import scene_info; \
-  scene_info.write_scene_info(\
-    scene_info.build_scene_info('scannet/scene0001_00', \
-      'data/Layout_info/scannet/scene0001_00/layout.json'), \
-    'output/info/scannet_scene0001_00.json')"
+internscenes info scannet/scene0001_00
 
 # 6. assemble the per-scene normalized folder (USD + textures + scene.json + PNGs)
-.venv311/bin/python scripts/normalize_output.py --sample scannet/scene0001_00
+.venv311/bin/python -c "from internscenes import pipeline; \
+  pipeline.assemble_normalized('scannet/scene0001_00')"
 ```
 
 ### Batch with the unified CLI
@@ -199,34 +193,34 @@ internscenes run -n 50 --seed 0 --auto-fill
 internscenes run -n 50 --seed 0 --resume
 ```
 
-### Batch (legacy `scripts/batch_pipeline.py`)
+### Batch
 
 Render **N** random scenes per category (compose → render → top-down → info),
 writing artifacts into `output/`:
 
 ```bash
-.venv311/bin/python scripts/batch_pipeline.py -n 50 --seed 0
+internscenes run -n 50 --seed 0
 # resume a previously interrupted run (skips stages whose output already exists)
-.venv311/bin/python scripts/batch_pipeline.py -n 50 --seed 0 --resume
+internscenes run -n 50 --seed 0 --resume
 # **auto-fill missing assets** — pre-compose every scene once, collect the
 # missing UIDs into output/info/*_missing.json, download *only* those, then
 # re-compose for real.  Avoids downloading the whole 22k-asset library.
-.venv311/bin/python scripts/batch_pipeline.py -n 50 --seed 0 --auto-fill
+internscenes run -n 50 --seed 0 --auto-fill
 ```
 
 You can also run the auto-filler on demand:
 
 ```bash
 # dry-run: print which UIDs would be downloaded
-.venv311/bin/python scripts/download_perobject.py --auto --scene scannet/scene0001_00 --dry-run
+.venv311/bin/python -m internscenes.download --auto --scene scannet/scene0001_00 --dry-run
 # actually download
-.venv311/bin/python scripts/download_perobject.py --auto --scene scannet/scene0001_00
+.venv311/bin/python -m internscenes.download --auto --scene scannet/scene0001_00
 ```
 
 Outputs: `output/composed/…/glb_scene.glb`, `output/render/…/perspective.png`,
 `output/topdown/…_topdown.png`, and `output/info/….json`; a run manifest is written
 to `output/batch/manifest.json`.  The USD + textures are produced (or picked up
-from a previous run) by the `normalize_output` step at the end, in
+from a previous run) by the normalization step at the end, in
 `output/normalized/<ds>_<id>/`.
 
 ### CLI commands
@@ -248,21 +242,20 @@ internscenes batch  -n 50 --seed 0
 
 `pipeline_commands_test.ipynb` walks the pipeline end to end, executing each stage
 and verifying the output file. Render and export *every* sampled scene with
-`scripts/batch_pipeline.py`.
+`internscenes.run`.
 
 ## Configuration
 
 | Setting | Where | Default | Purpose |
 |---|---|---|---|
-| `BLENDER` | env var | `/home/ubadmin/tools/blender/blender-5.1.2-linux-x64/blender` | Blender binary used by `glb_render.py` and `batch_pipeline.py` |
-| `VENV_PY` | env var | `.venv311/bin/python` | Python interpreter for `batch_pipeline.py` |
+| `BLENDER` | env var | `/home/ubadmin/tools/blender/blender-5.1.2-linux-x64/blender` | Blender binary used by `internscenes render` |
 | `INTERN_DATA_DIR` | env var | `<root>/data` | Root for `Layout_info/` and `asset_library/` |
 | `INTERN_OUTPUT_DIR` | env var | `<root>/output` | Output root (`composed/`, `render/`, `usd/`, `info/`, …) |
-| `-n` | `batch_pipeline.py` | `50` | Scenes sampled per category |
-| `--seed` | `batch_pipeline.py` | `0` | RNG seed (reproducible sampling) |
-| `--resume` | `batch_pipeline.py` | off | Skip stages whose output file already exists |
-| `--auto-fill` | `batch_pipeline.py` | off | Pre-pass: compose once, collect missing UIDs, download only those, then re-compose |
-| `--engine` | `glb_render.py` | `auto` (EEVEE) | Render engine (`EEVEE` or `CYCLES`) |
+| `-n` | `internscenes run` / `batch` | `50` | Scenes sampled per category |
+| `--seed` | `internscenes run` / `batch` | `0` | RNG seed (reproducible sampling) |
+| `--resume` | `internscenes run` / `batch` | off | Skip stages whose output file already exists |
+| `--auto-fill` | `internscenes run` / `batch` | off | Pre-pass: compose once, collect missing UIDs, download only those, then re-compose |
+| `--engine` | `internscenes render` | `EEVEE` | Render engine (`EEVEE` or `CYCLES`) |
 
 Paths are resolved relative to the project root by default; override with the
 environment variables above to point at an alternate data/output location.
@@ -323,14 +316,14 @@ pipeline.assemble_normalized("scannet/scene0001_00")
 ## Troubleshooting
 
 - **`MISSING` in the environment check** — install the missing dependency or set the
-  relevant path (`BLENDER`, `VENV_PY`).
+  relevant path (`BLENDER`, `INTERN_DATA_DIR`, `INTERN_OUTPUT_DIR`).
 - **Blender render produces no PNG** — ensure `--glb` points at an existing composed
   GLB and that `$BLENDER` is a valid binary.
 - **`compose` reports missing assets** — the asset for a `model_uid` is absent from
   `data/asset_library/`; it is skipped (see the compose log).
 - **Re-run a batch cheaply** — use `--resume` so completed stages are skipped.
 - **`compose` reports many missing assets** — re-run the batch with `--auto-fill` (or
-  call `scripts/download_perobject.py --auto`) to pull only the missing UIDs from
+  run `python -m internscenes.download --auto`) to pull only the missing UIDs from
   HuggingFace.  The per-scene report is at `output/info/<ds>_<id>_missing.json`.
 
 ## License

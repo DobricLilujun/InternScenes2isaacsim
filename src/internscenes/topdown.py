@@ -4,6 +4,9 @@ For each scene we project the 3D world onto the XY (top-down) plane:
   - every object's 3D bounding box -> its rotated rectangle footprint (XY)
   - the Go2 is placed by the collision-aware algorithm (:mod:`place_go2`)
   - the Go2 is drawn as a marker with a heading + a live position trace
+  - the room's wall footprint (XY hull of ``StructureMesh/wall.glb``) is
+    drawn as a translucent fill so the user can see the walkable region
+    and not just the layout-derived bounding box.
 
 Public entry point: :func:`draw_scene`.
 """
@@ -16,10 +19,12 @@ import math
 import os
 from pathlib import Path
 
+import numpy as np
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Polygon
 from matplotlib.transforms import Affine2D
 
 from . import place_go2 as pg
@@ -54,7 +59,8 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
     objs = [o for o in objs if o.get("bbox")]
     obs = pg.obstacle_circles(objs)
 
-    cand = pg.best_placement(objs)
+    polygon = pg.interior_polygon(layout_path)
+    cand = pg.best_placement(objs, polygon=polygon)
     if cand:
         # best placement = largest clearance
         clearance, gx, gy = cand[0]
@@ -63,8 +69,12 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
         logger.warning("%s: no valid placement, drawing without Go2 marker", scene_name)
         clearance, gx, gy = 0.0, 0.0, 0.0
 
-    # room bounds
-    bx0, bx1, by0, by1 = pg.room_bounds(objs)
+    # room bounds (use polygon extents when available so the figure is tight)
+    if polygon is not None and len(polygon) >= 3:
+        bx0, bx1 = float(polygon[:, 0].min()), float(polygon[:, 0].max())
+        by0, by1 = float(polygon[:, 1].min()), float(polygon[:, 1].max())
+    else:
+        bx0, bx1, by0, by1 = pg.room_bounds(objs)
     pad = 0.6
     bx0, bx1, by0, by1 = bx0 - pad, bx1 + pad, by0 - pad, by1 + pad
 
@@ -72,6 +82,17 @@ def draw_scene(scene_name: str, layout_path: str, out_path: str,
     ax.set_xlim(bx0, bx1)
     ax.set_ylim(by0, by1)
     ax.set_aspect("equal")
+
+    # walkable interior polygon (XY hull of wall.glb) as a translucent fill
+    if polygon is not None and len(polygon) >= 3:
+        ax.add_patch(Polygon(polygon, closed=True, facecolor="#7fbf7f",
+                             edgecolor="#2a7f2a", alpha=0.18, lw=1.2,
+                             label="walkable interior"))
+
+    # Go2 live position trace (optional: previous positions as faint dots)
+    if go2_trace:
+        for (px, py) in go2_trace:
+            ax.plot(px, py, "o", color="#2a7f2a", alpha=0.35, markersize=4)
 
     # obstacle footprints (rotated rectangles)
     for o in objs:

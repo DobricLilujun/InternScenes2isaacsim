@@ -76,7 +76,7 @@ source .venv311/bin/activate            # or call .venv311/bin/python directly
 
 # 2. dependencies
 uv pip install --python .venv311/bin/python \
-    trimesh open3d numpy matplotlib huggingface-hub usd-exchange
+    trimesh open3d numpy matplotlib huggingface-hub usd-exchange shapely
 
 # 3. (optional) install the package itself so the `internscenes` CLI is available
 pip install -e .
@@ -237,6 +237,9 @@ internscenes run --scene scannet/scene0001_00 --scene scannet/scene0002_00
 
 # limit random sampling to certain datasets
 internscenes run -n 10 --datasets scannet --seed 0
+
+# only keep larger rooms (smaller floor dimension >= 5 m)
+internscenes run -n 10 --seed 0 --min-room-extent 5.0
 ```
 
 Options:
@@ -252,6 +255,7 @@ Options:
 | `--auto-fill-once` | collect + download, but do not re-compose |
 | `--skip-render` | skip Blender perspective render |
 | `--skip-topdown` | skip 2D top-down projection |
+| `--min-room-extent M` | skip rooms whose smaller floor dimension is < M metres |
 | `--manifest PATH` | batch manifest (default: `output/batch/manifest.json`) |
 | `--log PATH` | batch log (default: `output/batch/batch.log`) |
 
