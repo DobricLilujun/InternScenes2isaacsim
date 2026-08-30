@@ -18,6 +18,7 @@ it is unavailable the code falls back to the layout-derived bounding box.
 
 from __future__ import annotations
 
+import functools
 import json
 import logging
 from pathlib import Path
@@ -39,6 +40,15 @@ except Exception:  # pragma: no cover - allow standalone import
     _PROJECT_ROOT = _HERE.parent.parent  # .../src/internscenes -> project root
     sys.path.insert(0, str(_PROJECT_ROOT / "scripts"))
     import place_go2  # type: ignore
+
+try:
+    from .compose import AssetMeshLoader  # type: ignore
+except Exception:  # pragma: no cover - allow standalone import
+    import sys
+    _HERE = Path(__file__).resolve().parent
+    _PROJECT_ROOT = _HERE.parent.parent
+    sys.path.insert(0, str(_PROJECT_ROOT / "src"))
+    from internscenes.compose import AssetMeshLoader  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +95,95 @@ def _as_array(value: Any) -> np.ndarray | None:
     if arr.ndim != 1 or len(arr) < 6:
         return None
     return arr
+
+
+def _average_image_color(img) -> tuple[float, float, float] | None:
+    """Return the mean RGB of a PIL image, premultiplied by alpha if present."""
+    try:
+        from PIL import Image
+    except Exception:
+        return None
+    if not isinstance(img, Image.Image):
+        return None
+    try:
+        if img.mode == "P":
+            img = img.convert("RGBA")
+        small = img.resize((64, 64))
+        arr = np.asarray(small, dtype=float) / 255.0
+        if arr.ndim == 2:
+            m = float(arr.mean())
+            return (m, m, m)
+        if arr.shape[-1] == 4:
+            rgb = arr[..., :3]
+            alpha = arr[..., 3:4]
+            if alpha.sum() > 0:
+                mean = (rgb * alpha).sum(axis=(0, 1)) / alpha.sum()
+            else:
+                mean = rgb.mean(axis=(0, 1))
+        else:
+            mean = arr[..., :3].mean(axis=(0, 1))
+        return tuple(round(float(x), 3) for x in mean)
+    except Exception:
+        return None
+
+
+def _material_color(material: Any) -> tuple[tuple[float, float, float], str] | None:
+    """Extract a single RGB color from a trimesh PBR material."""
+    if material is None:
+        return None
+    tex = getattr(material, "baseColorTexture", None)
+    if tex is not None:
+        rgb = _average_image_color(tex)
+        if rgb is not None:
+            return rgb, "baseColorTexture"
+    factor = getattr(material, "baseColorFactor", None)
+    if factor is not None:
+        try:
+            arr = np.asarray(factor, dtype=float)
+            # trimesh sometimes stores factors as 0-255 integers.
+            if arr.size >= 3 and arr[:3].max() > 1.0:
+                arr = arr / 255.0
+            rgb = tuple(float(x) for x in arr[:3])
+            return rgb, "baseColorFactor"
+        except Exception:
+            pass
+    return None
+
+
+@functools.lru_cache(maxsize=4096)
+def _extract_object_color(uid: str) -> dict[str, Any] | None:
+    """Load an object GLB and extract its representative base color."""
+    if not uid or trimesh is None:
+        return None
+    try:
+        loader = AssetMeshLoader()
+        path = loader.resolve_mesh_path(uid)
+        if path is None:
+            return None
+        mesh = trimesh.load(str(path))
+    except Exception:
+        return None
+
+    colors: list[tuple[tuple[float, float, float], str]] = []
+    if isinstance(mesh, trimesh.Scene):
+        for geom in mesh.geometry.values():
+            mat = getattr(getattr(geom, "visual", None), "material", None)
+            c = _material_color(mat)
+            if c is not None:
+                colors.append(c)
+    else:
+        mat = getattr(getattr(mesh, "visual", None), "material", None)
+        c = _material_color(mat)
+        if c is not None:
+            colors.append(c)
+
+    if not colors:
+        return None
+    rgb = tuple(round(float(x), 3) for x in np.mean([c[0] for c in colors], axis=0))
+    return {
+        "r": rgb[0], "g": rgb[1], "b": rgb[2],
+        "source": colors[0][1],
+    }
 
 
 def room_dimensions(objs: list[dict[str, Any]]) -> dict[str, float]:
@@ -201,21 +300,28 @@ def structure_mesh_bounds(layout_path: str | Path) -> dict[str, Any] | None:
 def object_properties(obj: dict[str, Any]) -> dict[str, Any]:
     """Return a normalised, JSON-safe record of a single object.
 
-    Exposes position, size (length/width/height) and rotation so the record is
-    human- and machine-readable without requiring the raw ``bbox`` layout.
+    Exposes position, size (length/width/height), rotation and a
+    representative base colour so the record is human- and machine-readable
+    without requiring the raw ``bbox`` layout.
     """
     b = _as_array(obj.get("bbox"))
+    uid = obj.get("model_uid", "")
     if b is None:
-        return {
+        rec: dict[str, Any] = {
             "id": obj.get("id"),
             "category": obj.get("category"),
-            "model_uid": obj.get("model_uid", ""),
+            "model_uid": uid,
             "valid": False,
         }
-    rec: dict[str, Any] = {
+        color = _extract_object_color(uid)
+        if color is not None:
+            rec["color"] = color
+        return rec
+
+    rec = {
         "id": obj.get("id"),
         "category": obj.get("category"),
-        "model_uid": obj.get("model_uid", ""),
+        "model_uid": uid,
         "valid": True,
         "position_m": {
             "x": round(float(b[0]), 4),
@@ -234,6 +340,9 @@ def object_properties(obj: dict[str, Any]) -> dict[str, Any]:
             "y": round(float(b[7]), 4),
             "z": round(float(b[8]), 4),
         }
+    color = _extract_object_color(uid)
+    if color is not None:
+        rec["color"] = color
     return rec
 
 

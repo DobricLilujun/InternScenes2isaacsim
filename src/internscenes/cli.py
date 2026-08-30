@@ -31,6 +31,7 @@ import time
 from pathlib import Path
 
 from . import pipeline
+from . import questions as _questions
 
 logger = logging.getLogger("internscenes")
 
@@ -167,10 +168,11 @@ def cmd_info(scene: str, out: str | None = None) -> int:
         return 1
     if out:
         src = _paths(scene)["info"]
-        if src.exists():
-            Path(out).parent.mkdir(parents=True, exist_ok=True)
+        dst = Path(out)
+        if src.exists() and src.resolve() != dst.resolve():
+            dst.parent.mkdir(parents=True, exist_ok=True)
             import shutil
-            shutil.copy2(src, out)
+            shutil.copy2(src, dst)
     return 0
 
 
@@ -193,6 +195,32 @@ def cmd_batch(
         log=str(pipeline.OUTPUT / "batch" / "batch.log"),
         min_room_extent_m=min_room_extent_m,
     )
+
+
+def cmd_questions(
+    scene_ids: list[str] | None,
+    n: int,
+    seed: int,
+    datasets: list[str] | None,
+    out_dir: str | None,
+    min_room_extent_m: float = 0.0,
+) -> int:
+    """Generate object-finding questions for one or more scenes."""
+    if scene_ids:
+        scenes = pipeline.resolve_scenes(
+            scene_ids=scene_ids, min_room_extent_m=min_room_extent_m
+        )
+    else:
+        scenes = pipeline.resolve_scenes(
+            n=n or 50, seed=seed, datasets=datasets, min_room_extent_m=min_room_extent_m
+        )
+    if not scenes:
+        logger.error("no scenes matched the criteria")
+        return 1
+    _questions.generate_for_scenes(
+        scenes, out_dir=out_dir, n=n, seed=seed
+    )
+    return 0
 
 
 # ---------------------------------------------------------------------------
@@ -252,6 +280,23 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.set_defaults(func=cmd_batch)
+
+    p = sub.add_parser(
+        "questions",
+        help="generate object-finding questions for navigation evaluation",
+    )
+    p.add_argument("-n", type=int, default=5,
+                   help="questions per scene (default: 5)")
+    p.add_argument("--seed", type=int, default=0, help="RNG seed")
+    p.add_argument("--datasets", nargs="+",
+                   help="limit random sampling to these datasets")
+    p.add_argument("--scene", action="append", dest="scene_ids",
+                   help="specific scene id(s); repeatable")
+    p.add_argument("--out-dir", default=str(pipeline.OUTPUT / "questions"),
+                   help="directory for per-scene .jsonl files")
+    p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
+                   help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
+    p.set_defaults(func=cmd_questions)
 
     return ap
 

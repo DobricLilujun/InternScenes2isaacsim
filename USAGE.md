@@ -31,6 +31,7 @@ data/Layout_info/<scene>/layout.json
 output/composed/<scene>/glb_scene.glb          ← composed scene GLB (shared input)
         │
         ├─ glb_to_usd      ──► output/normalized/<ds>_<id>/scene.usd   (auto: Isaac Sim, else usd-exchange)
+        │                     output/normalized/<ds>_<id>/scene.usdz  (self-contained USDZ for mesh viewers)
         │                     output/normalized/<ds>_<id>/textures/    (extracted PBR textures)
         │
         ├─ glb_render      ──► output/render/<scene>/perspective.png  (Blender EEVEE, camera in the room)
@@ -185,7 +186,24 @@ internscenes info scannet/scene0001_00
 # -> output/info/scannet_scene0001_00.json
 ```
 
-### 3.6 Normalized per-scene folder
+### 3.6 Navigation question generation (JSONL)
+
+Generate up to 5 object-finding questions per scene for evaluating a navigation
+robot.  Questions prefer medium-to-long distances from the Go2 start pose and
+favour objects whose representative colour is known.
+
+```bash
+# one scene
+internscenes questions --scene scannet/scene0001_00 -n 5 --seed 0
+# -> output/questions/scannet_scene0001_00.jsonl
+# -> output/questions/all.jsonl   (merged across all processed scenes)
+```
+
+Each line in the JSONL contains the Chinese and English question, target
+category and colour, target object metadata, the Go2 start position, and the
+straight-line distance to the target.
+
+### 3.7 Normalized per-scene folder
 
 Assemble **one self-contained folder per scene** (USD + textures + scene.json + perspective.png +
 topdown.png). This is the recommended entry point for a single scene:
@@ -204,6 +222,7 @@ Output layout:
 ```
 output/normalized/<dataset>_<id>/
     scene.usd          # USD (geometry, NO Go2) — auto-built by glb_to_usd if missing
+    scene.usdz         # self-contained USDZ (UsdPreviewSurface) for 3D Mesh Viewer / three.js
     textures/          # extracted PBR textures (next to the USD)
     scene.json         # full scene info + computed Go2 placement
     perspective.png    # Blender perspective render
@@ -216,7 +235,7 @@ output/normalized/<dataset>_<id>/
 > `output/normalized/<ds>_<id>/scene.usd` first so the script
 > re-converts it via the current pipeline.
 
-### 3.7 Unified CLI (recommended)
+### 3.8 Unified CLI (recommended)
 
 After `pip install -e .`, the `internscenes` command is the recommended entry
 point. It always produces the **normalized** per-scene folder as the final
@@ -264,6 +283,7 @@ The final normalized folder is written to
 
 ```
 scene.usd          # USD (geometry, NO Go2) — auto-built by glb_to_usd
+scene.usdz         # self-contained USDZ archive for mesh viewers
 textures/          # extracted PBR textures
 scene.json         # full scene info + Go2 placement
 perspective.png    # Blender perspective render
@@ -276,10 +296,11 @@ Single-stage commands:
 internscenes render scannet/scene0001_00 --engine EEVEE
 internscenes topdown scannet/scene0001_00
 internscenes info   scannet/scene0001_00 --out output/info/scannet_scene0001_00.json
+internscenes questions --scene scannet/scene0001_00 -n 5 --seed 0
 internscenes batch  -n 50 --seed 0
 ```
 
-### 3.8 Batch (random sample per category)
+### 3.9 Batch (random sample per category)
 
 ```bash
 internscenes run -n 50 --seed 0
@@ -330,7 +351,7 @@ Outputs: `output/composed/…/glb_scene.glb`, `output/render/…/perspective.png
 `output/topdown/…_topdown.png`, `output/info/….json`; a run manifest is written to
 `output/batch/manifest.json`.
 
-### 3.9 Batch helpers for the 5 example scenes
+### 3.10 Batch helpers for the 5 example scenes
 
 ```bash
 # example shell loop over the 5 composed example scenes
@@ -348,6 +369,7 @@ done
 |---|---|
 | `output/composed/<scene>/glb_scene.glb` | composed scene GLB (shared input) |
 | `output/normalized/<dataset>_<id>/scene.usd` | USD stage (auto backend: Isaac Sim if available, else usd-exchange) |
+| `output/normalized/<dataset>_<id>/scene.usdz` | self-contained USDZ archive (`UsdPreviewSurface`, for 3D Mesh Viewer / three.js) |
 | `output/normalized/<dataset>_<id>/textures/` | extracted PBR textures (next to the USD) |
 | `output/render/<scene>/perspective.png` | Blender perspective render |
 | `output/topdown/<scene>_topdown.png` | 2D top-down projection |
@@ -372,6 +394,7 @@ done
       "position_m": { "x": 0.79, "y": 0.80, "z": 0.48 },
       "size_m": { "length": 0.69, "width": 2.22, "height": 0.97 },
       "rotation_rad": { "x": -1.6, "y": 0.0, "z": 0.0 },
+      "color": { "r": 0.31, "g": 0.24, "b": 0.19, "source": "baseColorTexture" },
       "valid": true }
   ]
 }

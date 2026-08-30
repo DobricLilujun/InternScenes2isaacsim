@@ -2,10 +2,7 @@
 
 This backend produces a real PBR USD (``Z`` up, ``metersPerUnit = 1``,
 ``UsdPreviewSurface`` materials with exported textures, vertex normals,
-UVs, ``primvars:class``) when Isaac Sim is **not** installed.  It is
-intended to be functionally equivalent to the Isaac Sim backend for
-loading into Omniverse / Isaac Sim, just without the Omniverse-specific
-``OmniPBR.mdl`` graph.
+UVs) when Isaac Sim is **not** installed.
 
 Public entry point: :func:`build_usd(glb_path, out_usd)`.
 """
@@ -13,7 +10,9 @@ from __future__ import annotations
 
 import logging
 import os
+import zipfile
 from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -30,95 +29,183 @@ def _ensure_trimesh():
 
 def _load_gltf(glb_path: str):
     import trimesh
-    # scene=True gives us the scene graph + materials
     scene = trimesh.load(glb_path, force="scene")
     if isinstance(scene, trimesh.Scene):
         return scene
-    # fallback: wrap a single mesh in a Scene
     s = trimesh.Scene()
     s.add_geometry(scene)
     return s
 
 
-def _copy_texture(src: str | None, out_dir: Path) -> str | None:
-    if not src:
-        return None
-    src_p = Path(src)
-    if not src_p.exists():
-        return None
-    dst = out_dir / src_p.name
+def _safe_name(name: str) -> str:
+    """Turn a node/geometry name into a valid USD prim identifier."""
+    safe = "".join(
+        c if c.isalnum() or c == "_" else "_" for c in str(name)
+    ).strip("_.")
+    if safe and safe[0].isdigit():
+        safe = "m_" + safe
+    return safe or "mesh"
+
+
+def _save_image(img, tex_dir: Path, basename: str, fallback_ext: str = ".png") -> Path | None:
+    """Save a PIL / numpy image to ``tex_dir`` and return the saved path."""
     try:
-        dst.write_bytes(src_p.read_bytes())
+        from PIL import Image as PILImage
     except Exception:
+        PILImage = None  # type: ignore
+
+    if img is None:
         return None
-    return dst.name
+
+    path = tex_dir / basename
+    try:
+        if PILImage is not None and isinstance(img, PILImage.Image):
+            fmt = img.format
+            if fmt in ("JPEG", "JPG"):
+                path = path.with_suffix(".jpg")
+                img.save(path, "JPEG")
+            elif fmt == "PNG":
+                path = path.with_suffix(".png")
+                img.save(path, "PNG")
+            else:
+                path = path.with_suffix(fallback_ext)
+                img.save(path)
+            return path
+        # numpy array fallback
+        import numpy as np
+        arr = np.asarray(img)
+        if arr.ndim == 3 and arr.shape[-1] == 4:
+            path = path.with_suffix(".png")
+            if PILImage is not None:
+                PILImage.fromarray(arr).save(path)
+        elif arr.ndim in (2, 3):
+            path = path.with_suffix(".png")
+            if PILImage is not None:
+                PILImage.fromarray(arr).save(path)
+        return path if path.exists() else None
+    except Exception as exc:
+        logger.debug("could not save texture %s: %s", basename, exc)
+        return None
 
 
-def _build_material(stage, prim, mesh, material, tex_dir: Path):
-    """Attach a ``UsdPreviewSurface`` material to ``prim``."""
+def _build_preview_surface(
+    stage,
+    prim,
+    material: Any | None,
+    tex_dir: Path,
+    texture_counter: list[int],
+):
+    """Attach a ``UsdPreviewSurface`` material with ``UsdUVTexture`` bindings.
+
+    The resulting material graph is compatible with three.js r184 ``USDLoader``
+    / ``USDComposer`` and with mesh-viewer, as long as the USD is packaged as
+    ``.usdz`` so texture asset paths resolve.
+    """
     from pxr import UsdShade, Sdf
 
-    mat_path = prim.GetPath().AppendChild("material")
+    mesh_path = prim.GetPath()
+    mat_path = mesh_path.AppendChild("Looks").AppendChild("material")
     mat = UsdShade.Material.Define(stage, mat_path)
+
     shader_path = mat_path.AppendChild("shader")
     shader = UsdShade.Shader.Define(stage, shader_path)
     shader.CreateIdAttr("UsdPreviewSurface")
 
-    def _set_input(name, value, type_name):
-        shader.CreateInput(name, type_name).Set(value)
+    # Create primvar reader for UVs
+    primvar_path = mat_path.AppendChild("primvar_st")
+    primvar_reader = UsdShade.Shader.Define(stage, primvar_path)
+    primvar_reader.CreateIdAttr("UsdPrimvarReader_float2")
+    primvar_reader.CreateInput("varname", Sdf.ValueTypeNames.Token).Set("st")
+    st_output = primvar_reader.CreateOutput("result", Sdf.ValueTypeNames.Float2)
 
-    # Defaults
-    diffuse = (1.0, 1.0, 1.0, 1.0)
-    roughness = 0.5
-    metallic = 0.0
-    if material is not None:
+    def _get_factor(name: str, default: float) -> float:
+        if material is None:
+            return default
         try:
-            diffuse = tuple(material.get("diffuse", diffuse)) or diffuse
-            roughness = float(material.get("roughnessFactor", roughness))
-            metallic = float(material.get("metallicFactor", metallic))
+            v = getattr(material, name, None)
+            return float(v) if v is not None else default
+        except Exception:
+            return default
+
+    def _get_color(name: str, default: tuple[float, float, float]):
+        if material is None:
+            return default
+        try:
+            v = getattr(material, name, None)
+            if v is None:
+                return default
+            v = tuple(v)
+            if len(v) >= 3:
+                return tuple(float(x) for x in v[:3])
+            if len(v) == 4:
+                return tuple(float(x) for x in v[:3])
         except Exception:
             pass
-    _set_input("diffuseColor", tuple(diffuse[:3]) if len(diffuse) >= 3 else (1, 1, 1), Sdf.ValueTypeNames.Color3f)
-    _set_input("roughness", float(roughness), Sdf.ValueTypeNames.Float)
-    _set_input("metallic", float(metallic), Sdf.ValueTypeNames.Float)
-    _set_input("specularColor", (0.0, 0.0, 0.0), Sdf.ValueTypeNames.Color3f)
+        return default
 
-    # Textures
-    def _bind_file_input(input_name: str, uri: str | None) -> None:
-        if not uri:
-            return
-        rel = _copy_texture(uri, tex_dir)
-        if not rel:
-            return
-        mat.CreateInput(input_name, Sdf.ValueTypeNames.Asset).Set(rel)
+    shader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).Set(
+        _get_color("baseColorFactor", (1.0, 1.0, 1.0))
+    )
+    shader.CreateInput("roughness", Sdf.ValueTypeNames.Float).Set(
+        _get_factor("roughnessFactor", 0.5)
+    )
+    shader.CreateInput("metallic", Sdf.ValueTypeNames.Float).Set(
+        _get_factor("metallicFactor", 0.0)
+    )
+    shader.CreateInput("specularColor", Sdf.ValueTypeNames.Color3f).Set((0.0, 0.0, 0.0))
 
-    tex = (material or {}).get("image", None)
-    if isinstance(tex, str) and tex:
-        _bind_file_input("diffuseColor", tex)
-        UsdShade.MaterialBindingAPI(prim).Bind(mat)
-        return
-    # Try material has baseColorTexture / diffuseTexture URI
-    for key in ("baseColorTexture", "diffuseTexture", "emissiveTexture"):
-        tex_info = (material or {}).get(key, None)
-        if isinstance(tex_info, dict):
-            uri = tex_info.get("uri") or tex_info.get("image")
-            if key == "emissiveTexture":
-                _bind_file_input("emissiveColor", uri)
-            else:
-                _bind_file_input("diffuseColor", uri)
+    def _bind_texture(
+        texture_attr: str,
+        shader_input: str,
+        output_name: str = "rgb",
+    ) -> None:
+        if material is None:
+            return
+        tex = getattr(material, texture_attr, None)
+        if tex is None:
+            return
+        texture_counter[0] += 1
+        tex_name = f"texture_{texture_counter[0]:04d}"
+        saved = _save_image(tex, tex_dir, tex_name)
+        if saved is None:
+            return
+        rel_path = f"textures/{saved.name}"
+
+        tex_shader_path = mat_path.AppendChild(f"{tex_name}_shader")
+        tex_shader = UsdShade.Shader.Define(stage, tex_shader_path)
+        tex_shader.CreateIdAttr("UsdUVTexture")
+        tex_shader.CreateInput("file", Sdf.ValueTypeNames.Asset).Set(rel_path)
+        tex_shader.CreateInput("st", Sdf.ValueTypeNames.Float2).ConnectToSource(st_output)
+        tex_shader.CreateOutput(output_name, Sdf.ValueTypeNames.Color3f if output_name == "rgb" else Sdf.ValueTypeNames.Float)
+
+        inp = shader.CreateInput(shader_input, Sdf.ValueTypeNames.Color3f if output_name == "rgb" else Sdf.ValueTypeNames.Float)
+        inp.ConnectToSource(
+            tex_shader.ConnectableAPI(),
+            output_name,
+        )
+
+    # Bind known PBR texture slots.
+    _bind_texture("baseColorTexture", "diffuseColor", "rgb")
+    _bind_texture("emissiveTexture", "emissiveColor", "rgb")
+    _bind_texture("normalTexture", "normal", "rgb")
+    # glTF metallicRoughness texture: G=roughness, B=metallic
+    _bind_texture("metallicRoughnessTexture", "roughness", "g")
+    _bind_texture("metallicRoughnessTexture", "metallic", "b")
+    _bind_texture("occlusionTexture", "occlusion", "r")
+
     UsdShade.MaterialBindingAPI(prim).Bind(mat)
 
 
 def build_usd(glb_path: str, out_usd: str) -> str:
     """Convert ``glb_path`` to a USD file at ``out_usd``.
 
-    This is the public entry point.  It returns the absolute path to the
-    generated USD.  Raises ``FileNotFoundError`` for a missing input GLB
-    and ``RuntimeError`` if conversion fails.
+    Returns the absolute path to the generated USD.  Raises
+    ``FileNotFoundError`` for a missing input GLB and ``RuntimeError`` if
+    conversion fails.
     """
     _ensure_trimesh()
     import trimesh
-    from pxr import Usd, UsdGeom, UsdShade, Sdf, Gf
+    from pxr import Usd, UsdGeom, Sdf, Gf
 
     if not os.path.isfile(glb_path):
         raise FileNotFoundError(f"GLB not found: {glb_path}")
@@ -137,16 +224,18 @@ def build_usd(glb_path: str, out_usd: str) -> str:
     world = stage.DefinePrim("/World", "Xform")
     stage.SetDefaultPrim(world)
 
-    # Some source glTFs store per-mesh "class" semantics; keep them.
+    texture_counter = [0]
+
     for node_name in scene.graph.nodes_geometry:
         transform, geom_name = scene.graph[node_name]
         mesh = scene.geometry.get(geom_name)
         if mesh is None:
             continue
 
-        # Make a safe USD prim name
-        safe_name = str(node_name).replace("/", "_").replace(" ", "_")
-        prim_path = world.GetPath().AppendChild(safe_name)
+        safe = _safe_name(node_name)
+        if not safe:
+            safe = f"mesh_{texture_counter[0]}"
+        prim_path = world.GetPath().AppendChild(safe)
         mesh_prim = UsdGeom.Mesh.Define(stage, prim_path)
 
         vertices = mesh.vertices.tolist()
@@ -162,23 +251,17 @@ def build_usd(glb_path: str, out_usd: str) -> str:
             mesh_prim.CreateNormalsAttr(mesh.vertex_normals.tolist())
             mesh_prim.SetNormalsInterpolation("vertex")
 
-        if hasattr(mesh, "visual") and mesh.visual.uv is not None:
-            uvs = mesh.visual.uv.tolist()
-            primvar = mesh_prim.CreatePrimvar("st", Sdf.ValueTypeNames.TexCoord2fArray)
-            primvar.Set(uvs)
+        uvs = getattr(getattr(mesh, "visual", None), "uv", None)
+        if uvs is not None:
+            primvar = UsdGeom.PrimvarsAPI(mesh_prim).CreatePrimvar(
+                "st", Sdf.ValueTypeNames.TexCoord2fArray
+            )
+            primvar.Set(uvs.tolist())
             primvar.SetInterpolation("vertex")
 
-        # Material
-        material = None
-        if hasattr(scene, "materials"):
-            # trimesh stores geometry -> material mapping in scene.graph
-            try:
-                material = scene.materials.get(geom_name)
-            except Exception:
-                pass
-        _build_material(stage, mesh_prim, mesh, material, tex_dir)
+        material = getattr(getattr(mesh, "visual", None), "material", None)
+        _build_preview_surface(stage, mesh_prim, material, tex_dir, texture_counter)
 
-        # Transform (column-major in trimesh; pxr wants row-major matrix)
         matrix = transform.tolist()
         xform = UsdGeom.Xformable(mesh_prim)
         xform.AddTransformOp().Set(Gf.Matrix4d(matrix))
@@ -186,3 +269,49 @@ def build_usd(glb_path: str, out_usd: str) -> str:
     stage.Save()
     logger.info("USD (usd-exchange) written: %s", out_usd)
     return out_usd
+
+
+def package_usdz(usd_path: str, usdz_path: str | None = None) -> str:
+    """Package a USD file and its sibling ``textures/`` folder into a ``.usdz``.
+
+    The archive keeps the same internal layout as the original directory so
+    that relative ``textures/`` asset paths resolve correctly when the zip is
+    opened by three.js / mesh-viewer.
+    """
+    usd_path = Path(usd_path).resolve()
+    if not usd_path.exists():
+        raise FileNotFoundError(f"USD not found: {usd_path}")
+
+    if usdz_path is None:
+        usdz_path = usd_path.with_suffix(".usdz")
+    usdz_path = Path(usdz_path)
+    usdz_path.parent.mkdir(parents=True, exist_ok=True)
+
+    tex_dir = usd_path.parent / "textures"
+    files = [usd_path]
+    if tex_dir.is_dir():
+        files.extend(tex_dir.iterdir())
+
+    # USDZ requires uncompressed (stored) entries.
+    with zipfile.ZipFile(usdz_path, "w", zipfile.ZIP_STORED) as zf:
+        for src in files:
+            arcname = str(src.relative_to(usd_path.parent))
+            zf.write(src, arcname)
+
+    logger.info("USDZ packaged: %s", usdz_path)
+    return str(usdz_path)
+
+
+def build_usdz(glb_path: str, out_usdz: str) -> str:
+    """Convert ``glb_path`` to a self-contained ``.usdz`` file.
+
+    The intermediate ``.usd`` and ``textures/`` are placed next to the output
+    ``.usdz`` and then packaged.
+    """
+    out_usdz = os.path.abspath(out_usdz)
+    out_dir = Path(out_usdz).parent
+    out_dir.mkdir(parents=True, exist_ok=True)
+    usd_path = out_dir / "scene.usd"
+    build_usd(glb_path, str(usd_path))
+    package_usdz(str(usd_path), out_usdz)
+    return out_usdz

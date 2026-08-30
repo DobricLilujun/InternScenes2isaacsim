@@ -13,10 +13,11 @@ data/Layout_info/<scene>/layout.json
         │  compose (trimesh)
         ▼
 output/composed/<scene>/glb_scene.glb
-        │  ┌──────────────────────────────────────────────────────────────┐
-        │  │  glb_to_usd  →  output/normalized/<ds>_<id>/scene.usd        │   (auto: Isaac Sim → usd-exchange fallback)
-        │  │  glb_render  →  output/render/<scene>/perspective.png        │   (Blender EEVEE, camera inside the room)
-        │  └──────────────────────────────────────────────────────────────┘
+        │  ┌──────────────────────────────────────────────────────────────────┐
+        │  │  glb_to_usd  →  output/normalized/<ds>_<id>/scene.usd           │   (auto: Isaac Sim → usd-exchange fallback)
+        │  │                  output/normalized/<ds>_<id>/scene.usdz         │   (self-contained USDZ for 3D Mesh Viewer / three.js)
+        │  │  glb_render  →  output/render/<scene>/perspective.png           │   (Blender EEVEE, camera inside the room)
+        │  └──────────────────────────────────────────────────────────────────┘
         │  ┌──────────────────────────────────────────────────────────────┐
         │  │  topdown_projection → output/topdown/<scene>_topdown.png     │   (2D ground-plane projection)
         │  │  scene_info       → output/info/<scene>.json                │   (dimensions, objects, Go2 placement)
@@ -40,6 +41,14 @@ output/composed/<scene>/glb_scene.glb
   - Default output is the **normalized** per-scene folder
     (`output/normalized/<dataset>_<id>/scene.usd` + `textures/`), so the
     USD is the pipeline's primary artefact.
+  - **Mesh-viewer-compatible `.usdz`** export (`scene.usdz`) with embedded
+    `UsdPreviewSurface` materials and textures for browsers such as
+    3D Mesh Viewer / three.js.
+  - **Per-object representative colour** extraction from the source GLB
+    PBR materials, stored in `scene.json`.
+  - **Navigation-question generation**: produce object-finding tasks of
+    the form "Find the red chair" with target positions, Go2 start pose,
+    and distance, written as JSONL.
 - **Blender headless rendering** (EEVEE) with a camera placed *inside* the room.
 - **2D top-down projection** with a collision-aware Unitree **Go2** robot marker,
   nearest-obstacle clearance, and metre-scale grid.
@@ -208,6 +217,7 @@ internscenes run -n 10 --datasets scannet --seed 0 --auto-fill
 internscenes render scannet/scene0001_00 --engine EEVEE
 internscenes topdown scannet/scene0001_00
 internscenes info   scannet/scene0001_00 --out output/info/scannet_scene0001_00.json
+internscenes questions --scene scannet/scene0001_00 -n 5 --seed 0
 internscenes batch  -n 50 --seed 0
 ```
 
@@ -258,6 +268,7 @@ pipeline.assemble_normalized("scannet/scene0001_00")
 |---|---|
 | `output/composed/<scene>/glb_scene.glb` | composed scene GLB (shared input) |
 | `output/normalized/<dataset>_<id>/scene.usd` | USD stage (auto backend: Isaac Sim if available, else usd-exchange) |
+| `output/normalized/<dataset>_<id>/scene.usdz` | self-contained USDZ archive (`UsdPreviewSurface`, for 3D Mesh Viewer / three.js) |
 | `output/normalized/<dataset>_<id>/textures/` | extracted PBR textures (next to the USD) |
 | `output/render/<scene>/perspective.png` | Blender perspective render |
 | `output/topdown/<scene>_topdown.png` | 2D top-down projection |
@@ -281,6 +292,7 @@ pipeline.assemble_normalized("scannet/scene0001_00")
       "position_m": { "x": 0.79, "y": 0.80, "z": 0.48 },
       "size_m": { "length": 0.69, "width": 2.22, "height": 0.97 },
       "rotation_rad": { "x": -1.6, "y": 0.0, "z": 0.0 },
+      "color": { "r": 0.31, "g": 0.24, "b": 0.19, "source": "baseColorTexture" },
       "valid": true }
   ]
 }
