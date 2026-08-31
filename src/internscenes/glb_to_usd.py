@@ -109,20 +109,6 @@ def build_usd_fallback(glb_path: str, out_usd: str) -> str:
     return _impl(glb_path, out_usd)
 
 
-def build_usdz(glb_path: str, out_usdz: str | None = None) -> str:
-    """GLB → self-contained ``.usdz`` using the fallback backend.
-
-    Always uses the ``usd-exchange`` / ``pxr`` backend so the resulting
-    archive contains ``UsdPreviewSurface`` + ``UsdUVTexture`` material graphs
-    that three.js / mesh-viewer can load.
-    """
-    from .glb_to_usd_fallback import build_usdz as _impl  # type: ignore
-
-    if out_usdz is None:
-        out_usdz = str(_normalized_path_for(glb_path).with_suffix(".usdz"))
-    return _impl(glb_path, out_usdz)
-
-
 def build_usd(glb_path: str, out_usd: str | None = None) -> str:
     """Convert a composed GLB scene to a USD file; return the output path.
 
@@ -174,11 +160,6 @@ def main() -> int:
         default="auto",
         help="force a backend (default: auto = isaac if installed)",
     )
-    ap.add_argument(
-        "--usdz",
-        action="store_true",
-        help="output a self-contained .usdz (forces usd-exchange backend)",
-    )
     args = ap.parse_args()
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
@@ -186,9 +167,7 @@ def main() -> int:
 
     out = args.out or str(_normalized_path_for(args.glb))
     try:
-        if args.usdz:
-            out_path = build_usdz(args.glb, out if args.out else None)
-        elif args.backend == "isaac":
+        if args.backend == "isaac":
             if not _isaac_available():
                 logger.error("isaacsim is not installed in this environment")
                 return 2

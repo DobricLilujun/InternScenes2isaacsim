@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import logging
 import os
-import zipfile
 from pathlib import Path
 from typing import Any
 
@@ -97,9 +96,7 @@ def _build_preview_surface(
 ):
     """Attach a ``UsdPreviewSurface`` material with ``UsdUVTexture`` bindings.
 
-    The resulting material graph is compatible with three.js r184 ``USDLoader``
-    / ``USDComposer`` and with mesh-viewer, as long as the USD is packaged as
-    ``.usdz`` so texture asset paths resolve.
+    The resulting material graph is compatible with standard USD viewers.
     """
     from pxr import UsdShade, Sdf
 
@@ -270,48 +267,3 @@ def build_usd(glb_path: str, out_usd: str) -> str:
     logger.info("USD (usd-exchange) written: %s", out_usd)
     return out_usd
 
-
-def package_usdz(usd_path: str, usdz_path: str | None = None) -> str:
-    """Package a USD file and its sibling ``textures/`` folder into a ``.usdz``.
-
-    The archive keeps the same internal layout as the original directory so
-    that relative ``textures/`` asset paths resolve correctly when the zip is
-    opened by three.js / mesh-viewer.
-    """
-    usd_path = Path(usd_path).resolve()
-    if not usd_path.exists():
-        raise FileNotFoundError(f"USD not found: {usd_path}")
-
-    if usdz_path is None:
-        usdz_path = usd_path.with_suffix(".usdz")
-    usdz_path = Path(usdz_path)
-    usdz_path.parent.mkdir(parents=True, exist_ok=True)
-
-    tex_dir = usd_path.parent / "textures"
-    files = [usd_path]
-    if tex_dir.is_dir():
-        files.extend(tex_dir.iterdir())
-
-    # USDZ requires uncompressed (stored) entries.
-    with zipfile.ZipFile(usdz_path, "w", zipfile.ZIP_STORED) as zf:
-        for src in files:
-            arcname = str(src.relative_to(usd_path.parent))
-            zf.write(src, arcname)
-
-    logger.info("USDZ packaged: %s", usdz_path)
-    return str(usdz_path)
-
-
-def build_usdz(glb_path: str, out_usdz: str) -> str:
-    """Convert ``glb_path`` to a self-contained ``.usdz`` file.
-
-    The intermediate ``.usd`` and ``textures/`` are placed next to the output
-    ``.usdz`` and then packaged.
-    """
-    out_usdz = os.path.abspath(out_usdz)
-    out_dir = Path(out_usdz).parent
-    out_dir.mkdir(parents=True, exist_ok=True)
-    usd_path = out_dir / "scene.usd"
-    build_usd(glb_path, str(usd_path))
-    package_usdz(str(usd_path), out_usdz)
-    return out_usdz

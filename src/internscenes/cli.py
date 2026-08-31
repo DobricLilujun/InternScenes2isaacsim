@@ -293,7 +293,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--scene", action="append", dest="scene_ids",
                    help="specific scene id(s); repeatable")
     p.add_argument("--out-dir", default=str(pipeline.OUTPUT / "questions"),
-                   help="directory for per-scene .jsonl files")
+                   help="directory for the merged all.jsonl (per-scene files go into each normalized folder)")
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.set_defaults(func=cmd_questions)

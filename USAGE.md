@@ -31,7 +31,6 @@ data/Layout_info/<scene>/layout.json
 output/composed/<scene>/glb_scene.glb          ← composed scene GLB (shared input)
         │
         ├─ glb_to_usd      ──► output/normalized/<ds>_<id>/scene.usd   (auto: Isaac Sim, else usd-exchange)
-        │                     output/normalized/<ds>_<id>/scene.usdz  (self-contained USDZ for mesh viewers)
         │                     output/normalized/<ds>_<id>/textures/    (extracted PBR textures)
         │
         ├─ glb_render      ──► output/render/<scene>/perspective.png  (Blender EEVEE, camera in the room)
@@ -195,13 +194,16 @@ favour objects whose representative colour is known.
 ```bash
 # one scene
 internscenes questions --scene scannet/scene0001_00 -n 5 --seed 0
-# -> output/questions/scannet_scene0001_00.jsonl
+# -> output/normalized/scannet_scene0001_00/questions.jsonl
 # -> output/questions/all.jsonl   (merged across all processed scenes)
+
+# or use the standalone script
+python scripts/generate_questions.py --scene scannet/scene0001_00 -n 5 --seed 0
 ```
 
-Each line in the JSONL contains the Chinese and English question, target
-category and colour, target object metadata, the Go2 start position, and the
-straight-line distance to the target.
+Each line in the JSONL contains the English question, target category and
+colour, target object metadata, the Go2 start position, and the straight-line
+distance to the target.
 
 ### 3.7 Normalized per-scene folder
 
@@ -222,9 +224,9 @@ Output layout:
 ```
 output/normalized/<dataset>_<id>/
     scene.usd          # USD (geometry, NO Go2) — auto-built by glb_to_usd if missing
-    scene.usdz         # self-contained USDZ (UsdPreviewSurface) for 3D Mesh Viewer / three.js
     textures/          # extracted PBR textures (next to the USD)
     scene.json         # full scene info + computed Go2 placement
+    questions.jsonl    # generated object-finding navigation tasks (produced separately)
     perspective.png    # Blender perspective render
     topdown.png        # 2D top-down render
 ```
@@ -283,9 +285,9 @@ The final normalized folder is written to
 
 ```
 scene.usd          # USD (geometry, NO Go2) — auto-built by glb_to_usd
-scene.usdz         # self-contained USDZ archive for mesh viewers
-textures/          # extracted PBR textures
+textures/          # extracted PBR textures (next to the USD)
 scene.json         # full scene info + Go2 placement
+questions.jsonl    # generated object-finding navigation tasks
 perspective.png    # Blender perspective render
 topdown.png        # 2D top-down render
 ```
@@ -369,7 +371,6 @@ done
 |---|---|
 | `output/composed/<scene>/glb_scene.glb` | composed scene GLB (shared input) |
 | `output/normalized/<dataset>_<id>/scene.usd` | USD stage (auto backend: Isaac Sim if available, else usd-exchange) |
-| `output/normalized/<dataset>_<id>/scene.usdz` | self-contained USDZ archive (`UsdPreviewSurface`, for 3D Mesh Viewer / three.js) |
 | `output/normalized/<dataset>_<id>/textures/` | extracted PBR textures (next to the USD) |
 | `output/render/<scene>/perspective.png` | Blender perspective render |
 | `output/topdown/<scene>_topdown.png` | 2D top-down projection |

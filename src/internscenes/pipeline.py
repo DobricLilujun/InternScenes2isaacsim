@@ -165,8 +165,8 @@ def stage_info(scene_id: str) -> bool:
     return p["info"].exists()
 
 
-def stage_usd(scene_id: str) -> dict[str, Path] | None:
-    """Convert composed GLB to USD / USDZ in the normalized folder."""
+def stage_usd(scene_id: str) -> Path | None:
+    """Convert composed GLB to USD in the normalized folder."""
     p = paths_for(scene_id)
     if not p["composed"].exists():
         logger.error("[%s] usd: no composed GLB", scene_id)
@@ -179,20 +179,7 @@ def stage_usd(scene_id: str) -> dict[str, Path] | None:
     except Exception as exc:
         logger.exception("[%s] usd conversion failed", scene_id)
         return None
-
-    # Mesh-viewer / three.js need a self-contained .usdz with
-    # UsdPreviewSurface + UsdUVTexture; always generate that via fallback.
-    try:
-        usdz_path = Path(
-            _glb_to_usd.build_usdz(
-                str(p["composed"]), str(p["normalized"] / "scene.usdz")
-            )
-        )
-    except Exception as exc:
-        logger.exception("[%s] usdz packaging failed", scene_id)
-        usdz_path = None
-
-    return {"usd": usd_path, "usdz": usdz_path} if usdz_path else {"usd": usd_path}
+    return usd_path
 
 
 # ---------------------------------------------------------------------------
@@ -250,20 +237,12 @@ def assemble_normalized(scene_id: str) -> dict[str, str]:
     copy(p["topdown"], "topdown.png", "topdown")
     copy(p["perspective"], "perspective.png", "perspective")
 
-    usd_result = stage_usd(scene_id)
-    if usd_result is not None:
-        usd = usd_result.get("usd")
-        if usd is not None and usd.exists():
-            dst = dest / "scene.usd"
-            if usd.resolve() != dst.resolve():
-                shutil.copy2(usd, dst)
-            got["usd"] = str(dst)
-        usdz = usd_result.get("usdz")
-        if usdz is not None and usdz.exists():
-            dst = dest / "scene.usdz"
-            if usdz.resolve() != dst.resolve():
-                shutil.copy2(usdz, dst)
-            got["usdz"] = str(dst)
+    usd_path = stage_usd(scene_id)
+    if usd_path is not None and usd_path.exists():
+        dst = dest / "scene.usd"
+        if usd_path.resolve() != dst.resolve():
+            shutil.copy2(usd_path, dst)
+        got["usd"] = str(dst)
 
     # rebuild scene.json so it always reflects current renders / go2
     try:
@@ -275,7 +254,6 @@ def assemble_normalized(scene_id: str) -> dict[str, str]:
             if (dest / "topdown.png").exists() else None,
             "composed_glb": str(p["composed"]) if p["composed"].exists() else None,
             "usd": str(dest / "scene.usd") if (dest / "scene.usd").exists() else None,
-            "usdz": str(dest / "scene.usdz") if (dest / "scene.usdz").exists() else None,
         }
         dst = dest / "scene.json"
         _scene_info.write_scene_info(info, dst)

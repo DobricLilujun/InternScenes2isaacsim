@@ -15,7 +15,6 @@ data/Layout_info/<scene>/layout.json
 output/composed/<scene>/glb_scene.glb
         │  ┌──────────────────────────────────────────────────────────────────┐
         │  │  glb_to_usd  →  output/normalized/<ds>_<id>/scene.usd           │   (auto: Isaac Sim → usd-exchange fallback)
-        │  │                  output/normalized/<ds>_<id>/scene.usdz         │   (self-contained USDZ for 3D Mesh Viewer / three.js)
         │  │  glb_render  →  output/render/<scene>/perspective.png           │   (Blender EEVEE, camera inside the room)
         │  └──────────────────────────────────────────────────────────────────┘
         │  ┌──────────────────────────────────────────────────────────────┐
@@ -41,9 +40,6 @@ output/composed/<scene>/glb_scene.glb
   - Default output is the **normalized** per-scene folder
     (`output/normalized/<dataset>_<id>/scene.usd` + `textures/`), so the
     USD is the pipeline's primary artefact.
-  - **Mesh-viewer-compatible `.usdz`** export (`scene.usdz`) with embedded
-    `UsdPreviewSurface` materials and textures for browsers such as
-    3D Mesh Viewer / three.js.
   - **Per-object representative colour** extraction from the source GLB
     PBR materials, stored in `scene.json`.
   - **Navigation-question generation**: produce object-finding tasks of
@@ -268,7 +264,6 @@ pipeline.assemble_normalized("scannet/scene0001_00")
 |---|---|
 | `output/composed/<scene>/glb_scene.glb` | composed scene GLB (shared input) |
 | `output/normalized/<dataset>_<id>/scene.usd` | USD stage (auto backend: Isaac Sim if available, else usd-exchange) |
-| `output/normalized/<dataset>_<id>/scene.usdz` | self-contained USDZ archive (`UsdPreviewSurface`, for 3D Mesh Viewer / three.js) |
 | `output/normalized/<dataset>_<id>/textures/` | extracted PBR textures (next to the USD) |
 | `output/render/<scene>/perspective.png` | Blender perspective render |
 | `output/topdown/<scene>_topdown.png` | 2D top-down projection |

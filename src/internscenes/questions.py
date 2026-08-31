@@ -204,7 +204,7 @@ def generate_for_scene(
     ]
 
     if out_path is None:
-        out_path = pipeline.OUTPUT / "questions" / f"{pipeline.slug(scene_id)}.jsonl"
+        out_path = pipeline.paths_for(scene_id)["normalized"] / "questions.jsonl"
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as fh:
@@ -226,7 +226,7 @@ def generate_for_scenes(
     results: dict[str, list[dict[str, Any]]] = {}
     all_questions: list[dict[str, Any]] = []
     for sid in scene_ids:
-        path = out_dir / f"{pipeline.slug(sid)}.jsonl"
+        path = pipeline.paths_for(sid)["normalized"] / "questions.jsonl"
         qs = generate_for_scene(sid, out_path=path, n=n, seed=seed)
         results[sid] = qs
         all_questions.extend(qs)
