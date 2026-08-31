@@ -122,7 +122,9 @@ def _average_image_color(img) -> tuple[float, float, float] | None:
                 mean = rgb.mean(axis=(0, 1))
         else:
             mean = arr[..., :3].mean(axis=(0, 1))
-        return tuple(round(float(x), 3) for x in mean)
+        if hasattr(mean, "__len__") and len(mean) == 1:
+            mean = np.repeat(mean, 3)
+        return tuple(round(float(x), 3) for x in mean[:3])
     except Exception:
         return None
 
@@ -139,12 +141,13 @@ def _material_color(material: Any) -> tuple[tuple[float, float, float], str] | N
     factor = getattr(material, "baseColorFactor", None)
     if factor is not None:
         try:
-            arr = np.asarray(factor, dtype=float)
+            arr = np.asarray(factor, dtype=float).flatten()
             # trimesh sometimes stores factors as 0-255 integers.
-            if arr.size >= 3 and arr[:3].max() > 1.0:
-                arr = arr / 255.0
-            rgb = tuple(float(x) for x in arr[:3])
-            return rgb, "baseColorFactor"
+            if arr.size >= 3:
+                if arr[:3].max() > 1.0:
+                    arr = arr / 255.0
+                rgb = tuple(float(x) for x in arr[:3])
+                return rgb, "baseColorFactor"
         except Exception:
             pass
     return None
@@ -179,7 +182,10 @@ def _extract_object_color(uid: str) -> dict[str, Any] | None:
 
     if not colors:
         return None
-    rgb = tuple(round(float(x), 3) for x in np.mean([c[0] for c in colors], axis=0))
+    rgbs = [c[0] for c in colors if isinstance(c[0], (list, tuple, np.ndarray)) and len(c[0]) == 3]
+    if not rgbs:
+        return None
+    rgb = tuple(round(float(x), 3) for x in np.mean(rgbs, axis=0))
     return {
         "r": rgb[0], "g": rgb[1], "b": rgb[2],
         "source": colors[0][1],
