@@ -265,6 +265,7 @@ pipeline.assemble_normalized("scannet/scene0001_00")
 | `output/composed/<scene>/glb_scene.glb` | composed scene GLB (shared input) |
 | `output/normalized/<dataset>_<id>/scene.usd` | USD stage (auto backend: Isaac Sim if available, else usd-exchange) |
 | `output/normalized/<dataset>_<id>/textures/` | extracted PBR textures (next to the USD) |
+| `output/normalized/<dataset>_<id>/questions.jsonl` | generated object-finding navigation questions |
 | `output/render/<scene>/perspective.png` | Blender perspective render |
 | `output/topdown/<scene>_topdown.png` | 2D top-down projection |
 | `output/info/<scene>.json` | per-scene metadata |

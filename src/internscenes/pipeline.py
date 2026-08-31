@@ -19,6 +19,7 @@ from . import compose as _compose
 from . import download as _download
 from . import glb_to_usd as _glb_to_usd
 from . import place_go2 as _place_go2  # noqa: F401
+from . import questions as _questions
 from . import sampler as _sampler
 from . import scene_info as _scene_info
 from . import topdown as _topdown
@@ -180,6 +181,16 @@ def stage_usd(scene_id: str) -> Path | None:
         logger.exception("[%s] usd conversion failed", scene_id)
         return None
     return usd_path
+
+
+def stage_questions(scene_id: str, n: int = 5, seed: int | None = None) -> bool:
+    """Generate object-finding questions into the normalized folder."""
+    try:
+        qs = _questions.generate_for_scene(scene_id, n=n, seed=seed)
+    except Exception as exc:
+        logger.exception("[%s] question generation failed", scene_id)
+        return False
+    return len(qs) > 0
 
 
 # ---------------------------------------------------------------------------
@@ -383,8 +394,11 @@ def run_scene(
     resume: bool = False,
     skip_render: bool = False,
     skip_topdown: bool = False,
+    skip_questions: bool = False,
+    questions_n: int = 5,
+    questions_seed: int | None = None,
 ) -> dict[str, Any]:
-    """Run compose → render → topdown → info → normalize for one scene."""
+    """Run compose → render → topdown → info → normalize → questions for one scene."""
     p = paths_for(scene_id)
     status: dict[str, Any] = {"scene_id": scene_id, "stages": {}}
     stages = [
@@ -393,6 +407,7 @@ def run_scene(
         ("topdown", lambda: stage_topdown(scene_id) if not skip_topdown else True),
         ("info", lambda: stage_info(scene_id)),
         ("normalize", lambda: bool(assemble_normalized(scene_id))),
+        ("questions", lambda: stage_questions(scene_id, n=questions_n, seed=questions_seed) if not skip_questions else True),
     ]
     for name, fn in stages:
         t0 = time.time()
@@ -412,6 +427,9 @@ def run_scene(
             if name == "normalize" and (p["normalized"] / "scene.usd").exists() and (
                 p["normalized"] / "perspective.png").exists() and (
                 p["normalized"] / "topdown.png").exists():
+                status["stages"][name] = "skipped(exists)"
+                continue
+            if name == "questions" and (p["normalized"] / "questions.jsonl").exists():
                 status["stages"][name] = "skipped(exists)"
                 continue
         try:

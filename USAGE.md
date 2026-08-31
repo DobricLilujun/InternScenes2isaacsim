@@ -226,7 +226,7 @@ output/normalized/<dataset>_<id>/
     scene.usd          # USD (geometry, NO Go2) — auto-built by glb_to_usd if missing
     textures/          # extracted PBR textures (next to the USD)
     scene.json         # full scene info + computed Go2 placement
-    questions.jsonl    # generated object-finding navigation tasks (produced separately)
+    questions.jsonl    # generated object-finding navigation tasks
     perspective.png    # Blender perspective render
     topdown.png        # 2D top-down render
 ```
@@ -276,6 +276,8 @@ Options:
 | `--auto-fill-once` | collect + download, but do not re-compose |
 | `--skip-render` | skip Blender perspective render |
 | `--skip-topdown` | skip 2D top-down projection |
+| `--skip-questions` | do not generate `questions.jsonl` |
+| `--questions-n N` | number of questions per scene (default: 5) |
 | `--min-room-extent M` | skip rooms whose smaller floor dimension is < M metres |
 | `--manifest PATH` | batch manifest (default: `output/batch/manifest.json`) |
 | `--log PATH` | batch log (default: `output/batch/batch.log`) |

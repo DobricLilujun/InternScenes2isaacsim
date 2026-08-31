@@ -46,6 +46,8 @@ def cmd_run(
     auto_fill_once: bool,
     skip_render: bool,
     skip_topdown: bool,
+    skip_questions: bool,
+    questions_n: int,
     manifest: str,
     log: str,
     min_room_extent_m: float = 0.0,
@@ -86,8 +88,8 @@ def cmd_run(
 
     total = len(scenes)
     logger.info(
-        "run start: %d scene(s) (n=%s, seed=%d, min_room_extent_m=%.2f)",
-        total, n or "N/A", seed, min_room_extent_m,
+        "run start: %d scene(s) (n=%s, seed=%d, min_room_extent_m=%.2f, questions=%s)",
+        total, n or "N/A", seed, min_room_extent_m, "off" if skip_questions else f"{questions_n}",
     )
 
     # optional auto-fill pass
@@ -118,6 +120,9 @@ def cmd_run(
             resume=resume,
             skip_render=skip_render,
             skip_topdown=skip_topdown,
+            skip_questions=skip_questions,
+            questions_n=questions_n,
+            questions_seed=seed,
         )
         results.append(st)
         if st["status"] == "complete":
@@ -191,6 +196,8 @@ def cmd_batch(
         auto_fill_once=False,
         skip_render=False,
         skip_topdown=False,
+        skip_questions=True,
+        questions_n=5,
         manifest=str(pipeline.OUTPUT / "batch" / "manifest.json"),
         log=str(pipeline.OUTPUT / "batch" / "batch.log"),
         min_room_extent_m=min_room_extent_m,
@@ -251,6 +258,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="collect + download missing UIDs, but do not re-compose")
     p.add_argument("--skip-render", action="store_true")
     p.add_argument("--skip-topdown", action="store_true")
+    p.add_argument("--skip-questions", action="store_true",
+                   help="do not generate questions.jsonl during run")
+    p.add_argument("--questions-n", type=int, default=5,
+                   help="number of questions per scene (default: 5)")
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.add_argument("--manifest", default=str(pipeline.OUTPUT / "batch" / "manifest.json"))
