@@ -48,6 +48,8 @@ def cmd_run(
     skip_topdown: bool,
     skip_questions: bool,
     questions_n: int,
+    plan_questions: bool,
+    plan_questions_grid_res: float,
     manifest: str,
     log: str,
     min_room_extent_m: float = 0.0,
@@ -88,8 +90,10 @@ def cmd_run(
 
     total = len(scenes)
     logger.info(
-        "run start: %d scene(s) (n=%s, seed=%d, min_room_extent_m=%.2f, questions=%s)",
-        total, n or "N/A", seed, min_room_extent_m, "off" if skip_questions else f"{questions_n}",
+        "run start: %d scene(s) (n=%s, seed=%d, min_room_extent_m=%.2f, questions=%s, plan_questions=%s)",
+        total, n or "N/A", seed, min_room_extent_m,
+        "off" if skip_questions else f"{questions_n}",
+        plan_questions,
     )
 
     # optional auto-fill pass
@@ -123,6 +127,8 @@ def cmd_run(
             skip_questions=skip_questions,
             questions_n=questions_n,
             questions_seed=seed,
+            plan_questions=plan_questions,
+            plan_questions_grid_res=plan_questions_grid_res,
         )
         results.append(st)
         if st["status"] == "complete":
@@ -198,6 +204,8 @@ def cmd_batch(
         skip_topdown=False,
         skip_questions=True,
         questions_n=5,
+        plan_questions=False,
+        plan_questions_grid_res=0.05,
         manifest=str(pipeline.OUTPUT / "batch" / "manifest.json"),
         log=str(pipeline.OUTPUT / "batch" / "batch.log"),
         min_room_extent_m=min_room_extent_m,
@@ -228,6 +236,27 @@ def cmd_questions(
         scenes, out_dir=out_dir, n=n, seed=seed
     )
     return 0
+
+
+def cmd_plan_questions(
+    scene: str,
+    n: int | None,
+    grid_res: float,
+) -> int:
+    """Plan A* paths for every question of a scene and render top-down path images."""
+    from . import path_planner
+    try:
+        summary = path_planner.plan_for_scene(scene, questions_n=n, grid_res=grid_res)
+        print(json.dumps({
+            "scene": scene,
+            "num_questions": summary["num_questions"],
+            "successful": summary["successful"],
+            "output_dir": summary["output_dir"],
+        }))
+        return 0
+    except Exception as exc:
+        logger.error("plan-questions failed for %s: %s", scene, exc)
+        return 1
 
 
 # ---------------------------------------------------------------------------
@@ -262,6 +291,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="do not generate questions.jsonl during run")
     p.add_argument("--questions-n", type=int, default=5,
                    help="number of questions per scene (default: 5)")
+    p.add_argument("--plan-questions", action="store_true",
+                   help="after generating questions, run A* path planning and render path top-downs")
+    p.add_argument("--plan-questions-grid-res", type=float, default=0.05,
+                   help="occupancy grid resolution for --plan-questions (default: 0.05)")
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.add_argument("--manifest", default=str(pipeline.OUTPUT / "batch" / "manifest.json"))
@@ -308,6 +341,17 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.set_defaults(func=cmd_questions)
+
+    p = sub.add_parser(
+        "plan-questions",
+        help="plan A* paths for generated questions and render path top-downs",
+    )
+    p.add_argument("scene", help="scene id, e.g. scannet/scene0001_00")
+    p.add_argument("-n", type=int, dest="n", default=None,
+                   help="process only the first N questions")
+    p.add_argument("--grid-res", type=float, default=0.05,
+                   help="occupancy grid resolution in metres (default: 0.05)")
+    p.set_defaults(func=cmd_plan_questions)
 
     return ap
 

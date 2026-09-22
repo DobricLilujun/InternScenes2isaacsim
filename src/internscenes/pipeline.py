@@ -193,6 +193,20 @@ def stage_questions(scene_id: str, n: int = 5, seed: int | None = None) -> bool:
     return len(qs) > 0
 
 
+def _stage_plan_questions(
+    scene_id: str,
+    grid_res: float = 0.05,
+) -> bool:
+    """Run A* path planning for every question of a scene."""
+    from . import path_planner
+    try:
+        summary = path_planner.plan_for_scene(scene_id, grid_res=grid_res)
+        return summary["successful"] == summary["num_questions"]
+    except Exception:
+        logger.exception("[%s] plan-questions failed", scene_id)
+        return False
+
+
 # ---------------------------------------------------------------------------
 # auto-fill
 # ---------------------------------------------------------------------------
@@ -397,8 +411,15 @@ def run_scene(
     skip_questions: bool = False,
     questions_n: int = 5,
     questions_seed: int | None = None,
+    plan_questions: bool = False,
+    plan_questions_grid_res: float = 0.05,
 ) -> dict[str, Any]:
-    """Run compose → render → topdown → info → normalize → questions for one scene."""
+    """Run compose → render → topdown → info → normalize → questions for one scene.
+
+    When ``plan_questions`` is True, an extra A* path-planning stage is run for
+    every generated question and the results are saved under
+    ``output/normalized/<scene>/questions/qNNN/``.
+    """
     p = paths_for(scene_id)
     status: dict[str, Any] = {"scene_id": scene_id, "stages": {}}
     stages = [
@@ -408,6 +429,7 @@ def run_scene(
         ("info", lambda: stage_info(scene_id)),
         ("normalize", lambda: bool(assemble_normalized(scene_id))),
         ("questions", lambda: stage_questions(scene_id, n=questions_n, seed=questions_seed) if not skip_questions else True),
+        ("plan_questions", lambda: _stage_plan_questions(scene_id, grid_res=plan_questions_grid_res) if plan_questions and not skip_questions else True),
     ]
     for name, fn in stages:
         t0 = time.time()
@@ -430,6 +452,9 @@ def run_scene(
                 status["stages"][name] = "skipped(exists)"
                 continue
             if name == "questions" and (p["normalized"] / "questions.jsonl").exists():
+                status["stages"][name] = "skipped(exists)"
+                continue
+            if name == "plan_questions" and (p["normalized"] / "questions" / "summary.json").exists():
                 status["stages"][name] = "skipped(exists)"
                 continue
         try:
