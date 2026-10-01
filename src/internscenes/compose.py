@@ -13,7 +13,10 @@ from pathlib import Path
 
 import numpy as np
 import trimesh
+from trimesh.points import PointCloud
 from trimesh.transformations import rotation_matrix
+from trimesh.visual.color import ColorVisuals
+from trimesh.visual.texture import TextureVisuals
 
 # --- paths (relative to project root: <root>/src/internscenes/compose.py) ---
 ROOT = Path(__file__).resolve().parents[2]
@@ -103,26 +106,36 @@ class SceneComposer:
         self.composed_dir = COMPOSED_DIR
 
     def _sanitize_mesh_visuals(self, mesh):
-        """Strip malformed vertex/face colors that break the GLB exporter.
-
-        The composed scene uses PBR materials / textures for rendering, so
-        dropping color attributes is safe and prevents crashes on assets whose
-        color arrays have unexpected shapes or sizes.
-        """
-        if not hasattr(mesh, "visual") or mesh.visual is None:
+        """Replace malformed color attributes without discarding textures."""
+        visual = getattr(mesh, "visual", None)
+        if visual is None:
             return mesh
-        try:
-            from trimesh.visual.texture import TextureVisuals
-            mesh.visual = TextureVisuals()
-        except Exception:
-            try:
-                mesh.visual.vertex_colors = None
-            except Exception:
-                pass
-            try:
-                mesh.visual.face_colors = None
-            except Exception:
-                pass
+        attributes = getattr(visual, "vertex_attributes", None)
+        if attributes is not None and "color" in attributes:
+            colors = np.asarray(attributes["color"])
+            if colors.ndim == 2 and colors.shape == (len(mesh.vertices), 3):
+                alpha_value = 255 if np.issubdtype(colors.dtype, np.integer) else 1.0
+                alpha = np.full((len(colors), 1), alpha_value, dtype=colors.dtype)
+                attributes["color"] = np.concatenate((colors, alpha), axis=1)
+            elif colors.ndim != 2 or colors.shape not in (
+                (len(mesh.vertices), 4),
+            ):
+                del attributes["color"]
+        if isinstance(visual, ColorVisuals):
+            expected_vertices = len(mesh.vertices)
+            expected_faces = len(mesh.faces)
+            vertex_colors = np.asarray(visual.vertex_colors)
+            if vertex_colors.ndim != 2 or vertex_colors.shape != (expected_vertices, 4):
+                visual.vertex_colors = np.tile(
+                    np.array([[255, 255, 255, 255]], dtype=np.uint8),
+                    (expected_vertices, 1),
+                )
+            face_colors = np.asarray(visual.face_colors)
+            if face_colors.ndim != 2 or face_colors.shape != (expected_faces, 4):
+                visual.face_colors = np.tile(
+                    np.array([[255, 255, 255, 255]], dtype=np.uint8),
+                    (expected_faces, 1),
+                )
         return mesh
 
     def get_scale_transform_from_rules(self, mesh_size, instance_info, bbox_key="bbox"):
@@ -240,12 +253,14 @@ class SceneComposer:
             except Exception as e:
                 print(f"  error adding {part[0]}: {e}")
 
-        # Sanitize all geometry in the assembled scene before export.  Some
-        # source assets / structure meshes ship malformed vertex colors (e.g.
-        # RGB instead of RGBA, or non-divisible array sizes) that make the GLB
-        # exporter crash.
-        for g in scene.geometry.values():
-            self._sanitize_mesh_visuals(g)
+        # Some source geometry has malformed colors, and the GLB exporter
+        # cannot export point clouds. Remove point clouds and repair colors.
+        for name in list(scene.geometry.keys()):
+            g = scene.geometry[name]
+            if isinstance(g, PointCloud):
+                scene.delete_geometry(name)
+            else:
+                self._sanitize_mesh_visuals(g)
 
         Path(out_glb).parent.mkdir(parents=True, exist_ok=True)
         trimesh.exchange.export.export_mesh(scene, out_glb)
