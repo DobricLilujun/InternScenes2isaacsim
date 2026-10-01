@@ -102,6 +102,29 @@ class SceneComposer:
         self.asset_mesh_loader = asset_mesh_loader or AssetMeshLoader()
         self.composed_dir = COMPOSED_DIR
 
+    def _sanitize_mesh_visuals(self, mesh):
+        """Strip malformed vertex/face colors that break the GLB exporter.
+
+        The composed scene uses PBR materials / textures for rendering, so
+        dropping color attributes is safe and prevents crashes on assets whose
+        color arrays have unexpected shapes or sizes.
+        """
+        if not hasattr(mesh, "visual") or mesh.visual is None:
+            return mesh
+        try:
+            from trimesh.visual.texture import TextureVisuals
+            mesh.visual = TextureVisuals()
+        except Exception:
+            try:
+                mesh.visual.vertex_colors = None
+            except Exception:
+                pass
+            try:
+                mesh.visual.face_colors = None
+            except Exception:
+                pass
+        return mesh
+
     def get_scale_transform_from_rules(self, mesh_size, instance_info, bbox_key="bbox"):
         cat = instance_info["category"]
         target_size = np.array(instance_info[bbox_key][3:6])
@@ -216,6 +239,14 @@ class SceneComposer:
                     print(f"  no {part[0]}.glb for {scene_name}")
             except Exception as e:
                 print(f"  error adding {part[0]}: {e}")
+
+        # Sanitize all geometry in the assembled scene before export.  Some
+        # source assets / structure meshes ship malformed vertex colors (e.g.
+        # RGB instead of RGBA, or non-divisible array sizes) that make the GLB
+        # exporter crash.
+        for g in scene.geometry.values():
+            self._sanitize_mesh_visuals(g)
+
         Path(out_glb).parent.mkdir(parents=True, exist_ok=True)
         trimesh.exchange.export.export_mesh(scene, out_glb)
         if write_missing_report and missing:
