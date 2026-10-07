@@ -357,7 +357,7 @@ def _sidebar(active: str) -> str:
         for s, t in pages:
             cls = " active" if s == active else ""
             links.append(
-                f'<a class="nav-link{cls}" href="/{s}.html">{html.escape(t)}</a>'
+                f'<a class="nav-link{cls}" href="{s}.html">{html.escape(t)}</a>'
             )
         items.append(
             f'<div class="nav-group"><div class="nav-title">{group}</div>'
@@ -366,8 +366,19 @@ def _sidebar(active: str) -> str:
     return "".join(items)
 
 
+def _relativize(page: str) -> str:
+    # GitHub Pages *project* pages live at /<repo>/, so absolute paths like
+    # href="/foo.html" would resolve to the domain root and break. Rewrite any
+    # absolute href/src (but NOT http/https external links) to a relative path.
+    def _strip(m: "re.Match") -> str:
+        attr, _, val = m.group(1), m.group(2), m.group(3)
+        return f'{attr}="{val[1:]}"' if val.startswith("/") else m.group(0)
+
+    return re.sub(r'(href|src)(\s*=\s*")(/[^"\s]*)"', _strip, page)
+
+
 def _shell(active: str, title: str, description: str, content: str) -> str:
-    return f"""<!DOCTYPE html>
+    page = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -375,16 +386,16 @@ def _shell(active: str, title: str, description: str, content: str) -> str:
 <meta name="description" content="{html.escape(description)}" />
 <title>{html.escape(title)} · {SITE["title"]}</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-<link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
-<link rel="stylesheet" href="/assets/style.css" />
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+<link rel="stylesheet" href="assets/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script>
-<script src="/assets/search.js" defer></script>
+<script src="assets/search.js" defer></script>
 </head>
 <body>
 <div class="scanline"></div>
 <header class="topbar">
-  <a class="brand" href="/index.html">
-    <img src="/assets/logo.svg" alt="{SITE["title"]} logo" class="brand-logo" />
+  <a class="brand" href="index.html">
+    <img src="assets/logo.svg" alt="{SITE["title"]} logo" class="brand-logo" />
     <span class="brand-name">{SITE["title"]}</span>
     <span class="brand-tag">{html.escape(SITE["tagline"])}</span>
   </a>
@@ -417,7 +428,7 @@ def _shell(active: str, title: str, description: str, content: str) -> str:
         v{html.escape(SITE["version"])}</div>
       <div class="foot-links">
         <a href="{SITE["repo"]}">GitHub</a>
-        <a href="/contributing.html">Contribute</a>
+        <a href="contributing.html">Contribute</a>
       </div>
     </footer>
   </main>
@@ -425,6 +436,7 @@ def _shell(active: str, title: str, description: str, content: str) -> str:
 </body>
 </html>
 """
+    return _relativize(page)
 
 
 def build() -> None:

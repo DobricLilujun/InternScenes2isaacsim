@@ -7,6 +7,9 @@
   var data = { pages: [] };
   var index = null;
   var loaded = false;
+  // base dir of the current page — robust for a project page (…/SAGE-Bench/) or a
+  // user page (root). Pages are flat (no nested folders), so this is correct.
+  var base = location.pathname.slice(0, location.pathname.lastIndexOf("/") + 1);
 
   function show() { results.hidden = false; }
   function hide() { results.hidden = true; }
@@ -16,7 +19,7 @@
     });
   }
 
-  fetch("/assets/search-index.json")
+  fetch(base + "assets/search-index.json")
     .then(function (r) { return r.json(); })
     .then(function (d) {
       data = d;
@@ -86,7 +89,7 @@
     results.innerHTML = pages.slice(0, 8).map(function (p) {
       var snip = snippet(p, q);
       return (
-        '<a class="sr-item" href="/' + p.slug + '.html">' +
+        '<a class="sr-item" href="' + base + p.slug + '.html">' +
         '<div class="sr-title">' + esc(p.title) + "</div>" +
         '<div class="sr-slug">' + p.slug + ".html</div>" +
         (snip ? '<div class="sr-snip">' + snip + "</div>" : "") +
