@@ -40,6 +40,7 @@ NAV = [
     ("reference_frames", "Reference Frames", "Core"),
     ("vlm_annotation", "VLM Annotation", "Annotation"),
     ("evaluation", "Evaluation Metrics", "Evaluation"),
+    ("benchmark", "Benchmark", "Evaluation"),
     ("rendering", "Multi-View Rendering", "Pipeline"),
     ("python_api", "Python API", "Reference"),
     ("cli", "CLI Reference", "Reference"),
