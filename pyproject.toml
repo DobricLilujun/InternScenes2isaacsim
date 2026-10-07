@@ -26,8 +26,9 @@ dev = ["nbformat>=5.1.4", "nbclient>=0.10", "pytest>=8.0"]
 internscenes = "internscenes.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/InternRobotics/InternScenes"
-Repository = "https://github.com/InternRobotics/InternScenes"
+Homepage = "https://github.com/DobricLilujun/InternScenes2isaacsim"
+Repository = "https://github.com/DobricLilujun/InternScenes2isaacsim"
+Documentation = "https://dobriclilujun.github.io/SAGE-Bench"
 
 [tool.setuptools.package-data]
 "*" = ["*.md"]

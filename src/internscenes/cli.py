@@ -4,7 +4,7 @@
 After ``pip install -e .`` the command ``internscenes`` is available:
 
     # random batch: N scenes per dataset
-    internscenes run -n 50 --seed 0 --auto-fill
+    internscenes run -n 50 --seed 0
 
     # specific scene(s)
     internscenes run --scene scannet/scene0001_00
@@ -53,6 +53,9 @@ def cmd_run(
     manifest: str,
     log: str,
     min_room_extent_m: float = 0.0,
+    skip_graph: bool = False,
+    skip_render_multi: bool = False,
+    vlm: bool = False,
 ) -> int:
     """Run the full pipeline (compose → render → topdown → info → normalize)."""
     manifest_path = Path(manifest)
@@ -62,6 +65,7 @@ def cmd_run(
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
         handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
+        force=True,
     )
 
     # resolve scene list
@@ -69,10 +73,6 @@ def cmd_run(
         scenes = pipeline.resolve_scenes(
             scene_ids=scene_ids, min_room_extent_m=min_room_extent_m
         )
-        picked: dict[str, list[str]] = {}
-        for sid in scenes:
-            ds = sid.split("/", 1)[0]
-            picked.setdefault(ds, []).append(sid)
     else:
         scenes = pipeline.resolve_scenes(
             n=n or 50,
@@ -80,10 +80,14 @@ def cmd_run(
             datasets=datasets,
             min_room_extent_m=min_room_extent_m,
         )
-        picked: dict[str, list[str]] = {}
-        for sid in scenes:
-            ds = sid.split("/", 1)[0]
-            picked.setdefault(ds, []).append(sid)
+    if not scenes:
+        logger.error("no scenes matched the criteria")
+        return 1
+    picked: dict[str, list[str]] = {}
+    for sid in scenes:
+        ds = sid.split("/", 1)[0]
+        picked.setdefault(ds, []).append(sid)
+    if not scene_ids:
         pipeline._sampler.save_sample(
             picked, pipeline.OUTPUT / "batch" / "sample_manifest.json"
         )
@@ -96,25 +100,28 @@ def cmd_run(
         plan_questions,
     )
 
-    # optional auto-fill pass
-    if auto_fill or auto_fill_once:
-        logger.info("=== auto-fill pre-pass: %d scene(s) ===", len(scenes))
-        for sid in scenes:
-            pipeline.stage_compose(sid, write_missing_report=True, verbose_missing=False)
-        pipeline.auto_fill_assets(scenes)
-        if auto_fill:
-            for sid in scenes:
-                p = pipeline.paths_for(sid)["composed"]
-                if p.exists():
-                    try:
-                        p.unlink()
-                    except OSError:
-                        pass
-            logger.info("auto-fill: cleared placeholder composed GLBs")
-        else:
-            logger.info("auto-fill-once: leaving placeholder composed GLBs in place")
-
     t_start = time.time()
+    if auto_fill or auto_fill_once:
+        logger.info("=== verifying and filling assets: %d scene(s) ===", len(scenes))
+        if pipeline.auto_fill_assets(scenes) != 0:
+            logger.error("auto-fill verification failed; stopping before the final pipeline")
+            pipeline.flush_manifest(
+                manifest_path,
+                [
+                    {
+                        "scene_id": sid,
+                        "stages": {"auto_fill": "failed(verification)"},
+                        "status": "incomplete",
+                    }
+                    for sid in scenes
+                ],
+                picked,
+                t_start,
+            )
+            return 1
+    else:
+        logger.info("auto-fill disabled: using local assets only")
+
     results: list[dict] = []
     n_ok = 0
     for i, sid in enumerate(scenes, 1):
@@ -125,10 +132,14 @@ def cmd_run(
             skip_render=skip_render,
             skip_topdown=skip_topdown,
             skip_questions=skip_questions,
+            skip_graph=skip_graph,
+            skip_render_multi=skip_render_multi,
+            vlm=vlm,
             questions_n=questions_n,
             questions_seed=seed,
             plan_questions=plan_questions,
             plan_questions_grid_res=plan_questions_grid_res,
+            auto_fill=False,
         )
         results.append(st)
         if st["status"] == "complete":
@@ -144,7 +155,7 @@ def cmd_run(
         "elapsed_min": round(elapsed / 60, 1),
         "manifest": str(manifest_path),
     }))
-    return 0
+    return 0 if n_ok == total else 1
 
 
 # ---------------------------------------------------------------------------
@@ -187,9 +198,50 @@ def cmd_info(scene: str, out: str | None = None) -> int:
     return 0
 
 
+def cmd_graph(
+    scene: str,
+    out: str | None = None,
+    vlm: bool = False,
+    reference: str | None = None,
+    self_eval: bool = False,
+) -> int:
+    """Build (and optionally evaluate) a scene graph JSON for one scene."""
+    logger.info("graph: %s", scene)
+    from . import evaluate_graph as _ev
+
+    if not pipeline.stage_graph(scene, vlm=vlm):
+        logger.error("graph: build failed for %s", scene)
+        return 1
+    graph_path = _paths(scene)["graph"]
+    graph = json.load(open(graph_path, encoding="utf-8"))
+    if self_eval:
+        print(json.dumps(_ev.self_report(graph), indent=2))
+    elif reference:
+        ref = json.load(open(reference, encoding="utf-8"))
+        print(json.dumps(_ev.evaluate(ref, graph), indent=2))
+    else:
+        print(json.dumps({
+            "scene_id": graph["scene_id"],
+            "nodes": graph["stats"]["num_nodes"],
+            "edges": graph["stats"]["num_edges"],
+            "by_family": graph["stats"]["num_by_family"],
+        }, indent=2))
+    if out:
+        import shutil
+        dst = Path(out)
+        if dst.is_dir() or dst.suffix == "":
+            dst = dst / graph_path.name
+        if dst.resolve() != graph_path.resolve():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(graph_path, dst)
+    return 0
+
+
 def cmd_batch(
     n: int, seed: int, resume: bool, datasets: str,
     min_room_extent_m: float = 0.0,
+    auto_fill: bool = True,
+    auto_fill_once: bool = False,
 ) -> int:
     """Run the legacy batch pipeline (compose → render → topdown → info)."""
     return cmd_run(
@@ -198,8 +250,8 @@ def cmd_batch(
         datasets=datasets.split(",") if datasets else None,
         scene_ids=None,
         resume=resume,
-        auto_fill=False,
-        auto_fill_once=False,
+        auto_fill=auto_fill,
+        auto_fill_once=auto_fill_once,
         skip_render=False,
         skip_topdown=False,
         skip_questions=True,
@@ -262,6 +314,23 @@ def cmd_plan_questions(
 # ---------------------------------------------------------------------------
 # parser
 # ---------------------------------------------------------------------------
+def _add_auto_fill_options(parser: argparse.ArgumentParser) -> None:
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--disable-auto-fill", dest="auto_fill", action="store_false",
+        help="do not download missing models; use local assets only",
+    )
+    group.add_argument(
+        "--auto-fill", dest="auto_fill", action="store_true",
+        help="download and verify missing models (default; compatibility flag)",
+    )
+    group.add_argument(
+        "--auto-fill-once", action="store_true",
+        help=argparse.SUPPRESS,
+    )
+    parser.set_defaults(auto_fill=True, auto_fill_once=False)
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         prog="internscenes",
@@ -281,14 +350,17 @@ def build_parser() -> argparse.ArgumentParser:
                    help="specific scene id(s); repeatable (e.g. scannet/scene0001_00)")
     p.add_argument("--resume", action="store_true",
                    help="skip stages whose output file already exists")
-    p.add_argument("--auto-fill", action="store_true",
-                   help="pre-pass: collect missing UIDs, download only those, re-compose")
-    p.add_argument("--auto-fill-once", action="store_true",
-                   help="collect + download missing UIDs, but do not re-compose")
+    _add_auto_fill_options(p)
     p.add_argument("--skip-render", action="store_true")
     p.add_argument("--skip-topdown", action="store_true")
     p.add_argument("--skip-questions", action="store_true",
                    help="do not generate questions.jsonl during run")
+    p.add_argument("--skip-graph", action="store_true",
+                   help="do not build the scene graph during run")
+    p.add_argument("--skip-render-multi", action="store_true",
+                   help="do not render orbit/top-down views for VLM")
+    p.add_argument("--vlm", action="store_true",
+                   help="apply the VLM annotation layer (deterministic fallback if no endpoint)")
     p.add_argument("--questions-n", type=int, default=5,
                    help="number of questions per scene (default: 5)")
     p.add_argument("--plan-questions", action="store_true",
@@ -316,11 +388,22 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--out")
     p.set_defaults(func=cmd_info)
 
+    p = sub.add_parser("graph", help="build a scene graph JSON (deterministic + optional VLM)")
+    p.add_argument("scene", help="scene id, e.g. scannet/scene0001_00")
+    p.add_argument("--out", help="output path for scene_graph.json")
+    p.add_argument("--vlm", action="store_true",
+                   help="apply the VLM annotation layer (deterministic fallback if no endpoint)")
+    p.add_argument("--reference", help="reference scene_graph.json for factorised evaluation")
+    p.add_argument("--self", dest="self_eval", action="store_true",
+                   help="report only self-consistency (no reference)")
+    p.set_defaults(func=cmd_graph)
+
     p = sub.add_parser("batch", help="run the legacy batch pipeline")
     p.add_argument("-n", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--resume", action="store_true")
     p.add_argument("--datasets", default="")
+    _add_auto_fill_options(p)
     p.add_argument("--min-room-extent", dest="min_room_extent_m", type=float, default=0.0,
                    help="skip scenes whose smaller floor dimension (width/depth in m) is below this value")
     p.set_defaults(func=cmd_batch)

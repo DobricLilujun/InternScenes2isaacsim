@@ -17,12 +17,16 @@ from typing import Any
 
 from . import compose as _compose
 from . import download as _download
+from . import evaluate_graph as _evaluate_graph
 from . import glb_to_usd as _glb_to_usd
 from . import place_go2 as _place_go2  # noqa: F401
 from . import questions as _questions
+from . import render_multi as _render_multi
 from . import sampler as _sampler
+from . import scene_graph as _scene_graph
 from . import scene_info as _scene_info
 from . import topdown as _topdown
+from . import vlm_annotate as _vlm_annotate
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +55,7 @@ def paths_for(scene_id: str) -> dict[str, Path]:
         "info": OUTPUT / "info" / f"{flat}.json",
         "missing": OUTPUT / "info" / f"{flat}_missing.json",
         "normalized": OUTPUT / "normalized" / flat,
+        "graph": OUTPUT / "graph" / f"{flat}.json",
     }
 
 
@@ -58,10 +63,16 @@ def paths_for(scene_id: str) -> dict[str, Path]:
 # environment defaults
 # ---------------------------------------------------------------------------
 def blender_path() -> str:
-    return os.environ.get(
-        "BLENDER",
-        "/home/ubadmin/tools/blender/blender-5.1.2-linux-x64/blender",
-    )
+    configured = os.environ.get("BLENDER")
+    if configured:
+        return configured
+    installed = shutil.which("blender")
+    if installed:
+        return installed
+    legacy = Path("/home/ubadmin/tools/blender/blender-5.1.2-linux-x64/blender")
+    if legacy.is_file() and os.access(legacy, os.X_OK):
+        return str(legacy)
+    raise FileNotFoundError("Blender not found on PATH; set BLENDER to its executable path")
 
 
 def venv_python() -> str:
@@ -87,6 +98,13 @@ def stage_compose(
             write_missing_report=write_missing_report,
             verbose_missing=verbose_missing,
         )
+        if missing:
+            logger.error(
+                "[%s] incomplete composition: %d missing object instance(s); "
+                "enable auto-fill or prepare the models manually",
+                scene_id, len(missing),
+            )
+            return False
         return Path(glb).exists() if glb else False
     except Exception as exc:
         logger.exception("[%s] compose failed", scene_id)
@@ -112,8 +130,12 @@ def stage_render(scene_id: str) -> bool:
     env = os.environ.copy()
     env["INTERN_VENV_PY"] = venv_python()
     env["INTERN_SRC_ROOT"] = str(ROOT / "src")
+    blender = blender_path()
+    # System Blender discovers its Python through PATH; prefer sibling executables.
+    binary = shutil.which(blender) or blender
+    env["PATH"] = str(Path(binary).resolve().parent) + os.pathsep + env.get("PATH", os.defpath)
     cmd = [
-        blender_path(),
+        blender,
         "--background",
         "--python",
         str(script),
@@ -183,6 +205,136 @@ def stage_usd(scene_id: str) -> Path | None:
     return usd_path
 
 
+def _multi_render_paths(scene_id: str, n_views: int = 8) -> dict[str, Path]:
+    """Expected orbit and top-down image paths for a scene."""
+    flat = slug(scene_id)
+    render_dir = paths_for(scene_id)["render_dir"]
+    views = {
+        f"view_{k}": render_dir / f"{flat}__view_{k}.png"
+        for k in range(n_views)
+    }
+    views["topdown"] = render_dir / f"{flat}__topdown.png"
+    return views
+
+
+def stage_render_multi(scene_id: str, n_views: int = 8, height: float = 1.6) -> bool:
+    """Render a ring of orbit views + top-down for VLM annotation.
+
+    Mirrors :func:`stage_render` but bootstraps :mod:`internscenes.render_multi`
+    (via ``INTERN_RENDER_FILE``) so a single Blender session produces N orbit
+    views + a top-down.  Depends on the composed GLB; degrades to a no-op
+    warning when the GLB is missing (the graph stage then falls back to the
+    deterministic affordances).
+    """
+    p = paths_for(scene_id)
+    if not p["composed"].exists():
+        logger.warning("[%s] render_multi: no composed GLB", scene_id)
+        return False
+    p["render_dir"].mkdir(parents=True, exist_ok=True)
+
+    script = ROOT / "src" / "internscenes" / "_render_in_blender.py"
+    env = os.environ.copy()
+    env["INTERN_VENV_PY"] = venv_python()
+    env["INTERN_SRC_ROOT"] = str(ROOT / "src")
+    env["INTERN_RENDER_FILE"] = "render_multi.py"
+    blender = blender_path()
+    binary = shutil.which(blender) or blender
+    env["PATH"] = str(Path(binary).resolve().parent) + os.pathsep + env.get("PATH", os.defpath)
+    cmd = [
+        blender,
+        "--background",
+        "--python",
+        str(script),
+        "--",
+        "--glb",
+        str(p["composed"]),
+        "--out",
+        str(p["render_dir"]),
+        "--engine=EEVEE",
+        f"--views={n_views}",
+        f"--height={height}",
+        f"--scene={scene_id}",
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    if proc.returncode != 0:
+        logger.error("[%s] render_multi failed (rc=%d): %s",
+                     scene_id, proc.returncode, proc.stderr[-800:])
+        return False
+    expected = _multi_render_paths(scene_id, n_views)
+    missing = [name for name, path in expected.items() if not path.is_file()]
+    if missing:
+        logger.error("[%s] render_multi did not produce expected images: %s",
+                     scene_id, ", ".join(missing))
+        return False
+    logger.info("[%s] render_multi: %d view(s)", scene_id, len(expected))
+    return True
+
+
+def stage_graph(
+    scene_id: str,
+    vlm: bool = False,
+    skip_render_multi: bool = False,
+) -> bool:
+    """Build the scene graph JSON (deterministic + optional VLM layer).
+
+    When ``vlm`` is True, the VLM annotation layer is applied (falls back to
+    deterministic rules when no endpoint is configured).  Writes
+    ``output/graph/<scene>.json`` and copies it into the normalized folder.
+    """
+    p = paths_for(scene_id)
+    if not p["layout"].exists():
+        logger.error("[%s] graph: no layout.json", scene_id)
+        return False
+    try:
+        records = _scene_info.load_layout(p["layout"])
+        for i, r in enumerate(records):
+            r2 = dict(r)
+            r2["_idx"] = i
+            records[i] = r2
+        vlm_result = None
+        cfg = _vlm_annotate.VLMConfig.from_env() if vlm else None
+        render_paths = _multi_render_paths(scene_id)
+        if vlm:
+            if cfg is not None and cfg.endpoint is not None and not all(
+                path.is_file() for path in render_paths.values()
+            ):
+                if skip_render_multi:
+                    logger.error(
+                        "[%s] VLM endpoint configured but multi-view renders are "
+                        "missing and rendering was skipped",
+                        scene_id,
+                    )
+                    return False
+                if not stage_render_multi(scene_id):
+                    return False
+            views = {
+                name: str(path) for name, path in render_paths.items()
+                if path.is_file()
+            }
+            vlm_result = _vlm_annotate.annotate(
+                scene_id, records, cfg, views,
+            )
+        graph = _scene_graph.build_scene_graph(
+            scene_id,
+            p["layout"],
+            vlm_result=vlm_result,
+            render_views={name: str(path) for name, path in render_paths.items()
+                          if path.is_file()},
+        )
+        _scene_graph.write_scene_graph(graph, p["graph"])
+        p["normalized"].mkdir(parents=True, exist_ok=True)
+        shutil.copy2(p["graph"], p["normalized"] / "scene_graph.json")
+        # self-consistency gate
+        rep = _vlm_annotate.consistency_check(graph)
+        if not rep["ok"]:
+            logger.warning("[%s] graph inconsistency: %d issues", scene_id,
+                           rep["num_issues"])
+        return p["graph"].exists()
+    except Exception as exc:
+        logger.exception("[%s] graph failed", scene_id)
+        return False
+
+
 def stage_questions(scene_id: str, n: int = 5, seed: int | None = None) -> bool:
     """Generate object-finding questions into the normalized folder."""
     try:
@@ -230,7 +382,9 @@ def collect_missing_uids(scene_ids: list[str]) -> dict[str, set[str]]:
 
 
 def auto_fill_assets(scene_ids: list[str]) -> int:
-    """Download only the missing per-object GLBs for ``scene_ids``."""
+    """Download and verify missing models referenced by the selected layouts."""
+    if not scene_ids:
+        raise ValueError("auto_fill_assets requires at least one scene")
     logger.info("auto-fill: %d scene(s)", len(scene_ids))
     return _download.download_missing(
         scene_ids=scene_ids,
@@ -261,6 +415,7 @@ def assemble_normalized(scene_id: str) -> dict[str, str]:
 
     copy(p["topdown"], "topdown.png", "topdown")
     copy(p["perspective"], "perspective.png", "perspective")
+    copy(p["graph"], "scene_graph.json", "graph")
 
     usd_path = stage_usd(scene_id)
     if usd_path is not None and usd_path.exists():
@@ -402,6 +557,26 @@ def scene_inventory() -> dict[str, list[str]]:
 # ---------------------------------------------------------------------------
 # full scene run
 # ---------------------------------------------------------------------------
+def _can_resume_composed(scene_id: str) -> bool:
+    p = paths_for(scene_id)
+    if not all(p[key].is_file() for key in ("layout", "composed", "missing")):
+        return False
+    try:
+        report = json.loads(p["missing"].read_text(encoding="utf-8"))
+        verified = (
+            report["scene_id"] == scene_id
+            and report["num_missing"] == 0
+            and report["missing"] == []
+            and p["missing"].stat().st_mtime_ns >= max(
+                p["layout"].stat().st_mtime_ns, p["composed"].stat().st_mtime_ns
+            )
+        )
+        return verified and not _download._filter_existing(_download._collect_uids([scene_id]))
+    except (OSError, ValueError, KeyError, TypeError):
+        logger.warning("[%s] cannot verify composition for resume; rebuilding", scene_id)
+        return False
+
+
 def run_scene(
     scene_id: str,
     *,
@@ -409,32 +584,56 @@ def run_scene(
     skip_render: bool = False,
     skip_topdown: bool = False,
     skip_questions: bool = False,
+    skip_graph: bool = False,
+    skip_render_multi: bool = False,
+    vlm: bool = False,
     questions_n: int = 5,
     questions_seed: int | None = None,
     plan_questions: bool = False,
     plan_questions_grid_res: float = 0.05,
+    auto_fill: bool = True,
 ) -> dict[str, Any]:
-    """Run compose → render → topdown → info → normalize → questions for one scene.
+    """Run the configured scene stages from composition through questions.
 
-    When ``plan_questions`` is True, an extra A* path-planning stage is run for
-    every generated question and the results are saved under
-    ``output/normalized/<scene>/questions/qNNN/``.
+    Missing models are downloaded and verified before composition by default.
+    Set ``auto_fill=False`` to use local assets only. ``vlm=True`` enables
+    multi-view rendering and VLM annotation (deterministic fallback when no
+    endpoint is configured).
     """
     p = paths_for(scene_id)
     status: dict[str, Any] = {"scene_id": scene_id, "stages": {}}
     stages = [
         ("compose", lambda: stage_compose(scene_id)),
         ("render", lambda: stage_render(scene_id) if not skip_render else True),
+        ("render_multi", lambda: stage_render_multi(scene_id)),
         ("topdown", lambda: stage_topdown(scene_id) if not skip_topdown else True),
         ("info", lambda: stage_info(scene_id)),
+        ("graph", lambda: stage_graph(
+            scene_id, vlm=vlm, skip_render_multi=skip_render_multi
+        )),
         ("normalize", lambda: bool(assemble_normalized(scene_id))),
         ("questions", lambda: stage_questions(scene_id, n=questions_n, seed=questions_seed) if not skip_questions else True),
         ("plan_questions", lambda: _stage_plan_questions(scene_id, grid_res=plan_questions_grid_res) if plan_questions and not skip_questions else True),
     ]
+    if auto_fill:
+        if auto_fill_assets([scene_id]) != 0:
+            logger.error("[%s] auto-fill verification failed", scene_id)
+            status["stages"]["auto_fill"] = "failed(verification)"
+            for name, _ in stages:
+                status["stages"][name] = "blocked(auto_fill)"
+            status["status"] = "incomplete"
+            return status
+        status["stages"]["auto_fill"] = "ok(verified)"
     for name, fn in stages:
         t0 = time.time()
+        if name == "render_multi" and (not vlm or skip_render_multi):
+            status["stages"][name] = "skipped(not_requested)"
+            continue
+        if name == "graph" and skip_graph:
+            status["stages"][name] = "skipped(not_requested)"
+            continue
         if resume:
-            if name == "compose" and p["composed"].exists():
+            if name == "compose" and _can_resume_composed(scene_id):
                 status["stages"][name] = "skipped(exists)"
                 continue
             if name == "render" and p["perspective"].exists():
@@ -451,6 +650,14 @@ def run_scene(
                 p["normalized"] / "topdown.png").exists():
                 status["stages"][name] = "skipped(exists)"
                 continue
+            if name == "render_multi" and all(
+                path.is_file() for path in _multi_render_paths(scene_id).values()
+            ):
+                status["stages"][name] = "skipped(exists)"
+                continue
+            if name == "graph" and p["graph"].exists():
+                status["stages"][name] = "skipped(exists)"
+                continue
             if name == "questions" and (p["normalized"] / "questions.jsonl").exists():
                 status["stages"][name] = "skipped(exists)"
                 continue
@@ -463,10 +670,17 @@ def run_scene(
             logger.exception("[%s] %s raised", scene_id, name)
             ok = False
             status["stages"][name] = f"error({type(exc).__name__})"
-            continue
-        dt = time.time() - t0
-        status["stages"][name] = f"ok({dt:.1f}s)" if ok else f"failed({dt:.1f}s)"
+        else:
+            dt = time.time() - t0
+            status["stages"][name] = f"ok({dt:.1f}s)" if ok else f"failed({dt:.1f}s)"
         logger.info("[%s] %s -> %s", scene_id, name, status["stages"][name])
+        if name == "compose":
+            if not ok:
+                for downstream, _ in stages[1:]:
+                    status["stages"][downstream] = "blocked(compose)"
+                break
+            # Rebuilt geometry invalidates all downstream outputs, even on resume.
+            resume = False
 
     status["status"] = "complete" if all(
         v.startswith("ok") or v.startswith("skipped") for v in status["stages"].values()

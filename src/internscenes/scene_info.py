@@ -352,6 +352,55 @@ def object_properties(obj: dict[str, Any]) -> dict[str, Any]:
     return rec
 
 
+def node_records(objs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Expose graph-ready structured node records for a scene's objects.
+
+    Each record is a JSON-safe, schema-1.0 object node (level=``object``)
+    derived from :func:`object_properties` plus the representative colour and a
+    deterministic ``obj_<index>`` id.  Invalid objects are still emitted (marked
+    ``valid=False``) so node counts line up with the layout object count.
+
+    This is the canonical bridge between :mod:`scene_info` and the scene graph
+    (see :mod:`internscenes.scene_graph`).
+    """
+    nodes: list[dict[str, Any]] = []
+    for i, obj in enumerate(objs):
+        rec = object_properties(obj)
+        node: dict[str, Any] = {
+            "id": f"obj_{i}",
+            "level": "object",
+            "category": str(rec.get("category", "object")).lower().replace(" ", "_"),
+            "model_uid": str(rec.get("model_uid", "")),
+            "valid": bool(rec.get("valid", False)),
+            "geometry": _node_geometry(rec),
+            "attributes": {},
+            "confidence": 1.0 if rec.get("valid") else 0.0,
+            "source": "deterministic",
+        }
+        color = rec.get("color")
+        if isinstance(color, dict):
+            node["color"] = color
+        elif isinstance(color, (list, tuple)) and len(color) >= 3:
+            node["color"] = {
+                "r": float(color[0]), "g": float(color[1]), "b": float(color[2]),
+            }
+        nodes.append(node)
+    return nodes
+
+
+def _node_geometry(rec: dict[str, Any]) -> dict[str, Any] | None:
+    """Return the geometry block for a :func:`object_properties` record."""
+    pos = rec.get("position_m")
+    size = rec.get("size_m")
+    if not isinstance(pos, dict) or not isinstance(size, dict):
+        return None
+    return {
+        "center_m": [pos.get("x", 0.0), pos.get("y", 0.0), pos.get("z", 0.0)],
+        "size_m": [size.get("length", 0.0), size.get("width", 0.0),
+                   size.get("height", 0.0)],
+    }
+
+
 def category_counts(objs: list[dict[str, Any]]) -> dict[str, int]:
     """Return a {category: count} frequency table over the scene's objects."""
     counts: dict[str, int] = {}

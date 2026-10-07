@@ -57,12 +57,14 @@ def _run_via_blender_script(venv_py: Path, src_root: str, forward: list[str]) ->
         # Import the render submodule without triggering a full internscenes import
         # (Blender's Python does not have project dependencies like trimesh).
         import importlib.util
+        render_file = os.environ.get("INTERN_RENDER_FILE", "render.py")
+        render_name = "internscenes." + os.path.splitext(render_file)[0]
         spec = importlib.util.spec_from_file_location(
-            "internscenes.render",
-            os.path.join(os.environ.get("INTERN_SRC_ROOT", ""), "internscenes", "render.py"),
+            render_name,
+            os.path.join(os.environ.get("INTERN_SRC_ROOT", ""), "internscenes", render_file),
         )
         render_mod = importlib.util.module_from_spec(spec)
-        sys.modules["internscenes.render"] = render_mod
+        sys.modules[render_name] = render_mod
         spec.loader.exec_module(render_mod)
         sys.argv = ["__main__.py"] + (sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
         raise SystemExit(render_mod.main())
@@ -77,28 +79,15 @@ def _run_via_blender_script(venv_py: Path, src_root: str, forward: list[str]) ->
         f.write(script)
         tmp_script = Path(f.name)
 
-    # Locate the outer Blender binary from the embedded Python path.
-    # Typical layout: <BLENDER_DIR>/5.1/python/bin/python3.13
-    # Blender binary is <BLENDER_DIR>/blender.
-    blender_bin = Path(sys.executable)
-    parts = blender_bin.parts
     try:
-        # Find the version directory (e.g. "5.1") and go two levels up.
-        version_idx = next(
-            i for i, p in enumerate(parts)
-            if p.count(".") == 1 and p[0].isdigit() and parts[i - 1] == "python"
-        )
-        blender_bin = Path(*parts[:version_idx - 1]) / "blender"
-    except StopIteration:
-        # Fallback: search upward for a directory containing "blender".
-        for parent in blender_bin.parents:
-            candidate = parent / "blender"
-            if candidate.exists():
-                blender_bin = candidate
-                break
-
-    try:
-        cmd = [str(blender_bin), "--background", "--python", str(tmp_script), "--"] + forward
+        import bpy
+        blender_bin = bpy.app.binary_path
+        if not blender_bin:
+            raise RuntimeError("Blender did not report its executable path")
+        cmd = [
+            blender_bin, "--background", "--python-exit-code", "1",
+            "--python", str(tmp_script), "--",
+        ] + forward
         print("[blender bootstrap] running:", " ".join(cmd))
         proc = subprocess.run(cmd, env=env)
         return proc.returncode

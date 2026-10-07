@@ -1,0 +1,49 @@
+name: SAGE-Bench Pages
+
+# Build the self-contained docs site (docs-site/build.py, stdlib only — no
+# pip install required) and publish it to GitHub Pages.
+#
+# To get https://dobriclilujun.github.io/SAGE-Bench, either:
+#   (a) rename this repo to `SAGE-Bench`, or
+#   (b) create a repo named `SAGE-Bench` and point its Pages source at
+#       the `main` branch / `docs-site/output` path.
+# Then enable Pages (Settings → Pages → Source: GitHub Actions).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build the site
+        run: python docs-site/build.py
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-site/output
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

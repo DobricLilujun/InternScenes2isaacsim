@@ -39,9 +39,16 @@ _submodules = [
     "glb_to_usd",
     "place_go2",
     "render",
+    "render_multi",
     "sampler",
     "scene_info",
     "topdown",
+    # SAGE-Bench scene-graph modules
+    "coordinate",
+    "relations",
+    "scene_graph",
+    "vlm_annotate",
+    "evaluate_graph",
 ]
 
 
