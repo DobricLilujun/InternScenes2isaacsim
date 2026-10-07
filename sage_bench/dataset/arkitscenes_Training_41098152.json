@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "arkitscenes/Training/41098152",
+  "dataset": "arkitscenes",
+  "layout_source": "/home/yiqun/project_lujun/InternScenes2isaacsim/data/Layout_info/arkitscenes/Training/41098152/layout.json",
+  "frame": {
+    "name": "room_canonical",
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "forward": [
+      0.555,
+      0.8319,
+      0.0
+    ],
+    "right": [
+      0.8319,
+      -0.555,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "matrix": [
+      [
+        0.8319,
+        0.555,
+        0.0
+      ],
+      [
+        -0.555,
+        0.8319,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "method": "fallback(longer room axis)",
+    "source": "room_canonical"
+  },
+  "num_objects": 1,
+  "nodes": [
+    {
+      "id": "room",
+      "level": "room",
+      "category": "room",
+      "geometry": {
+        "min_m": [
+          -0.742,
+          -0.43,
+          -0.0
+        ],
+        "max_m": [
+          0.664,
+          0.508,
+          3.0
+        ],
+        "width_m": 1.406,
+        "depth_m": 0.938,
+        "height_m": 3.0
+      },
+      "attributes": {},
+      "confidence": 0.98,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_floor",
+      "level": "structure",
+      "category": "floor",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_wall",
+      "level": "structure",
+      "category": "wall",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_ceiling",
+      "level": "structure",
+      "category": "ceiling",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "obj_0",
+      "level": "object",
+      "category": "couch",
+      "model_uid": "hssd-models/objects/c/c61fefb9251e37e49f9bab947b800721fa966e39",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          0.0,
+          -0.0,
+          0.4428
+        ],
+        "size_m": [
+          0.91,
+          1.3037,
+          0.8856
+        ],
+        "bbox_min_m": [
+          -0.455,
+          -0.6519,
+          0.0
+        ],
+        "bbox_max_m": [
+          0.455,
+          0.6519,
+          0.8856
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    }
+  ],
+  "edges": [
+    {
+      "source": "room",
+      "target": "obj_0",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    }
+  ],
+  "stats": {
+    "num_nodes": 5,
+    "num_edges": 2,
+    "num_by_level": {
+      "room": 1,
+      "structure": 3,
+      "object": 1
+    },
+    "num_by_family": {
+      "hierarchy": 2
+    },
+    "num_by_predicate": {
+      "contains": 1,
+      "in_room": 1
+    },
+    "confidence_tiers": {
+      "structure_mesh": 4,
+      "deterministic": 1
+    },
+    "edge_tiers": {
+      "deterministic": 2
+    }
+  }
+}

@@ -1,0 +1,4195 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "matterport3d/vyrNrziPKCB/region39",
+  "dataset": "matterport3d",
+  "layout_source": "/home/yiqun/project_lujun/InternScenes2isaacsim/data/Layout_info/matterport3d/vyrNrziPKCB/region39/layout.json",
+  "frame": {
+    "name": "room_canonical",
+    "origin": [
+      0.0864,
+      0.1313,
+      1.5789
+    ],
+    "forward": [
+      0.9984,
+      -0.0568,
+      0.0
+    ],
+    "right": [
+      -0.0568,
+      -0.9984,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "matrix": [
+      [
+        -0.0568,
+        0.9984,
+        0.0
+      ],
+      [
+        -0.9984,
+        -0.0568,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "method": "PCA(principal axis of object centroids, XY)",
+    "source": "room_canonical"
+  },
+  "num_objects": 15,
+  "nodes": [
+    {
+      "id": "room",
+      "level": "room",
+      "category": "room",
+      "geometry": {
+        "min_m": [
+          -3.555,
+          -0.977,
+          -0.0
+        ],
+        "max_m": [
+          3.477,
+          1.055,
+          3.0
+        ],
+        "width_m": 7.031,
+        "depth_m": 2.031,
+        "height_m": 3.0
+      },
+      "attributes": {},
+      "confidence": 0.98,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_floor",
+      "level": "structure",
+      "category": "floor",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_wall",
+      "level": "structure",
+      "category": "wall",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_ceiling",
+      "level": "structure",
+      "category": "ceiling",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "obj_0",
+      "level": "object",
+      "category": "pillar",
+      "model_uid": "objaverse/dcda2913a5d843618404f374b48be3de",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -3.1778,
+          0.7128,
+          1.1264
+        ],
+        "size_m": [
+          0.2425,
+          0.4713,
+          2.247
+        ],
+        "bbox_min_m": [
+          -3.2991,
+          0.4771,
+          0.0028
+        ],
+        "bbox_max_m": [
+          -3.0566,
+          0.9484,
+          2.2499
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_1",
+      "level": "object",
+      "category": "doorframe",
+      "model_uid": "hssd-models/objects/openings/211-36",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          0.9982,
+          0.8967,
+          1.3306
+        ],
+        "size_m": [
+          0.1273,
+          1.575,
+          2.4428
+        ],
+        "bbox_min_m": [
+          0.9346,
+          0.1092,
+          0.1092
+        ],
+        "bbox_max_m": [
+          1.0619,
+          1.6842,
+          2.552
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_2",
+      "level": "object",
+      "category": "pillar",
+      "model_uid": "objaverse/dcda2913a5d843618404f374b48be3de",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.9194,
+          -0.8593,
+          1.2482
+        ],
+        "size_m": [
+          0.2991,
+          0.5779,
+          2.3879
+        ],
+        "bbox_min_m": [
+          -1.069,
+          -1.1482,
+          0.0543
+        ],
+        "bbox_max_m": [
+          -0.7699,
+          -0.5703,
+          2.4421
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_3",
+      "level": "object",
+      "category": "window",
+      "model_uid": "partnet_mobility/103236",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          3.4365,
+          -0.034,
+          1.5469
+        ],
+        "size_m": [
+          0.0548,
+          1.1433,
+          1.7139
+        ],
+        "bbox_min_m": [
+          3.4091,
+          -0.6056,
+          0.6899
+        ],
+        "bbox_max_m": [
+          3.4638,
+          0.5377,
+          2.4039
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_4",
+      "level": "object",
+      "category": "pillar",
+      "model_uid": "objaverse/dcda2913a5d843618404f374b48be3de",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          2.9645,
+          -0.8577,
+          1.1329
+        ],
+        "size_m": [
+          0.2711,
+          0.3142,
+          2.2013
+        ],
+        "bbox_min_m": [
+          2.829,
+          -1.0148,
+          0.0322
+        ],
+        "bbox_max_m": [
+          3.1001,
+          -0.7006,
+          2.2335
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_5",
+      "level": "object",
+      "category": "window",
+      "model_uid": "partnet_mobility/103236",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          3.4121,
+          -0.0479,
+          1.6015
+        ],
+        "size_m": [
+          0.1027,
+          1.3193,
+          1.9505
+        ],
+        "bbox_min_m": [
+          3.3607,
+          -0.7076,
+          0.6263
+        ],
+        "bbox_max_m": [
+          3.4634,
+          0.6117,
+          2.5768
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_6",
+      "level": "object",
+      "category": "pillar",
+      "model_uid": "objaverse/dcda2913a5d843618404f374b48be3de",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.9621,
+          0.7191,
+          1.1476
+        ],
+        "size_m": [
+          0.25,
+          0.4855,
+          2.2037
+        ],
+        "bbox_min_m": [
+          -1.0871,
+          0.4764,
+          0.0458
+        ],
+        "bbox_max_m": [
+          -0.8371,
+          0.9619,
+          2.2495
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_7",
+      "level": "object",
+      "category": "pillar",
+      "model_uid": "objaverse/dcda2913a5d843618404f374b48be3de",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -3.2104,
+          -0.8246,
+          1.1306
+        ],
+        "size_m": [
+          0.2927,
+          0.5069,
+          2.25
+        ],
+        "bbox_min_m": [
+          -3.3567,
+          -1.0781,
+          0.0056
+        ],
+        "bbox_max_m": [
+          -3.064,
+          -0.5711,
+          2.2556
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_8",
+      "level": "object",
+      "category": "alarm",
+      "model_uid": "objaverse/252236660fb647c4885d25e2b629386f",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -2.4504,
+          0.7171,
+          0.0138
+        ],
+        "size_m": [
+          0.0305,
+          0.1764,
+          0.1926
+        ],
+        "bbox_min_m": [
+          -2.4656,
+          0.6289,
+          -0.0826
+        ],
+        "bbox_max_m": [
+          -2.4351,
+          0.8053,
+          0.1101
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_9",
+      "level": "object",
+      "category": "thermostat",
+      "model_uid": "objaverse_old/e57e4847e659475eb7819e920cbd22da",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.5791,
+          0.922,
+          0.0155
+        ],
+        "size_m": [
+          0.031,
+          0.2519,
+          0.1734
+        ],
+        "bbox_min_m": [
+          -0.5946,
+          0.7961,
+          -0.0712
+        ],
+        "bbox_max_m": [
+          -0.5636,
+          1.048,
+          0.1022
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_10",
+      "level": "object",
+      "category": "light",
+      "model_uid": "gr100/home-others-light-4493f80506be147ed747af3890b18e72",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          1.1697,
+          -0.0616,
+          3.0911
+        ],
+        "size_m": [
+          0.0503,
+          0.3115,
+          0.2722
+        ],
+        "bbox_min_m": [
+          1.1445,
+          -0.2173,
+          2.955
+        ],
+        "bbox_max_m": [
+          1.1948,
+          0.0942,
+          3.2272
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_11",
+      "level": "object",
+      "category": "light",
+      "model_uid": "gr100/home-others-light-ac22f4a46396046f9a2973df034a7e6a",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.058,
+          -0.0567,
+          3.1212
+        ],
+        "size_m": [
+          0.0324,
+          0.2354,
+          0.291
+        ],
+        "bbox_min_m": [
+          -0.0742,
+          -0.1744,
+          2.9757
+        ],
+        "bbox_max_m": [
+          -0.0418,
+          0.061,
+          3.2667
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_12",
+      "level": "object",
+      "category": "light",
+      "model_uid": "gr100/home-others-light-4493f80506be147ed747af3890b18e72",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          2.6717,
+          -0.0302,
+          3.0744
+        ],
+        "size_m": [
+          0.0441,
+          0.2995,
+          0.2449
+        ],
+        "bbox_min_m": [
+          2.6497,
+          -0.18,
+          2.9519
+        ],
+        "bbox_max_m": [
+          2.6938,
+          0.1195,
+          3.1968
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_13",
+      "level": "object",
+      "category": "light",
+      "model_uid": "3D-FUTURE-model/ecb51f39-b6ff-442d-8b81-dda39f6a4bc1",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -2.0403,
+          -0.0565,
+          2.8504
+        ],
+        "size_m": [
+          0.0431,
+          0.2142,
+          0.2474
+        ],
+        "bbox_min_m": [
+          -2.0619,
+          -0.1637,
+          2.7267
+        ],
+        "bbox_max_m": [
+          -2.0188,
+          0.0506,
+          2.9741
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_14",
+      "level": "object",
+      "category": "switch",
+      "model_uid": "partnet_mobility/100957",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          0.0405,
+          0.831,
+          1.2531
+        ],
+        "size_m": [
+          0.0155,
+          0.1613,
+          0.1667
+        ],
+        "bbox_min_m": [
+          0.0327,
+          0.7503,
+          1.1697
+        ],
+        "bbox_max_m": [
+          0.0483,
+          0.9117,
+          1.3364
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "agent_go2",
+      "level": "agent",
+      "category": "go2",
+      "geometry": {
+        "center_m": [
+          -2.783,
+          -0.065,
+          0.0
+        ]
+      },
+      "attributes": {
+        "clearance_m": 0.498
+      },
+      "confidence": 0.9,
+      "source": "placement"
+    }
+  ],
+  "edges": [
+    {
+      "source": "obj_0",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.329,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_7",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.538,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.204,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.216,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.754,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.834,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.223,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.782,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 0.963,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.977,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.012,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.054,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.287,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.589,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.601,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_5",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.606,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.228,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.502,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.012,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.335,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_5",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.692,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_3",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.743,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_4",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.773,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.898,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.228,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.001,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.071,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.212,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.287,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.305,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.73,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.298,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.502,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_5",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.649,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_3",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.708,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_4",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.131,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.589,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.73,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.314,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 4.113,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.001,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.114,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.16,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.204,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_7",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.217,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.769,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.969,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.219,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 0.963,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.014,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.387,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.944,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.071,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.335,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.769,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.784,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.582,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.944,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.114,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.193,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.212,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_7",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.294,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.52,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.601,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 0.061,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_4",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.036,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.708,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.619,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.743,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.517,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.833,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 4.403,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_3",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.036,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_5",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.037,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.131,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.643,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.773,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.379,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.706,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.886,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_3",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 0.061,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_4",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.037,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_12",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.649,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.606,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_10",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.692,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.502,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.788,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 4.403,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.014,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.212,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.582,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.871,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.977,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.16,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.216,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.305,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.538,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.05,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.217,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.294,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.727,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.349,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.65,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.807,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.329,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.871,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_9",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.882,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_7",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.05,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.52,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.784,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.969,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.696,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_6",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.212,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_14",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.387,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_8",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.882,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.054,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.193,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 2.834,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_11",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.298,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_13",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 3.336,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_1",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.185,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_1",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_3",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.67,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_3",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_4",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.34,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_4",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_5",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.651,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_5",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_6",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_7",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_8",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.329,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_8",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_9",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_10",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.833,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_0",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_0",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_11",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.21,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_0",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_0",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_13",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_3",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_4",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_5",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_6",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_7",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.551,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_9",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_1",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_10",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_1",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_11",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_1",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_1",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_14",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 0.963,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_3",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.443,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_3",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_4",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_5",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.421,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_5",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_6",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_9",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_2",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_2",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_11",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.113,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_2",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_2",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_14",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_4",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.036,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_4",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 0.061,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "touching",
+      "family": "metric",
+      "confidence": 0.85,
+      "reference_frame": "world",
+      "value": 0.0,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "inside",
+      "family": "metric",
+      "confidence": 0.95,
+      "reference_frame": "world",
+      "note": "AABB containment",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_6",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.48,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_6",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_7",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.707,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_8",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.129,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_9",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.403,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_9",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_3",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_10",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_3",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_11",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_3",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_12",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_13",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 5.63,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_3",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_5",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.037,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_5",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_6",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.231,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_6",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_7",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.175,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_8",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 5.749,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_9",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.12,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_9",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_4",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_10",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_4",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_11",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_4",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_12",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_13",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 5.352,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_4",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_6",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.464,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_6",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_7",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.684,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_8",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.122,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_9",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.403,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_9",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_5",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_10",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_5",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_11",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_5",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_12",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_13",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 5.594,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_5",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_7",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_8",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_9",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.212,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_9",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_6",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_6",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_11",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.181,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_6",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_6",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_14",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.014,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_8",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_9",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_10",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.859,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_7",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_7",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_11",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.246,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_7",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_7",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_13",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_9",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_10",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.815,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_11",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 6.013,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_13",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_8",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_10",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_11",
+      "predicate": "left",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_12",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.564,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_14",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.387,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "obj_9",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_11",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.228,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_11",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_14",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_12",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_14",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "obj_14",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_13",
+      "predicate": "far",
+      "family": "metric",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": 4.717,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_13",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_14",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "obj_14",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_14",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "obj_14",
+      "predicate": "front",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_0",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_1",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_2",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_3",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_3",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_4",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_4",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_5",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_5",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_6",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_6",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_7",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_7",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_8",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_8",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_9",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_9",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_10",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_10",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_11",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_11",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_12",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_12",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_13",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_13",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_14",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_14",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_4",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_6",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_7",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_4",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_6",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_7",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_3",
+      "target": "obj_5",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_6",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_4",
+      "target": "obj_7",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_6",
+      "target": "obj_7",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    },
+    {
+      "source": "obj_10",
+      "target": "obj_12",
+      "predicate": "same_material",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "color/model_uid",
+      "tier": "heuristic"
+    }
+  ],
+  "stats": {
+    "num_nodes": 20,
+    "num_edges": 360,
+    "num_by_level": {
+      "room": 1,
+      "structure": 3,
+      "object": 15,
+      "agent": 1
+    },
+    "num_by_family": {
+      "metric": 318,
+      "hierarchy": 30,
+      "semantic": 12
+    },
+    "num_by_predicate": {
+      "distance": 120,
+      "far": 32,
+      "front": 45,
+      "left": 8,
+      "near": 9,
+      "above": 50,
+      "behind": 45,
+      "right": 7,
+      "touching": 1,
+      "inside": 1,
+      "contains": 15,
+      "in_room": 15,
+      "same_material": 12
+    },
+    "confidence_tiers": {
+      "structure_mesh": 4,
+      "deterministic": 15,
+      "placement": 1
+    },
+    "edge_tiers": {
+      "deterministic": 348,
+      "heuristic": 12
+    }
+  }
+}

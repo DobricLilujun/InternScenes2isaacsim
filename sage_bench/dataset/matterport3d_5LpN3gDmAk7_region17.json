@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "matterport3d/5LpN3gDmAk7/region17",
+  "dataset": "matterport3d",
+  "layout_source": "/home/yiqun/project_lujun/InternScenes2isaacsim/data/Layout_info/matterport3d/5LpN3gDmAk7/region17/layout.json",
+  "frame": {
+    "name": "room_canonical",
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "forward": [
+      0.6178,
+      0.7863,
+      0.0
+    ],
+    "right": [
+      0.7863,
+      -0.6178,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "matrix": [
+      [
+        0.7863,
+        0.6178,
+        0.0
+      ],
+      [
+        -0.6178,
+        0.7863,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "method": "fallback(longer room axis)",
+    "source": "room_canonical"
+  },
+  "num_objects": 1,
+  "nodes": [
+    {
+      "id": "room",
+      "level": "room",
+      "category": "room",
+      "geometry": {
+        "min_m": [
+          -1.133,
+          -0.82,
+          -0.0
+        ],
+        "max_m": [
+          1.055,
+          0.898,
+          3.0
+        ],
+        "width_m": 2.188,
+        "depth_m": 1.719,
+        "height_m": 3.0
+      },
+      "attributes": {},
+      "confidence": 0.98,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_floor",
+      "level": "structure",
+      "category": "floor",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_wall",
+      "level": "structure",
+      "category": "wall",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_ceiling",
+      "level": "structure",
+      "category": "ceiling",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "obj_0",
+      "level": "object",
+      "category": "shelf",
+      "model_uid": "gr100/commercial-others-shelf-20ed683db454159890439c32c165e11c",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.0,
+          0.0,
+          1.276
+        ],
+        "size_m": [
+          2.1792,
+          1.6151,
+          2.5145
+        ],
+        "bbox_min_m": [
+          -1.0896,
+          -0.8076,
+          0.0187
+        ],
+        "bbox_max_m": [
+          1.0896,
+          0.8076,
+          2.5332
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    }
+  ],
+  "edges": [
+    {
+      "source": "room",
+      "target": "obj_0",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    }
+  ],
+  "stats": {
+    "num_nodes": 5,
+    "num_edges": 2,
+    "num_by_level": {
+      "room": 1,
+      "structure": 3,
+      "object": 1
+    },
+    "num_by_family": {
+      "hierarchy": 2
+    },
+    "num_by_predicate": {
+      "contains": 1,
+      "in_room": 1
+    },
+    "confidence_tiers": {
+      "structure_mesh": 4,
+      "deterministic": 1
+    },
+    "edge_tiers": {
+      "deterministic": 2
+    }
+  }
+}

@@ -1,0 +1,3140 @@
+{
+  "dataset": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset",
+  "num_scenes": 12,
+  "methods": [
+    "geometric_3d",
+    "semantic",
+    "vlm_augmented",
+    "knn_spatial",
+    "random"
+  ],
+  "leaderboard": [
+    {
+      "method": "vlm_augmented",
+      "relations_F1": 0.992,
+      "relations_precision": 0.9848,
+      "relations_recall": 1.0,
+      "nodes_macro_F1": 0.8687,
+      "nodes_mean_3d_IoU": 0.67,
+      "spatial_F1": 0.75,
+      "hierarchy_F1": 0.9672,
+      "affordance_IoU": 0.0,
+      "mRecall@8": 1.0,
+      "rank": 1
+    },
+    {
+      "method": "geometric_3d",
+      "relations_F1": 0.9557,
+      "relations_precision": 1.0,
+      "relations_recall": 0.9227,
+      "nodes_macro_F1": 1.0,
+      "nodes_mean_3d_IoU": 0.67,
+      "spatial_F1": 0.75,
+      "hierarchy_F1": 1.0,
+      "affordance_IoU": 0.0,
+      "mRecall@8": 0.9296,
+      "rank": 2
+    },
+    {
+      "method": "semantic",
+      "relations_F1": 0.5595,
+      "relations_precision": 1.0,
+      "relations_recall": 0.4643,
+      "nodes_macro_F1": 1.0,
+      "nodes_mean_3d_IoU": 0.67,
+      "spatial_F1": 0.0,
+      "hierarchy_F1": 1.0,
+      "affordance_IoU": 0.0,
+      "mRecall@8": 0.5018,
+      "rank": 3
+    },
+    {
+      "method": "knn_spatial",
+      "relations_F1": 0.421,
+      "relations_precision": 0.75,
+      "relations_recall": 0.2948,
+      "nodes_macro_F1": 1.0,
+      "nodes_mean_3d_IoU": 0.67,
+      "spatial_F1": 0.5436,
+      "hierarchy_F1": 0.0,
+      "affordance_IoU": 0.0,
+      "mRecall@8": 0.3601,
+      "rank": 4
+    },
+    {
+      "method": "random",
+      "relations_F1": 0.0134,
+      "relations_precision": 0.0179,
+      "relations_recall": 0.0107,
+      "nodes_macro_F1": 1.0,
+      "nodes_mean_3d_IoU": 0.67,
+      "spatial_F1": 0.0155,
+      "hierarchy_F1": 0.0,
+      "affordance_IoU": 0.0,
+      "mRecall@8": 0.2944,
+      "rank": 5
+    }
+  ],
+  "per_scene": [
+    {
+      "scene_id": "3rscan/ddc737a3-765b-241a-9c99-f98a3c126686",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8387,
+            "macro_F1": 1.0,
+            "num_matched": 31,
+            "num_predicted": 31,
+            "num_reference": 31
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.9805,
+            "F1": 0.9901,
+            "num_tp": 652,
+            "num_predicted": 652,
+            "num_reference": 665
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 52,
+            "num_predicted": 52,
+            "num_reference": 52
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 31
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 127060,
+            "num_nodes": 31,
+            "num_edges": 652
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8387,
+            "macro_F1": 1.0,
+            "num_matched": 31,
+            "num_predicted": 31,
+            "num_reference": 31
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.0977,
+            "F1": 0.1781,
+            "num_tp": 65,
+            "num_predicted": 65,
+            "num_reference": 665
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 52,
+            "num_predicted": 52,
+            "num_reference": 52
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 31
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.1323,
+          "efficiency": {
+            "bytes": 23689,
+            "num_nodes": 31,
+            "num_edges": 65
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.8611,
+            "mean_3d_IoU": 0.8387,
+            "macro_F1": 0.8,
+            "num_matched": 31,
+            "num_predicted": 36,
+            "num_reference": 31
+          },
+          "relations": {
+            "precision": 0.9925,
+            "recall": 1.0,
+            "F1": 0.9963,
+            "num_tp": 665,
+            "num_predicted": 670,
+            "num_reference": 665
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9123,
+            "recall": 1.0,
+            "F1": 0.9541,
+            "num_tp": 52,
+            "num_predicted": 57,
+            "num_reference": 52
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 36
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 7
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 132322,
+            "num_nodes": 36,
+            "num_edges": 672
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8387,
+            "macro_F1": 1.0,
+            "num_matched": 31,
+            "num_predicted": 31,
+            "num_reference": 31
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.3925,
+            "F1": 0.5637,
+            "num_tp": 261,
+            "num_predicted": 261,
+            "num_reference": 665
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.435,
+            "F1": 0.6063,
+            "num_tp": 261,
+            "num_predicted": 261,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 52
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 31
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.4468,
+          "efficiency": {
+            "bytes": 62692,
+            "num_nodes": 31,
+            "num_edges": 261
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8387,
+            "macro_F1": 1.0,
+            "num_matched": 31,
+            "num_predicted": 31,
+            "num_reference": 31
+          },
+          "relations": {
+            "precision": 0.0276,
+            "recall": 0.0165,
+            "F1": 0.0207,
+            "num_tp": 11,
+            "num_predicted": 399,
+            "num_reference": 665
+          },
+          "spatial": {
+            "precision": 0.0276,
+            "recall": 0.0183,
+            "F1": 0.022,
+            "num_tp": 11,
+            "num_predicted": 399,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 52
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 31
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6652,
+          "efficiency": {
+            "bytes": 82263,
+            "num_nodes": 31,
+            "num_edges": 399
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "3rscan/9766cbfd-6321-2e2f-8348-7da212a30beb",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9764,
+            "macro_F1": 1.0,
+            "num_matched": 212,
+            "num_predicted": 212,
+            "num_reference": 212
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.7854,
+            "F1": 0.8798,
+            "num_tp": 1014,
+            "num_predicted": 1014,
+            "num_reference": 1291
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 414,
+            "num_predicted": 414,
+            "num_reference": 414
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 212
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.7205,
+          "efficiency": {
+            "bytes": 268618,
+            "num_nodes": 212,
+            "num_edges": 1014
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9764,
+            "macro_F1": 1.0,
+            "num_matched": 212,
+            "num_predicted": 212,
+            "num_reference": 212
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.5352,
+            "F1": 0.6973,
+            "num_tp": 691,
+            "num_predicted": 691,
+            "num_reference": 1291
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 414,
+            "num_predicted": 414,
+            "num_reference": 414
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 212
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.5392,
+          "efficiency": {
+            "bytes": 207475,
+            "num_nodes": 212,
+            "num_edges": 691
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.968,
+            "mean_3d_IoU": 0.9764,
+            "macro_F1": 0.901,
+            "num_matched": 212,
+            "num_predicted": 219,
+            "num_reference": 212
+          },
+          "relations": {
+            "precision": 0.9946,
+            "recall": 1.0,
+            "F1": 0.9973,
+            "num_tp": 1291,
+            "num_predicted": 1298,
+            "num_reference": 1291
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9834,
+            "recall": 1.0,
+            "F1": 0.9916,
+            "num_tp": 414,
+            "num_predicted": 421,
+            "num_reference": 414
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 219
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 36
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 335903,
+            "num_nodes": 219,
+            "num_edges": 1327
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9764,
+            "macro_F1": 1.0,
+            "num_matched": 212,
+            "num_predicted": 212,
+            "num_reference": 212
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.3261,
+            "F1": 0.4918,
+            "num_tp": 421,
+            "num_predicted": 421,
+            "num_reference": 1291
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.7017,
+            "F1": 0.8247,
+            "num_tp": 421,
+            "num_predicted": 421,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 414
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 212
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.356,
+          "efficiency": {
+            "bytes": 163145,
+            "num_nodes": 212,
+            "num_edges": 421
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9764,
+            "macro_F1": 1.0,
+            "num_matched": 212,
+            "num_predicted": 212,
+            "num_reference": 212
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 774,
+            "num_reference": 1291
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 774,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 414
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 212
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0263,
+          "efficiency": {
+            "bytes": 214661,
+            "num_nodes": 212,
+            "num_edges": 774
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "3rscan/6bde604d-9162-246f-8d7d-631c1e992162",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.1667,
+            "macro_F1": 1.0,
+            "num_matched": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 6
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2620,
+            "num_nodes": 6,
+            "num_edges": 2
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.1667,
+            "macro_F1": 1.0,
+            "num_matched": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 6
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2620,
+            "num_nodes": 6,
+            "num_edges": 2
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.1667,
+            "macro_F1": 1.0,
+            "num_matched": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 6
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2666,
+            "num_nodes": 6,
+            "num_edges": 2
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.1667,
+            "macro_F1": 1.0,
+            "num_matched": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 6
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 2200,
+            "num_nodes": 6,
+            "num_edges": 0
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.1667,
+            "macro_F1": 1.0,
+            "num_matched": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 6
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 2431,
+            "num_nodes": 6,
+            "num_edges": 1
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "arkitscenes/Training/47333776",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8,
+            "macro_F1": 1.0,
+            "num_matched": 25,
+            "num_predicted": 25,
+            "num_reference": 25
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.9863,
+            "F1": 0.9931,
+            "num_tp": 503,
+            "num_predicted": 503,
+            "num_reference": 510
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 463,
+            "num_predicted": 463,
+            "num_reference": 463
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 40,
+            "num_predicted": 40,
+            "num_reference": 40
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 25
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 98868,
+            "num_nodes": 25,
+            "num_edges": 503
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8,
+            "macro_F1": 1.0,
+            "num_matched": 25,
+            "num_predicted": 25,
+            "num_reference": 25
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.0922,
+            "F1": 0.1688,
+            "num_tp": 47,
+            "num_predicted": 47,
+            "num_reference": 510
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 463
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 40,
+            "num_predicted": 40,
+            "num_reference": 40
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 25
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.1286,
+          "efficiency": {
+            "bytes": 18036,
+            "num_nodes": 25,
+            "num_edges": 47
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.8929,
+            "mean_3d_IoU": 0.8,
+            "macro_F1": 0.8889,
+            "num_matched": 25,
+            "num_predicted": 28,
+            "num_reference": 25
+          },
+          "relations": {
+            "precision": 0.9942,
+            "recall": 1.0,
+            "F1": 0.9971,
+            "num_tp": 510,
+            "num_predicted": 513,
+            "num_reference": 510
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 463,
+            "num_predicted": 463,
+            "num_reference": 463
+          },
+          "hierarchy": {
+            "precision": 0.9302,
+            "recall": 1.0,
+            "F1": 0.9639,
+            "num_tp": 40,
+            "num_predicted": 43,
+            "num_reference": 40
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 28
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 4
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 101928,
+            "num_nodes": 28,
+            "num_edges": 514
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8,
+            "macro_F1": 1.0,
+            "num_matched": 25,
+            "num_predicted": 25,
+            "num_reference": 25
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.4196,
+            "F1": 0.5912,
+            "num_tp": 214,
+            "num_predicted": 214,
+            "num_reference": 510
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.4622,
+            "F1": 0.6322,
+            "num_tp": 214,
+            "num_predicted": 214,
+            "num_reference": 463
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 40
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 25
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.4286,
+          "efficiency": {
+            "bytes": 50883,
+            "num_nodes": 25,
+            "num_edges": 214
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8,
+            "macro_F1": 1.0,
+            "num_matched": 25,
+            "num_predicted": 25,
+            "num_reference": 25
+          },
+          "relations": {
+            "precision": 0.0327,
+            "recall": 0.0196,
+            "F1": 0.0245,
+            "num_tp": 10,
+            "num_predicted": 306,
+            "num_reference": 510
+          },
+          "spatial": {
+            "precision": 0.0327,
+            "recall": 0.0216,
+            "F1": 0.026,
+            "num_tp": 10,
+            "num_predicted": 306,
+            "num_reference": 463
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 40
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 25
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.7429,
+          "efficiency": {
+            "bytes": 63557,
+            "num_nodes": 25,
+            "num_edges": 306
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "arkitscenes/Training/41159375",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9462,
+            "macro_F1": 1.0,
+            "num_matched": 93,
+            "num_predicted": 93,
+            "num_reference": 93
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.9076,
+            "F1": 0.9516,
+            "num_tp": 776,
+            "num_predicted": 776,
+            "num_reference": 855
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 176,
+            "num_predicted": 176,
+            "num_reference": 176
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 93
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.9201,
+          "efficiency": {
+            "bytes": 179872,
+            "num_nodes": 93,
+            "num_edges": 776
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9462,
+            "macro_F1": 1.0,
+            "num_matched": 93,
+            "num_predicted": 93,
+            "num_reference": 93
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.2982,
+            "F1": 0.4595,
+            "num_tp": 255,
+            "num_predicted": 255,
+            "num_reference": 855
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 176,
+            "num_predicted": 176,
+            "num_reference": 176
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 93
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.2877,
+          "efficiency": {
+            "bytes": 81091,
+            "num_nodes": 93,
+            "num_edges": 255
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.9029,
+            "mean_3d_IoU": 0.9462,
+            "macro_F1": 0.7971,
+            "num_matched": 93,
+            "num_predicted": 103,
+            "num_reference": 93
+          },
+          "relations": {
+            "precision": 0.9884,
+            "recall": 1.0,
+            "F1": 0.9942,
+            "num_tp": 855,
+            "num_predicted": 865,
+            "num_reference": 855
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9462,
+            "recall": 1.0,
+            "F1": 0.9724,
+            "num_tp": 176,
+            "num_predicted": 186,
+            "num_reference": 176
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 103
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 73
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 222576,
+            "num_nodes": 103,
+            "num_edges": 928
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9462,
+            "macro_F1": 1.0,
+            "num_matched": 93,
+            "num_predicted": 93,
+            "num_reference": 93
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.4819,
+            "F1": 0.6504,
+            "num_tp": 412,
+            "num_predicted": 412,
+            "num_reference": 855
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.6867,
+            "F1": 0.8142,
+            "num_tp": 412,
+            "num_predicted": 412,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 176
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 93
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6522,
+          "efficiency": {
+            "bytes": 116764,
+            "num_nodes": 93,
+            "num_edges": 412
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9462,
+            "macro_F1": 1.0,
+            "num_matched": 93,
+            "num_predicted": 93,
+            "num_reference": 93
+          },
+          "relations": {
+            "precision": 0.0039,
+            "recall": 0.0023,
+            "F1": 0.0029,
+            "num_tp": 2,
+            "num_predicted": 513,
+            "num_reference": 855
+          },
+          "spatial": {
+            "precision": 0.0039,
+            "recall": 0.0033,
+            "F1": 0.0036,
+            "num_tp": 2,
+            "num_predicted": 513,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 176
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 93
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.1083,
+          "efficiency": {
+            "bytes": 123937,
+            "num_nodes": 93,
+            "num_edges": 513
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "arkitscenes/Training/41098152",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2372,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2372,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2372,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 1952,
+            "num_nodes": 5,
+            "num_edges": 0
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 2180,
+            "num_nodes": 5,
+            "num_edges": 1
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "matterport3d/vyrNrziPKCB/region39",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.75,
+            "macro_F1": 1.0,
+            "num_matched": 20,
+            "num_predicted": 20,
+            "num_reference": 20
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.9667,
+            "F1": 0.9831,
+            "num_tp": 348,
+            "num_predicted": 348,
+            "num_reference": 360
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 318,
+            "num_predicted": 318,
+            "num_reference": 318
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 30,
+            "num_predicted": 30,
+            "num_reference": 30
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 20
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 69429,
+            "num_nodes": 20,
+            "num_edges": 348
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.75,
+            "macro_F1": 1.0,
+            "num_matched": 20,
+            "num_predicted": 20,
+            "num_reference": 20
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.1167,
+            "F1": 0.209,
+            "num_tp": 42,
+            "num_predicted": 42,
+            "num_reference": 360
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 318
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 30,
+            "num_predicted": 30,
+            "num_reference": 30
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 20
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.225,
+          "efficiency": {
+            "bytes": 15156,
+            "num_nodes": 20,
+            "num_edges": 42
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.9524,
+            "mean_3d_IoU": 0.75,
+            "macro_F1": 0.9231,
+            "num_matched": 20,
+            "num_predicted": 21,
+            "num_reference": 20
+          },
+          "relations": {
+            "precision": 0.9972,
+            "recall": 1.0,
+            "F1": 0.9986,
+            "num_tp": 360,
+            "num_predicted": 361,
+            "num_reference": 360
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 318,
+            "num_predicted": 318,
+            "num_reference": 318
+          },
+          "hierarchy": {
+            "precision": 0.9677,
+            "recall": 1.0,
+            "F1": 0.9836,
+            "num_tp": 30,
+            "num_predicted": 31,
+            "num_reference": 30
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 21
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 2
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 72542,
+            "num_nodes": 21,
+            "num_edges": 362
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.75,
+            "macro_F1": 1.0,
+            "num_matched": 20,
+            "num_predicted": 20,
+            "num_reference": 20
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.3611,
+            "F1": 0.5306,
+            "num_tp": 130,
+            "num_predicted": 130,
+            "num_reference": 360
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.4088,
+            "F1": 0.5804,
+            "num_tp": 130,
+            "num_predicted": 130,
+            "num_reference": 318
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 30
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 20
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6,
+          "efficiency": {
+            "bytes": 33299,
+            "num_nodes": 20,
+            "num_edges": 130
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.75,
+            "macro_F1": 1.0,
+            "num_matched": 20,
+            "num_predicted": 20,
+            "num_reference": 20
+          },
+          "relations": {
+            "precision": 0.037,
+            "recall": 0.0222,
+            "F1": 0.0278,
+            "num_tp": 8,
+            "num_predicted": 216,
+            "num_reference": 360
+          },
+          "spatial": {
+            "precision": 0.037,
+            "recall": 0.0252,
+            "F1": 0.03,
+            "num_tp": 8,
+            "num_predicted": 216,
+            "num_reference": 318
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 30
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 20
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.7667,
+          "efficiency": {
+            "bytes": 45786,
+            "num_nodes": 20,
+            "num_edges": 216
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "matterport3d/2n8kARJN3HM/region0",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9682,
+            "macro_F1": 1.0,
+            "num_matched": 157,
+            "num_predicted": 157,
+            "num_reference": 157
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.6011,
+            "F1": 0.7508,
+            "num_tp": 904,
+            "num_predicted": 904,
+            "num_reference": 1504
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 304,
+            "num_predicted": 304,
+            "num_reference": 304
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 157
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6476,
+          "efficiency": {
+            "bytes": 228983,
+            "num_nodes": 157,
+            "num_edges": 904
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9682,
+            "macro_F1": 1.0,
+            "num_matched": 157,
+            "num_predicted": 157,
+            "num_reference": 157
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.6011,
+            "F1": 0.7508,
+            "num_tp": 904,
+            "num_predicted": 904,
+            "num_reference": 1504
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 304,
+            "num_predicted": 304,
+            "num_reference": 304
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 157
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.5488,
+          "efficiency": {
+            "bytes": 228908,
+            "num_nodes": 157,
+            "num_edges": 904
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.9632,
+            "mean_3d_IoU": 0.9682,
+            "macro_F1": 0.7391,
+            "num_matched": 157,
+            "num_predicted": 163,
+            "num_reference": 157
+          },
+          "relations": {
+            "precision": 0.996,
+            "recall": 1.0,
+            "F1": 0.998,
+            "num_tp": 1504,
+            "num_predicted": 1510,
+            "num_reference": 1504
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9806,
+            "recall": 1.0,
+            "F1": 0.9902,
+            "num_tp": 304,
+            "num_predicted": 310,
+            "num_reference": 304
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 163
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 39
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 357820,
+            "num_nodes": 163,
+            "num_edges": 1543
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9682,
+            "macro_F1": 1.0,
+            "num_matched": 157,
+            "num_predicted": 157,
+            "num_reference": 157
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.2666,
+            "F1": 0.421,
+            "num_tp": 401,
+            "num_predicted": 401,
+            "num_reference": 1504
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.6683,
+            "F1": 0.8012,
+            "num_tp": 401,
+            "num_predicted": 401,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 304
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 157
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.3866,
+          "efficiency": {
+            "bytes": 140870,
+            "num_nodes": 157,
+            "num_edges": 401
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9682,
+            "macro_F1": 1.0,
+            "num_matched": 157,
+            "num_predicted": 157,
+            "num_reference": 157
+          },
+          "relations": {
+            "precision": 0.0011,
+            "recall": 0.0007,
+            "F1": 0.0008,
+            "num_tp": 1,
+            "num_predicted": 902,
+            "num_reference": 1504
+          },
+          "spatial": {
+            "precision": 0.0011,
+            "recall": 0.0017,
+            "F1": 0.0013,
+            "num_tp": 1,
+            "num_predicted": 902,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 304
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 157
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0659,
+          "efficiency": {
+            "bytes": 218262,
+            "num_nodes": 157,
+            "num_edges": 902
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "matterport3d/5LpN3gDmAk7/region17",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2391,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2391,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 2,
+            "num_predicted": 2,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 2463,
+            "num_nodes": 5,
+            "num_edges": 2
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 1971,
+            "num_nodes": 5,
+            "num_edges": 0
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.2,
+            "macro_F1": 1.0,
+            "num_matched": 5,
+            "num_predicted": 5,
+            "num_reference": 5
+          },
+          "relations": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 2
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 1,
+            "num_reference": 0
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 2
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 5
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0,
+          "efficiency": {
+            "bytes": 2201,
+            "num_nodes": 5,
+            "num_edges": 1
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "scannet/scene0665_01",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8529,
+            "macro_F1": 1.0,
+            "num_matched": 34,
+            "num_predicted": 34,
+            "num_reference": 34
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.988,
+            "F1": 0.994,
+            "num_tp": 658,
+            "num_predicted": 658,
+            "num_reference": 666
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 58,
+            "num_predicted": 58,
+            "num_reference": 58
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 34
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 130398,
+            "num_nodes": 34,
+            "num_edges": 658
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8529,
+            "macro_F1": 1.0,
+            "num_matched": 34,
+            "num_predicted": 34,
+            "num_reference": 34
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.0991,
+            "F1": 0.1803,
+            "num_tp": 66,
+            "num_predicted": 66,
+            "num_reference": 666
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 58,
+            "num_predicted": 58,
+            "num_reference": 58
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 34
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.1043,
+          "efficiency": {
+            "bytes": 24172,
+            "num_nodes": 34,
+            "num_edges": 66
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.8947,
+            "mean_3d_IoU": 0.8529,
+            "macro_F1": 0.7647,
+            "num_matched": 34,
+            "num_predicted": 38,
+            "num_reference": 34
+          },
+          "relations": {
+            "precision": 0.994,
+            "recall": 1.0,
+            "F1": 0.997,
+            "num_tp": 666,
+            "num_predicted": 670,
+            "num_reference": 666
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9355,
+            "recall": 1.0,
+            "F1": 0.9667,
+            "num_tp": 58,
+            "num_predicted": 62,
+            "num_reference": 58
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 38
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 21
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 139887,
+            "num_nodes": 38,
+            "num_edges": 687
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8529,
+            "macro_F1": 1.0,
+            "num_matched": 34,
+            "num_predicted": 34,
+            "num_reference": 34
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.4069,
+            "F1": 0.5784,
+            "num_tp": 271,
+            "num_predicted": 271,
+            "num_reference": 666
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.4517,
+            "F1": 0.6223,
+            "num_tp": 271,
+            "num_predicted": 271,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 58
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 34
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.4668,
+          "efficiency": {
+            "bytes": 65569,
+            "num_nodes": 34,
+            "num_edges": 271
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.8529,
+            "macro_F1": 1.0,
+            "num_matched": 34,
+            "num_predicted": 34,
+            "num_reference": 34
+          },
+          "relations": {
+            "precision": 0.0276,
+            "recall": 0.0165,
+            "F1": 0.0207,
+            "num_tp": 11,
+            "num_predicted": 399,
+            "num_reference": 666
+          },
+          "spatial": {
+            "precision": 0.0276,
+            "recall": 0.0183,
+            "F1": 0.022,
+            "num_tp": 11,
+            "num_predicted": 399,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 58
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 34
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6005,
+          "efficiency": {
+            "bytes": 82557,
+            "num_nodes": 34,
+            "num_edges": 399
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "scannet/scene0054_00",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9655,
+            "macro_F1": 1.0,
+            "num_matched": 145,
+            "num_predicted": 145,
+            "num_reference": 145
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.9072,
+            "F1": 0.9514,
+            "num_tp": 880,
+            "num_predicted": 880,
+            "num_reference": 970
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 280,
+            "num_predicted": 280,
+            "num_reference": 280
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 145
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.8666,
+          "efficiency": {
+            "bytes": 218749,
+            "num_nodes": 145,
+            "num_edges": 880
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9655,
+            "macro_F1": 1.0,
+            "num_matched": 145,
+            "num_predicted": 145,
+            "num_reference": 145
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.3814,
+            "F1": 0.5522,
+            "num_tp": 370,
+            "num_predicted": 370,
+            "num_reference": 970
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 280,
+            "num_predicted": 280,
+            "num_reference": 280
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 145
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.3889,
+          "efficiency": {
+            "bytes": 121861,
+            "num_nodes": 145,
+            "num_edges": 370
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.9416,
+            "mean_3d_IoU": 0.9655,
+            "macro_F1": 0.8831,
+            "num_matched": 145,
+            "num_predicted": 154,
+            "num_reference": 145
+          },
+          "relations": {
+            "precision": 0.9908,
+            "recall": 1.0,
+            "F1": 0.9954,
+            "num_tp": 970,
+            "num_predicted": 979,
+            "num_reference": 970
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 600,
+            "num_predicted": 600,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.9689,
+            "recall": 1.0,
+            "F1": 0.9842,
+            "num_tp": 280,
+            "num_predicted": 289,
+            "num_reference": 280
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 154
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 41
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 251549,
+            "num_nodes": 154,
+            "num_edges": 1011
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9655,
+            "macro_F1": 1.0,
+            "num_matched": 145,
+            "num_predicted": 145,
+            "num_reference": 145
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.433,
+            "F1": 0.6043,
+            "num_tp": 420,
+            "num_predicted": 420,
+            "num_reference": 970
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.7,
+            "F1": 0.8235,
+            "num_tp": 420,
+            "num_predicted": 420,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 280
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 145
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.4842,
+          "efficiency": {
+            "bytes": 138104,
+            "num_nodes": 145,
+            "num_edges": 420
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.9655,
+            "macro_F1": 1.0,
+            "num_matched": 145,
+            "num_predicted": 145,
+            "num_reference": 145
+          },
+          "relations": {
+            "precision": 0.0017,
+            "recall": 0.001,
+            "F1": 0.0013,
+            "num_tp": 1,
+            "num_predicted": 582,
+            "num_reference": 970
+          },
+          "spatial": {
+            "precision": 0.0017,
+            "recall": 0.0017,
+            "F1": 0.0017,
+            "num_tp": 1,
+            "num_predicted": 582,
+            "num_reference": 600
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 280
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 145
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.0566,
+          "efficiency": {
+            "bytes": 155731,
+            "num_nodes": 145,
+            "num_edges": 582
+          }
+        }
+      }
+    },
+    {
+      "scene_id": "scannet/scene0044_00",
+      "by_method": {
+        "geometric_3d": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.375,
+            "macro_F1": 1.0,
+            "num_matched": 8,
+            "num_predicted": 8,
+            "num_reference": 8
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.95,
+            "F1": 0.9744,
+            "num_tp": 19,
+            "num_predicted": 19,
+            "num_reference": 20
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 13,
+            "num_predicted": 13,
+            "num_reference": 13
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 8
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 6496,
+            "num_nodes": 8,
+            "num_edges": 19
+          }
+        },
+        "semantic": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.375,
+            "macro_F1": 1.0,
+            "num_matched": 8,
+            "num_predicted": 8,
+            "num_reference": 8
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.35,
+            "F1": 0.5185,
+            "num_tp": 7,
+            "num_predicted": 7,
+            "num_reference": 20
+          },
+          "spatial": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 13
+          },
+          "hierarchy": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 6,
+            "num_predicted": 6,
+            "num_reference": 6
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 8
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.6667,
+          "efficiency": {
+            "bytes": 4301,
+            "num_nodes": 8,
+            "num_edges": 7
+          }
+        },
+        "vlm_augmented": {
+          "nodes": {
+            "mAP": 0.7273,
+            "mean_3d_IoU": 0.375,
+            "macro_F1": 0.7273,
+            "num_matched": 8,
+            "num_predicted": 11,
+            "num_reference": 8
+          },
+          "relations": {
+            "precision": 0.8696,
+            "recall": 1.0,
+            "F1": 0.9302,
+            "num_tp": 20,
+            "num_predicted": 23,
+            "num_reference": 20
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "F1": 1.0,
+            "num_tp": 13,
+            "num_predicted": 13,
+            "num_reference": 13
+          },
+          "hierarchy": {
+            "precision": 0.6667,
+            "recall": 1.0,
+            "F1": 0.8,
+            "num_tp": 6,
+            "num_predicted": 9,
+            "num_reference": 6
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 11
+          },
+          "calibration": {
+            "ECE": 0.5,
+            "Brier": 0.25,
+            "n": 3
+          },
+          "mRecall@8": 1.0,
+          "efficiency": {
+            "bytes": 7900,
+            "num_nodes": 11,
+            "num_edges": 23
+          }
+        },
+        "knn_spatial": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.375,
+            "macro_F1": 1.0,
+            "num_matched": 8,
+            "num_predicted": 8,
+            "num_reference": 8
+          },
+          "relations": {
+            "precision": 1.0,
+            "recall": 0.45,
+            "F1": 0.6207,
+            "num_tp": 9,
+            "num_predicted": 9,
+            "num_reference": 20
+          },
+          "spatial": {
+            "precision": 1.0,
+            "recall": 0.6923,
+            "F1": 0.8182,
+            "num_tp": 9,
+            "num_predicted": 9,
+            "num_reference": 13
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 6
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 8
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.5,
+          "efficiency": {
+            "bytes": 4677,
+            "num_nodes": 8,
+            "num_edges": 9
+          }
+        },
+        "random": {
+          "nodes": {
+            "mAP": 1.0,
+            "mean_3d_IoU": 0.375,
+            "macro_F1": 1.0,
+            "num_matched": 8,
+            "num_predicted": 8,
+            "num_reference": 8
+          },
+          "relations": {
+            "precision": 0.0833,
+            "recall": 0.05,
+            "F1": 0.0625,
+            "num_tp": 1,
+            "num_predicted": 12,
+            "num_reference": 20
+          },
+          "spatial": {
+            "precision": 0.0833,
+            "recall": 0.0769,
+            "F1": 0.08,
+            "num_tp": 1,
+            "num_predicted": 12,
+            "num_reference": 13
+          },
+          "hierarchy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "F1": 0.0,
+            "num_tp": 0,
+            "num_predicted": 0,
+            "num_reference": 6
+          },
+          "affordance": {
+            "mean_IoU": 0.0,
+            "mean_AP": 0.0,
+            "num_nodes": 8
+          },
+          "calibration": {
+            "ECE": 0.0,
+            "Brier": 0.0,
+            "n": 0
+          },
+          "mRecall@8": 0.5,
+          "efficiency": {
+            "bytes": 5163,
+            "num_nodes": 8,
+            "num_edges": 12
+          }
+        }
+      }
+    }
+  ]
+}

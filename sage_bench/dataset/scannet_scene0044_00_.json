@@ -1,0 +1,455 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "scannet/scene0044_00/",
+  "dataset": "scannet",
+  "layout_source": "/home/yiqun/project_lujun/InternScenes2isaacsim/data/Layout_info/scannet/scene0044_00/layout.json",
+  "frame": {
+    "name": "room_canonical",
+    "origin": [
+      -0.1561,
+      -0.2815,
+      0.8424
+    ],
+    "forward": [
+      0.9348,
+      0.3551,
+      0.0
+    ],
+    "right": [
+      0.3551,
+      -0.9348,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "matrix": [
+      [
+        0.3551,
+        0.9348,
+        0.0
+      ],
+      [
+        -0.9348,
+        0.3551,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "method": "PCA(principal axis of object centroids, XY)",
+    "source": "room_canonical"
+  },
+  "num_objects": 3,
+  "nodes": [
+    {
+      "id": "room",
+      "level": "room",
+      "category": "room",
+      "geometry": {
+        "min_m": [
+          -0.82,
+          -0.586,
+          -0.0
+        ],
+        "max_m": [
+          0.742,
+          0.664,
+          3.0
+        ],
+        "width_m": 1.562,
+        "depth_m": 1.25,
+        "height_m": 3.0
+      },
+      "attributes": {},
+      "confidence": 0.98,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_floor",
+      "level": "structure",
+      "category": "floor",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_wall",
+      "level": "structure",
+      "category": "wall",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_ceiling",
+      "level": "structure",
+      "category": "ceiling",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "obj_0",
+      "level": "object",
+      "category": "door",
+      "model_uid": "partnet_mobility/9410",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          0.5962,
+          0.0,
+          0.8028
+        ],
+        "size_m": [
+          0.2677,
+          1.1922,
+          2.17
+        ],
+        "bbox_min_m": [
+          0.4623,
+          -0.5961,
+          -0.2822
+        ],
+        "bbox_max_m": [
+          0.73,
+          0.5961,
+          1.8878
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_1",
+      "level": "object",
+      "category": "light",
+      "model_uid": "gr100/home-others-light-c0ff07618beaf6ae1cb30c6a2d0920ce",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.5355,
+          -0.5033,
+          1.5234
+        ],
+        "size_m": [
+          0.0907,
+          0.389,
+          0.3015
+        ],
+        "bbox_min_m": [
+          -0.5809,
+          -0.6978,
+          1.3726
+        ],
+        "bbox_max_m": [
+          -0.4902,
+          -0.3088,
+          1.6741
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "obj_2",
+      "level": "object",
+      "category": "backpack",
+      "model_uid": "gr100/commercial-others-backpack-abd4eebb509a10a1c4c6719a8cca399d",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.5288,
+          -0.3413,
+          0.2011
+        ],
+        "size_m": [
+          0.3378,
+          0.3987,
+          0.4019
+        ],
+        "bbox_min_m": [
+          -0.6978,
+          -0.5406,
+          0.0001
+        ],
+        "bbox_max_m": [
+          -0.3599,
+          -0.142,
+          0.402
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "agent_go2",
+      "level": "agent",
+      "category": "go2",
+      "geometry": {
+        "center_m": [
+          -0.362,
+          0.234,
+          0.0
+        ]
+      },
+      "attributes": {
+        "clearance_m": 0.205
+      },
+      "confidence": 0.9,
+      "source": "placement"
+    }
+  ],
+  "edges": [
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.321,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.433,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.332,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.433,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_0",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.321,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "obj_1",
+      "predicate": "distance",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "value": 1.332,
+      "note": "centre-to-centre",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_1",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.433,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_1",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.321,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "obj_2",
+      "predicate": "behind",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "near",
+      "family": "metric",
+      "confidence": 0.9,
+      "reference_frame": "world",
+      "value": 1.332,
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "above",
+      "family": "metric",
+      "confidence": 1.0,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "right",
+      "family": "metric",
+      "confidence": 0.8,
+      "reference_frame": "room_canonical",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_0",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_1",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "room",
+      "target": "obj_2",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_2",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_1",
+      "target": "obj_2",
+      "predicate": "on_top_of",
+      "family": "semantic",
+      "confidence": 0.7,
+      "reference_frame": "world",
+      "value": "above + horizontal overlap",
+      "tier": "heuristic"
+    }
+  ],
+  "stats": {
+    "num_nodes": 8,
+    "num_edges": 20,
+    "num_by_level": {
+      "room": 1,
+      "structure": 3,
+      "object": 3,
+      "agent": 1
+    },
+    "num_by_family": {
+      "metric": 13,
+      "hierarchy": 6,
+      "semantic": 1
+    },
+    "num_by_predicate": {
+      "distance": 6,
+      "near": 3,
+      "behind": 2,
+      "above": 1,
+      "right": 1,
+      "contains": 3,
+      "in_room": 3,
+      "on_top_of": 1
+    },
+    "confidence_tiers": {
+      "structure_mesh": 4,
+      "deterministic": 3,
+      "placement": 1
+    },
+    "edge_tiers": {
+      "deterministic": 19,
+      "heuristic": 1
+    }
+  }
+}

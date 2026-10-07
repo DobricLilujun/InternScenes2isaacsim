@@ -1,0 +1,114 @@
+{
+  "scenes": [
+    "3rscan/ddc737a3-765b-241a-9c99-f98a3c126686",
+    "3rscan/9766cbfd-6321-2e2f-8348-7da212a30beb",
+    "3rscan/6bde604d-9162-246f-8d7d-631c1e992162",
+    "arkitscenes/Training/47333776",
+    "arkitscenes/Training/41159375",
+    "arkitscenes/Training/41098152",
+    "matterport3d/vyrNrziPKCB/region39",
+    "matterport3d/2n8kARJN3HM/region0",
+    "matterport3d/5LpN3gDmAk7/region17",
+    "scannet/scene0665_01",
+    "scannet/scene0054_00",
+    "scannet/scene0044_00"
+  ],
+  "refs": [
+    {
+      "scene_id": "3rscan/ddc737a3-765b-241a-9c99-f98a3c126686",
+      "dataset": "3rscan",
+      "num_objects": 26,
+      "num_nodes": 31,
+      "num_edges": 665,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/3rscan_ddc737a3-765b-241a-9c99-f98a3c126686.json"
+    },
+    {
+      "scene_id": "3rscan/9766cbfd-6321-2e2f-8348-7da212a30beb",
+      "dataset": "3rscan",
+      "num_objects": 207,
+      "num_nodes": 212,
+      "num_edges": 1291,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/3rscan_9766cbfd-6321-2e2f-8348-7da212a30beb.json"
+    },
+    {
+      "scene_id": "3rscan/6bde604d-9162-246f-8d7d-631c1e992162",
+      "dataset": "3rscan",
+      "num_objects": 1,
+      "num_nodes": 6,
+      "num_edges": 2,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/3rscan_6bde604d-9162-246f-8d7d-631c1e992162.json"
+    },
+    {
+      "scene_id": "arkitscenes/Training/47333776",
+      "dataset": "arkitscenes",
+      "num_objects": 20,
+      "num_nodes": 25,
+      "num_edges": 510,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/arkitscenes_Training_47333776.json"
+    },
+    {
+      "scene_id": "arkitscenes/Training/41159375",
+      "dataset": "arkitscenes",
+      "num_objects": 88,
+      "num_nodes": 93,
+      "num_edges": 855,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/arkitscenes_Training_41159375.json"
+    },
+    {
+      "scene_id": "arkitscenes/Training/41098152",
+      "dataset": "arkitscenes",
+      "num_objects": 1,
+      "num_nodes": 5,
+      "num_edges": 2,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/arkitscenes_Training_41098152.json"
+    },
+    {
+      "scene_id": "matterport3d/vyrNrziPKCB/region39",
+      "dataset": "matterport3d",
+      "num_objects": 15,
+      "num_nodes": 20,
+      "num_edges": 360,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/matterport3d_vyrNrziPKCB_region39.json"
+    },
+    {
+      "scene_id": "matterport3d/2n8kARJN3HM/region0",
+      "dataset": "matterport3d",
+      "num_objects": 152,
+      "num_nodes": 157,
+      "num_edges": 1504,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/matterport3d_2n8kARJN3HM_region0.json"
+    },
+    {
+      "scene_id": "matterport3d/5LpN3gDmAk7/region17",
+      "dataset": "matterport3d",
+      "num_objects": 1,
+      "num_nodes": 5,
+      "num_edges": 2,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/matterport3d_5LpN3gDmAk7_region17.json"
+    },
+    {
+      "scene_id": "scannet/scene0665_01",
+      "dataset": "scannet",
+      "num_objects": 29,
+      "num_nodes": 34,
+      "num_edges": 666,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/scannet_scene0665_01.json"
+    },
+    {
+      "scene_id": "scannet/scene0054_00",
+      "dataset": "scannet",
+      "num_objects": 140,
+      "num_nodes": 145,
+      "num_edges": 970,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/scannet_scene0054_00.json"
+    },
+    {
+      "scene_id": "scannet/scene0044_00",
+      "dataset": "scannet",
+      "num_objects": 3,
+      "num_nodes": 8,
+      "num_edges": 20,
+      "ref_path": "/home/yiqun/project_lujun/InternScenes2isaacsim/sage_bench/dataset/scannet_scene0044_00.json"
+    }
+  ]
+}

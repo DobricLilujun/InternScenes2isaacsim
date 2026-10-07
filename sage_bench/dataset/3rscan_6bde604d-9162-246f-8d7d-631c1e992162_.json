@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "3rscan/6bde604d-9162-246f-8d7d-631c1e992162/",
+  "dataset": "3rscan",
+  "layout_source": "/home/yiqun/project_lujun/InternScenes2isaacsim/data/Layout_info/3rscan/6bde604d-9162-246f-8d7d-631c1e992162/layout.json",
+  "frame": {
+    "name": "room_canonical",
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "forward": [
+      0.5999,
+      0.8001,
+      0.0
+    ],
+    "right": [
+      0.8001,
+      -0.5999,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "matrix": [
+      [
+        0.8001,
+        0.5999,
+        0.0
+      ],
+      [
+        -0.5999,
+        0.8001,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "method": "fallback(longer room axis)",
+    "source": "room_canonical"
+  },
+  "num_objects": 1,
+  "nodes": [
+    {
+      "id": "room",
+      "level": "room",
+      "category": "room",
+      "geometry": {
+        "min_m": [
+          -1.914,
+          -1.367,
+          -0.0
+        ],
+        "max_m": [
+          1.836,
+          1.445,
+          3.0
+        ],
+        "width_m": 3.75,
+        "depth_m": 2.812,
+        "height_m": 3.0
+      },
+      "attributes": {},
+      "confidence": 0.98,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_floor",
+      "level": "structure",
+      "category": "floor",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_wall",
+      "level": "structure",
+      "category": "wall",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "structure_ceiling",
+      "level": "structure",
+      "category": "ceiling",
+      "geometry": {
+        "source": "floor/wall/ceiling"
+      },
+      "attributes": {},
+      "confidence": 0.9,
+      "source": "structure_mesh"
+    },
+    {
+      "id": "obj_0",
+      "level": "object",
+      "category": "bench",
+      "model_uid": "hssd-models/objects/x/xxxx0eb789bbx3025x428exa066x987ccfafe6ea",
+      "valid": true,
+      "geometry": {
+        "center_m": [
+          -0.0,
+          0.0,
+          0.4545
+        ],
+        "size_m": [
+          1.4377,
+          3.4077,
+          0.8946
+        ],
+        "bbox_min_m": [
+          -0.7188,
+          -1.7039,
+          0.0072
+        ],
+        "bbox_max_m": [
+          0.7188,
+          1.7039,
+          0.9018
+        ]
+      },
+      "attributes": {},
+      "confidence": 1.0,
+      "source": "deterministic"
+    },
+    {
+      "id": "agent_go2",
+      "level": "agent",
+      "category": "go2",
+      "geometry": {
+        "center_m": [
+          -1.686,
+          1.216,
+          0.0
+        ]
+      },
+      "attributes": {
+        "clearance_m": 0.003
+      },
+      "confidence": 0.9,
+      "source": "placement"
+    }
+  ],
+  "edges": [
+    {
+      "source": "room",
+      "target": "obj_0",
+      "predicate": "contains",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "value": "object centre in room footprint",
+      "tier": "deterministic"
+    },
+    {
+      "source": "obj_0",
+      "target": "room",
+      "predicate": "in_room",
+      "family": "hierarchy",
+      "confidence": 0.98,
+      "reference_frame": "world",
+      "tier": "deterministic"
+    }
+  ],
+  "stats": {
+    "num_nodes": 6,
+    "num_edges": 2,
+    "num_by_level": {
+      "room": 1,
+      "structure": 3,
+      "object": 1,
+      "agent": 1
+    },
+    "num_by_family": {
+      "hierarchy": 2
+    },
+    "num_by_predicate": {
+      "contains": 1,
+      "in_room": 1
+    },
+    "confidence_tiers": {
+      "structure_mesh": 4,
+      "deterministic": 1,
+      "placement": 1
+    },
+    "edge_tiers": {
+      "deterministic": 2
+    }
+  }
+}
