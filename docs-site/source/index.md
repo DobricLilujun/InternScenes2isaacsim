@@ -1,5 +1,5 @@
 ---
-title: SAGE-Bench
+title: Overview
 description: Scene-graph Assessment and Generation Evaluation for Indoor Environments
 ---
 
