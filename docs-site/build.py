@@ -467,6 +467,13 @@ def build() -> None:
         if src.exists():
             shutil.copy2(src, OUT / "assets" / name)
 
+    # copy figure directory (charts) if present
+    figs = ASSETS / "figs"
+    if figs.exists():
+        (OUT / "assets" / "figs").mkdir(parents=True, exist_ok=True)
+        for png in figs.glob("*.png"):
+            shutil.copy2(png, OUT / "assets" / "figs" / png.name)
+
     # search index
     (OUT / "assets" / "search-index.json").write_text(
         json.dumps({"pages": index}), encoding="utf-8")

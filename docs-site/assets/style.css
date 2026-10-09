@@ -364,3 +364,9 @@ kbd {
   .doc { padding: 24px 20px; }
   #search-input { width: 150px; }
 }
+
+.figure { margin: 20px 0; text-align: center; }
+.figure img { max-width: 100%; border: 1px solid rgba(0, 230, 195, 0.2);
+  border-radius: 6px; background: rgba(255, 255, 255, 0.02); }
+.figure figcaption { margin-top: 8px; font-size: 12px; color: #8b949e;
+  font-family: var(--mono, monospace); }

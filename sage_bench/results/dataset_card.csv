@@ -1,0 +1,13 @@
+scene_id,dataset,num_objects,num_nodes,num_edges
+3rscan/ddc737a3-765b-241a-9c99-f98a3c126686,3rscan,26,31,665
+3rscan/9766cbfd-6321-2e2f-8348-7da212a30beb,3rscan,207,212,1291
+3rscan/6bde604d-9162-246f-8d7d-631c1e992162,3rscan,1,6,2
+arkitscenes/Training/47333776,arkitscenes,20,25,510
+arkitscenes/Training/41159375,arkitscenes,88,93,855
+arkitscenes/Training/41098152,arkitscenes,1,5,2
+matterport3d/vyrNrziPKCB/region39,matterport3d,15,20,360
+matterport3d/2n8kARJN3HM/region0,matterport3d,152,157,1504
+matterport3d/5LpN3gDmAk7/region17,matterport3d,1,5,2
+scannet/scene0665_01,scannet,29,34,666
+scannet/scene0054_00,scannet,140,145,970
+scannet/scene0044_00,scannet,3,8,20

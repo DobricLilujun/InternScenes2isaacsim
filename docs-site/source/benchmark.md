@@ -70,6 +70,25 @@ The ranking is **stable across all four datasets** (per-dataset relation F1:
 `vlm` ≈ 0.997, `geometric` ≈ 0.99, `knn` ≈ 0.57, `semantic` ≈ 0.18,
 `random` ≈ 0.03).
 
+<div class="figure">
+<img src="assets/figs/fig_leaderboard.png" alt="Factorised metrics by method" />
+<figcaption>Figure 1. Factorised metrics by method. `vlm_augmented` leads on
+relation F1; `random` collapses, confirming the harness discriminates signal
+from noise.</figcaption>
+</div>
+
+<div class="figure">
+<img src="assets/figs/fig_per_dataset.png" alt="Relation F1 by method and dataset" />
+<figcaption>Figure 2. Relation F1 by method and dataset — stable across all four
+source datasets.</figcaption>
+</div>
+
+<div class="figure">
+<img src="assets/figs/fig_pareto.png" alt="Accuracy vs. efficiency" />
+<figcaption>Figure 3. Accuracy vs. efficiency (accuracy = mean of relation-F1,
+node-F1, spatial-F1; cost = bytes + 8 × edges).</figcaption>
+</div>
+
 ### Reading the table
 
 - **`vlm_augmented` wins** — it keeps the full deterministic base (recall 1.0)
